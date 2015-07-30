@@ -8,11 +8,11 @@ import java.nio.file.Path;
 
 public interface Rule {
 
-    boolean verify(@NonNull Path rootPath, @NonNull Path childPath) throws DevKitSonarRuntimeException;
+    boolean verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException;
 
-    String errorMessage(@NonNull Path rootPath, @NonNull Path childPath) throws DevKitSonarRuntimeException;
+    String errorMessage(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException;
 
-    boolean accepts(@NonNull Path rootPath, @NonNull Path childPath);
+    boolean accepts(@NonNull Path basePath, @NonNull Path childPath);
 
     interface Documentation {
 

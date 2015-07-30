@@ -65,7 +65,7 @@ public class XmlRule extends AbstractRule {
     }
 
     @Override
-    public boolean verify(@NonNull Path rootPath, @NonNull final Path childPath) throws DevKitSonarRuntimeException {
+    public boolean verify(@NonNull Path basePath, @NonNull final Path childPath) throws DevKitSonarRuntimeException {
 
         boolean result;
         try {

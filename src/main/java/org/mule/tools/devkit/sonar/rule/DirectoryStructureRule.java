@@ -42,13 +42,13 @@ public class DirectoryStructureRule extends AbstractRule {
     }
 
     @Override
-    public boolean verify(@NonNull Path rootPath, @NonNull Path childPath) throws DevKitSonarRuntimeException {
+    public boolean verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException {
         final VelocityContext context = new VelocityContext();
         context.put("PROCESSOR", "World");
 
         final StringWriter sw = new StringWriter();
         template.merge(context, sw);
-        final Path fullPath = rootPath.resolve(sw.toString());
+        final Path fullPath = basePath.resolve(sw.toString());
 
         return Files.exists(fullPath);
     }
