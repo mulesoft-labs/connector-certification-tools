@@ -7,12 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL) @Generated("org.jsonschema2pojo") @JsonPropertyOrder({
-        "id", "type", "acceptRegexp", "xpath", "brief", "description" }) public class JsonRule {
+        "id", "type", "acceptRegexp", "verifyExpression", "brief", "description" }) public class JsonRule {
 
     @JsonProperty("id") private String id;
     @JsonProperty("type") private String type;
     @JsonProperty("acceptRegexp") private String acceptRegexp;
-    @JsonProperty("xpath") private String xpath;
+    @JsonProperty("verifyExpression") private String verifyExpression;
     @JsonProperty("brief") private String brief;
     @JsonProperty("description") private String description;
 
@@ -34,12 +34,12 @@ import java.util.Map;
         this.acceptRegexp = acceptRegexp;
     }
 
-    @JsonProperty("xpath") public String getXPath() {
-        return xpath;
+    @JsonProperty("verifyExpression") public String getXPath() {
+        return verifyExpression;
     }
 
-    @JsonProperty("xpath") public void setXPath(String xpath) {
-        this.xpath = xpath;
+    @JsonProperty("verifyExpression") public void setXPath(String xpath) {
+        this.verifyExpression = xpath;
     }
 
     @JsonProperty("brief") public String getBrief() {

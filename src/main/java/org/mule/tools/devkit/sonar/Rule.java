@@ -8,11 +8,11 @@ import java.nio.file.Path;
 
 public interface Rule {
 
-    boolean verify(@NonNull Path path) throws DevKitSonarRuntimeException;
+    boolean verify(@NonNull Path rootPath, @NonNull Path childPath) throws DevKitSonarRuntimeException;
 
-    @NonNull String errorMessage(@NonNull Path path) throws DevKitSonarRuntimeException;
+    String errorMessage(@NonNull Path rootPath, @NonNull Path childPath) throws DevKitSonarRuntimeException;
 
-    boolean accepts(@NonNull Path path);
+    boolean accepts(@NonNull Path rootPath, @NonNull Path childPath);
 
     interface Documentation {
 
@@ -24,5 +24,4 @@ public interface Rule {
 
         @Nullable String getId();
     }
-
 }

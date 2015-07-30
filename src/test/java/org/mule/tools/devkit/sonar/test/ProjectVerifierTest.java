@@ -10,8 +10,7 @@ import java.nio.file.Paths;
 public class ProjectVerifierTest {
 
     @Test public void validatePom() throws IOException {
-        final Path path = Paths.get("/Users/pveiga/repo/salesforce-connector/");
-
+        final Path path = TestData.rootPath();
         final ModuleValidator projectChecker = ModuleValidator.create();
         projectChecker.validator(path);
 

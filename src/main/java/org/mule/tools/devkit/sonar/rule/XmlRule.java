@@ -1,8 +1,7 @@
 package org.mule.tools.devkit.sonar.rule;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.regex.qual.Regex;
+import org.mule.tools.devkit.sonar.Rule;
 import org.mule.tools.devkit.sonar.exception.DevKitSonarRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +20,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.Optional;
 
 public class XmlRule extends AbstractRule {
 
     private final static XPathFactory xpathFactory = XPathFactory.newInstance();
     private final XPathExpression xpath;
-    @Regex private final Pattern acceptRegexp;
     final private static Logger logger = LoggerFactory.getLogger(AbstractRule.class);
 
     private final static DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
@@ -42,55 +40,49 @@ public class XmlRule extends AbstractRule {
         }
     }
 
-    public XmlRule(@NonNull final String id, @NonNull final String description, @NonNull final String documentation, @NonNull final String xpathExp, @NonNull String acceptRegexp) {
-        super(DocumentationImpl.create(id, description, documentation, null));
+    public XmlRule(final Rule.Documentation documentation, @NonNull String acceptRegexp,@NonNull final String verifyExpression) {
+        super(documentation, acceptRegexp);
+        //@Todo: Load section...
 
         // Compile xpath expression ...
         final XPath xpath = xpathFactory.newXPath();
 
-        // Set namespace context ...
-        final NamespaceContext context = createXPathNsContext();
-        if (context != null) {
-            xpath.setNamespaceContext(context);
+        // Set namespace context resolver...
+        final Optional<NamespaceContext> context = createXPathNsContext();
+        if (context.isPresent()) {
+            xpath.setNamespaceContext(context.get());
         }
 
         try {
-            this.xpath = xpath.compile(xpathExp);
+            this.xpath = xpath.compile(verifyExpression);
         } catch (XPathExpressionException e) {
             throw new DevKitSonarRuntimeException(e);
         }
-
-        this.acceptRegexp = Pattern.compile(acceptRegexp);
     }
 
-    @Nullable protected NamespaceContext createXPathNsContext() {
-        return null;
+    protected Optional<NamespaceContext> createXPathNsContext() {
+        return Optional.empty();
     }
 
-    @Override public boolean verify(@NonNull Path path) throws DevKitSonarRuntimeException {
+    @Override
+    public boolean verify(@NonNull Path rootPath, @NonNull final Path childPath) throws DevKitSonarRuntimeException {
 
         boolean result;
         try {
-            final InputStream is = Files.newInputStream(path);
+            final InputStream is = Files.newInputStream(childPath);
             final Document xmlDocument = builder.parse(is);
             result = !(Boolean) xpath.evaluate(xmlDocument, XPathConstants.BOOLEAN);
 
         } catch (SAXException | XPathExpressionException | IOException e) {
             throw new DevKitSonarRuntimeException(e);
         }
-        logger.debug("Rule {} applied to {} -> {}", this.getDocumentation().getId(), path.toString(), result);
+        logger.debug("Rule {} applied to {} -> {}", this.getDocumentation().getId(), childPath.toString(), result);
 
         return result;
     }
 
-    @Override public boolean accepts(@NonNull Path path) {
-        final boolean result = acceptRegexp.matcher(path.toAbsolutePath().toString()).matches();
-        //logger.debug("File {} accepted -> {}", path.toString(), result);
-
-        return result;
-    }
-
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "XPathRule{} " + super.toString();
     }
 }

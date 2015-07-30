@@ -32,18 +32,20 @@ public class ModuleValidator {
         this.rules = RulesFactory.load();
     }
 
-    public void validator(final @NonNull Path path) throws IOException {
+    public void validator(final @NonNull Path rootPath) throws IOException {
 
         // Process rules ...
-        final Stream<Path> filteredHiddenDirs = Files.walk(path, FileVisitOption.FOLLOW_LINKS).filter(childPath -> !childPath.toString().contains("/."));
+        final Stream<Path> filteredHiddenDirs = Files.walk(rootPath, FileVisitOption.FOLLOW_LINKS).filter(childPath -> !childPath.toString().contains("/."));
         final Set<String> collect = filteredHiddenDirs.map(childPath -> {
-            logger.debug("Processing file -> {}", childPath.toAbsolutePath());
+
+            final Path relativePath = childPath.relativize(childPath);
+            logger.debug("Processing file -> {} {}", rootPath, relativePath);
 
             // Filter rules ...
-            final Stream<Rule> filteredRules = rules.stream().filter(rule -> rule.accepts(childPath));
+            final Stream<Rule> filteredRules = rules.stream().filter(rule -> rule.accepts(rootPath, childPath.relativize(childPath)));
 
             // Apply rules ..
-            return filteredRules.filter(rule -> !rule.verify(childPath)).map(rule -> rule.errorMessage(childPath)).collect(Collectors.toSet());
+            return filteredRules.filter(rule -> !rule.verify(rootPath, childPath)).map(rule -> rule.errorMessage(rootPath, childPath)).collect(Collectors.toSet());
         }).filter(set -> !set.isEmpty()).flatMap(Set::stream).collect(Collectors.toSet());
 
         // Generate report ...

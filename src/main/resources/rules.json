@@ -7,7 +7,7 @@
       "description": "Connectors testing framework must not be overwritten. This could produce unexpected errors once the devkit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
       "section": "Best Practices",
       "acceptRegexp": ".+/some.xml$",
-      "xpath": "boolean(/*[local-name() = 'project']/*[local-name() = 'properties']/*[local-name() = 'connector.test.version']/text())"
+      "verifyExpression": "boolean(/*[local-name() = 'project']/*[local-name() = 'properties']/*[local-name() = 'connector.test.version']/text())"
     },
     {
       "type": "pom",
@@ -16,16 +16,16 @@
       "description": "Connectors testing framework must not be overwritten. This could produce unexpected errors once the devkit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
       "section": "Best Practices",
       "acceptRegexp": ".+/pom.xml$",
-      "xpath": "not(boolean(/project/properties/connector.test.version/text()))"
+      "verifyExpression": "not(boolean(/project/properties/connector.test.version/text()))"
     },
     {
-      "type": "pom",
-      "id": "bp_framework_overwritten",
+      "type": "structure",
+      "id": "bp_structure_readme",
       "brief": "Structure validation ...",
       "description": "",
       "section": "Best Practices",
-      "acceptRegexp": ".+/pom.xml$",
-      "xpath": "boolean(/project/build/plugins/plugin/artifact-id[contains(.,'mule-devkit-parent')])"
+      "acceptRegexp": "README.md",
+      "verifyExpression": "README.md"
     }
   ]
 }
