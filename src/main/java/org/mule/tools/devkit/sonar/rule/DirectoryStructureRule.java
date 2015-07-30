@@ -44,6 +44,8 @@ public class DirectoryStructureRule extends AbstractRule {
     @Override
     public boolean verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException {
         final VelocityContext context = new VelocityContext();
+
+        // @todo: Hook with devkit documentation metadata ....
         context.put("PROCESSOR", "World");
 
         final StringWriter sw = new StringWriter();

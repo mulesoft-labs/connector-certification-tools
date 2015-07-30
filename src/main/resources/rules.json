@@ -15,7 +15,7 @@
       "brief": "Connector test framework must not be overwritten.",
       "description": "Connectors testing framework must not be overwritten. This could produce unexpected errors once the devkit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
       "section": "Best Practices",
-      "acceptRegexp": ".+/pom.xml$",
+      "acceptRegexp": "pom.xml$",
       "verifyExpression": "not(boolean(/project/properties/connector.test.version/text()))"
     },
     {
@@ -24,8 +24,8 @@
       "brief": "Structure validation ...",
       "description": "",
       "section": "Best Practices",
-      "acceptRegexp": "README.md",
-      "verifyExpression": "README.md"
+      "acceptRegexp": "src/test/java$",
+      "verifyExpression": "src/test/java/${CONNECTOR_PACKAGE}/automation/functional/${PROCESSOR}TestCases"
     }
   ]
 }
