@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "object",
+  "properties": {
+    "rules": {
+      "id": "rules",
+      "type": "array",
+      "items": {
+        "id": "0",
+        "type": "object",
+        "properties": {
+          "type": {
+            "id": "type",
+            "type": "string"
+          },
+          "file": {
+            "id": "file",
+            "type": "string"
+          },
+          "xpaths": {
+            "id": "xpaths",
+            "type": "array",
+            "items": [
+              {
+                "id": "0",
+                "type": "string"
+              },
+              {
+                "id": "1",
+                "type": "string"
+              }
+            ]
+          },
+          "description": {
+            "id": "description",
+            "type": "string"
+          },
+          "documentation": {
+            "id": "documentation",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "file",
+          "xpaths",
+          "description",
+          "documentation"
+        ]
+      },
+      "required": [
+        "0"
+      ]
+    }
+  },
+  "required": [
+    "rules"
+  ]
+}
