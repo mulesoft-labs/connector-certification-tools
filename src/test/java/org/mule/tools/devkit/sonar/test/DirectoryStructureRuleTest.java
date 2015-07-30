@@ -25,4 +25,16 @@ public class DirectoryStructureRuleTest {
         assertTrue("File could not be found.", rule.verify(rootPath, childPath));
     }
 
+    @Test
+    public void validatePath() throws IOException {
+        final Rule.Documentation documentation = new DocumentationImpl("id", "brief", "description", "section");
+        final Rule rule = new DirectoryStructureRule(documentation, "src/test/java", "src/test/java/${CONNECTOR_PACKAGE}/automation/functional/${PROCESSOR}TestCases");
+
+        final Path childPath = Paths.get("src/test/java");
+        final Path rootPath = TestData.rootPath();
+        assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
+
+        //  assertTrue("File could not be found.", rule.verify(rootPath, childPath));
+    }
+
 }

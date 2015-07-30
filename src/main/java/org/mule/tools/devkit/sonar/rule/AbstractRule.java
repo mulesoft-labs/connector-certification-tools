@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
     public boolean accepts(@NonNull Path path, @NonNull Path childPath) {
         final String pathStr = childPath.toFile().toString();
         final boolean result = acceptRegexp.matcher(pathStr).matches();
-        logger.debug("File {} accepted -> {}", path.toString(), result);
+        logger.debug("File {} accepted -> {}", pathStr, result);
 
         return result;
     }
@@ -39,5 +39,6 @@ import java.util.regex.Pattern;
     public String errorMessage(@NonNull Path rootPath, @NonNull Path childPath) {
         return "-> Rule not satisfied. " + this.getDocumentation().getDescription();
     }
+
 
 }
