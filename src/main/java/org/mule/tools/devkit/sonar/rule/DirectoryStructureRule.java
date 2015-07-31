@@ -7,6 +7,7 @@ import org.apache.velocity.runtime.RuntimeSingleton;
 import org.apache.velocity.runtime.parser.ParseException;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.mule.tools.devkit.sonar.Context;
 import org.mule.tools.devkit.sonar.exception.DevKitSonarRuntimeException;
 
 import java.io.StringReader;
@@ -41,17 +42,17 @@ public class DirectoryStructureRule extends AbstractRule {
         this.template = template;
     }
 
-    @Override
-    public boolean verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException {
-        final VelocityContext context = new VelocityContext();
+    @Override public boolean verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException {
 
-        // @todo: Hook with devkit documentation metadata ....
-        context.put("PROCESSOR", "World");
+        final Context context = Context.getInstance(basePath);
+
+        final VelocityContext vcontext = new VelocityContext();
+        vcontext.put("PROCESSOR", "World");
 
         final StringWriter sw = new StringWriter();
-        template.merge(context, sw);
-        final Path fullPath = basePath.resolve(sw.toString());
+        template.merge(vcontext, sw);
 
+        final Path fullPath = basePath.resolve(sw.toString());
         return Files.exists(fullPath);
     }
 }
