@@ -12,4 +12,8 @@ public class ContextImpl implements Context {
         return new ContextImpl();
     }
 
+    @Override public @NonNull ConnectorModel getConnectorModel() {
+        return null;
+    }
+
 }

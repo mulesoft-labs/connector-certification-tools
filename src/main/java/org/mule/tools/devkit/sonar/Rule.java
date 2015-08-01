@@ -1,20 +1,20 @@
 package org.mule.tools.devkit.sonar;
 
+import com.sun.istack.internal.NotNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.tools.devkit.sonar.exception.DevKitSonarRuntimeException;
 
 import java.nio.file.Path;
+import java.util.Set;
 
 public interface Rule {
 
-    boolean accepts(@NonNull Path basePath, @NonNull Path childPath);
+    @NonNull boolean accepts(@NonNull Path basePath, @NonNull Path childPath);
 
-    boolean verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException;
+    @NonNull Set<ValidationError> verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException;
 
-    @NonNull
-    String errorMessage(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException;
-
+    @NotNull Documentation getDocumentation();
 
     interface Documentation {
 
@@ -25,7 +25,6 @@ public interface Rule {
         @NonNull String getBrief();
 
         @NonNull String getDescription();
-
 
     }
 }

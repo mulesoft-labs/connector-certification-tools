@@ -2,6 +2,7 @@ package org.mule.tools.devkit.sonar.rule;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.tools.devkit.sonar.Rule;
+import org.mule.tools.devkit.sonar.ValidationError;
 import org.mule.tools.devkit.sonar.exception.DevKitSonarRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class XmlRule extends AbstractRule {
 
@@ -40,7 +42,7 @@ public class XmlRule extends AbstractRule {
         }
     }
 
-    public XmlRule(final Rule.Documentation documentation, @NonNull String acceptRegexp,@NonNull final String verifyExpression) {
+    public XmlRule(final Rule.Documentation documentation, @NonNull String acceptRegexp, @NonNull final String verifyExpression) {
         super(documentation, acceptRegexp);
         //@Todo: Load section...
 
@@ -64,8 +66,7 @@ public class XmlRule extends AbstractRule {
         return Optional.empty();
     }
 
-    @Override
-    public boolean verify(@NonNull Path basePath, @NonNull final Path childPath) throws DevKitSonarRuntimeException {
+    @Override public Set<ValidationError> verify(@NonNull Path basePath, @NonNull final Path childPath) throws DevKitSonarRuntimeException {
 
         boolean result;
         try {
@@ -78,11 +79,10 @@ public class XmlRule extends AbstractRule {
         }
         logger.debug("Rule {} applied to {} -> {}", this.getDocumentation().getId(), childPath.toString(), result);
 
-        return result;
+        return buildError("Expression could not be found.");
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "XPathRule{} " + super.toString();
     }
 }

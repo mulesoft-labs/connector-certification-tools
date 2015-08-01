@@ -12,31 +12,32 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ModuleValidator {
+public class ConnectorValidator {
 
-    final private static Logger logger = LoggerFactory.getLogger(ModuleValidator.class);
+    final private static Logger logger = LoggerFactory.getLogger(ConnectorValidator.class);
+    private final Path rootPath;
 
     private Set<Rule> rules;
 
-    private ModuleValidator() {
+    private ConnectorValidator(@NonNull final Path rootPath) {
+        this.rootPath = rootPath;
     }
 
-    public static ModuleValidator create() throws IOException {
-        final ModuleValidator result = new ModuleValidator();
+    public static @NonNull ConnectorValidator create(@NonNull final Path rootPath) throws IOException {
+        final ConnectorValidator result = new ConnectorValidator(rootPath);
         result.init();
-
         return result;
     }
 
-    public void init() throws IOException {
+    private void init() throws IOException {
         this.rules = RulesFactory.load();
     }
 
-    public void validator(final @NonNull Path rootPath) throws IOException {
+    public void validator() throws IOException {
 
         // Process rules ...
         final Stream<Path> filteredHiddenDirs = Files.walk(rootPath, FileVisitOption.FOLLOW_LINKS).filter(childPath -> !childPath.toString().contains("/."));
-        final Set<String> collect = filteredHiddenDirs.map(childPath -> {
+        final Set<Set<ValidationError>> collect = filteredHiddenDirs.map(childPath -> {
 
             final Path relativePath = childPath.relativize(childPath);
             logger.debug("Processing file -> {} {}", rootPath, relativePath);
@@ -45,11 +46,15 @@ public class ModuleValidator {
             final Stream<Rule> filteredRules = rules.stream().filter(rule -> rule.accepts(rootPath, childPath.relativize(childPath)));
 
             // Apply rules ..
-            return filteredRules.filter(rule -> !rule.verify(rootPath, childPath)).map(rule -> rule.errorMessage(rootPath, childPath)).collect(Collectors.toSet());
+            return filteredRules.map(rule -> rule.verify(rootPath, childPath)).collect(Collectors.toSet());
         }).filter(set -> !set.isEmpty()).flatMap(Set::stream).collect(Collectors.toSet());
 
         // Generate report ...
         collect.forEach(System.err::println);
     }
 
+    @NonNull
+    public Set<Rule.Documentation> rulesDoc() throws IOException {
+        return rules.stream().map(Rule::getDocumentation).collect(Collectors.toSet());
+    }
 }
