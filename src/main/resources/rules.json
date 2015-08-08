@@ -32,7 +32,24 @@
       "brief": "Structure validation ...",
       "description": "",
       "section": "Best Practices",
-      "verifyExpression": "org.mule.tools.devkit.sonar.rule.svisitor.ProcessDefaultPayloadVerifier"
+      "verifyExpression": "org.mule.tools.devkit.sonar.rule.svisitor.DefaultPayloadVerifier"
+    },
+    {
+      "type": "source.java",
+      "id": "bp_structure_readme",
+      "brief": "Structure validation ...",
+      "description": "It's strongly recommended that all mandatory parameters be defined as part of the payload. Consider creating a complex object as grouping all the parameters.",
+      "section": "Best Practices",
+      "verifyExpression": "org.mule.tools.devkit.sonar.rule.svisitor.ProcessorParameterVerifier"
+    }
+  ,
+    {
+      "type": "source.java",
+      "id": "bp_structure_readme",
+      "brief": "Structure validation ...",
+      "description": "Complex types should should be marked with @RefOnly.",
+      "section": "Best Practices",
+      "verifyExpression": "org.mule.tools.devkit.sonar.rule.svisitor.RefOnlyParametersVerifier"
     }
   ]
 }

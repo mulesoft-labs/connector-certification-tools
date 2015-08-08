@@ -87,7 +87,7 @@ public class MyConnector {
      * @param environmentVariables Environment variables for you application.
      */
     @Processor
-    public void createAndDeployApplication(@Default("#[payload]") InputStream file, String domain, @Default("3.7.0") String muleVersion, @Default("1") Integer workersCount,
+    public void createAndDeployApplication(InputStream file, String domain, @Default("3.7.0") String muleVersion, @Default("1") Integer workersCount,
             @Optional WorkerType workerSize, @Optional Map<String, String> environmentVariables, @Optional Boolean persistentQueues, @Optional Boolean multitenanted,
             @Optional Boolean vpnEnabled, @Optional Boolean autoRestartMonitoring) {
 

@@ -2,6 +2,7 @@ package org.mule.tools.devkit.sonar.rule.sverifier;
 
 import com.sun.source.tree.AnnotationTree;
 import com.sun.source.tree.MethodTree;
+import com.sun.source.tree.VariableTree;
 import com.sun.source.util.Trees;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -25,11 +26,11 @@ abstract public class ConnectorClassVerifier extends SourceTreeVerifier {
             final Type type = typeOp.get().get();
             switch (type) {
                 case PROCESSOR: {
-                    this.verifyProcessor(methodTree);
+                    this.verifyProcessor(methodTree, methodTree.getParameters());
                     break;
                 }
                 case SOURCE: {
-                    this.verifySource(methodTree);
+                    this.verifySource(methodTree, methodTree.getParameters());
                     break;
                 }
             }
@@ -38,11 +39,11 @@ abstract public class ConnectorClassVerifier extends SourceTreeVerifier {
         return super.visitMethod(methodTree, trees);
     }
 
-    protected void verifySource(@NonNull MethodTree methodTree) {
+    protected void verifySource(@NonNull MethodTree method, @NonNull final List<? extends VariableTree> parameters) {
 
     }
 
-    protected void verifyProcessor(@NonNull final MethodTree methodTree) {
+    protected void verifyProcessor(@NonNull final MethodTree method, @NonNull final List<? extends VariableTree> parameters) {
     }
 
     private enum Type {
