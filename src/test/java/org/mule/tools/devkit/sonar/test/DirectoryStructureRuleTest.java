@@ -1,6 +1,9 @@
 package org.mule.tools.devkit.sonar.test;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.mule.tools.devkit.sonar.Context;
 import org.mule.tools.devkit.sonar.Rule;
 import org.mule.tools.devkit.sonar.rule.DirectoryStructureRule;
 import org.mule.tools.devkit.sonar.rule.DocumentationImpl;
@@ -17,6 +20,17 @@ import static org.junit.Assert.assertTrue;
 
 public class DirectoryStructureRuleTest {
 
+    private Context context;
+
+    @Before public void setup() {
+
+        final Context.ConnectorModel connectorModel = Mockito.mock(Context.ConnectorModel.class);
+        Mockito.when(connectorModel.getProperty(null)).then(var -> Arrays.asList("Processor", "Processor2"));
+
+        this.context = Mockito.mock(Context.class);
+        Mockito.when(context.getConnectorModel()).thenReturn(connectorModel);
+    }
+
     @Test public void validateSinglePath() throws IOException {
         final Rule.Documentation documentation = new DocumentationImpl("id", "brief", "description", "section");
         final Rule rule = new DirectoryStructureRule(documentation, "README.md$", "README.md");
@@ -31,12 +45,11 @@ public class DirectoryStructureRuleTest {
     @Test public void validatePath() throws IOException {
         final Rule.Documentation documentation = new DocumentationImpl("id", "brief", "description", "section");
 
-        final Rule rule = new DirectoryStructureRule(documentation, "src/test/java", "src/test/java/${CONNECTOR_PACKAGE}/automation/functional/${PROCESSOR}TestCases");
+        final Rule rule = new DirectoryStructureRule(documentation, "src/test/java", "src/test/java/${connector.package}/automation/functional/${processor.name}TestCases.java");
         final Path childPath = Paths.get("src/test/java");
         final Path rootPath = TestData.rootPath();
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
-        //  assertTrue("File could not be found.", rule.verify(rootPath, childPath));
     }
 
     @Test public void permutation() throws IOException {

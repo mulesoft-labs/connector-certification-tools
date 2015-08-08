@@ -6,7 +6,7 @@ import java.nio.file.Path;
 
 public class ContextImpl implements Context {
 
-    private static ContextImpl instance;
+    private static Context instance;
 
     @NonNull public static Context getInstance(final @NonNull Path basePath) {
         return new ContextImpl();

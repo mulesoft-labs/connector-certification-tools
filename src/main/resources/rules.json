@@ -1,7 +1,7 @@
 {
   "rules": [
     {
-      "type": "xml",
+      "type": "source.xml",
       "id": "bp_framework_overwritten",
       "brief": "Connector test framework must not be overwritten.",
       "description": "Connectors testing framework must not be overwritten. This could produce unexpected errors once the devkit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
@@ -10,7 +10,7 @@
       "verifyExpression": "boolean(/*[local-name() = 'project']/*[local-name() = 'properties']/*[local-name() = 'connector.test.version']/text())"
     },
     {
-      "type": "pom",
+      "type": "source.pom",
       "id": "bp_framework_overwritten",
       "brief": "Connector test framework must not be overwritten.",
       "description": "Connectors testing framework must not be overwritten. This could produce unexpected errors once the devkit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
@@ -25,6 +25,14 @@
       "section": "Best Practices",
       "acceptRegexp": "src/test/java$",
       "verifyExpression": "src/test/java/${connector.package}/automation/functional/${processor.name}TestCases.java"
+    },
+    {
+      "type": "source.java",
+      "id": "bp_structure_readme",
+      "brief": "Structure validation ...",
+      "description": "",
+      "section": "Best Practices",
+      "verifyExpression": "org.mule.tools.devkit.sonar.rule.svisitor.ProcessDefaultPayloadVerifier"
     }
   ]
 }

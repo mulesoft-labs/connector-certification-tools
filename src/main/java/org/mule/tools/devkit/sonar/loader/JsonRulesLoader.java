@@ -3,10 +3,7 @@ package org.mule.tools.devkit.sonar.loader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.tools.devkit.sonar.Rule;
-import org.mule.tools.devkit.sonar.rule.DirectoryStructureRule;
-import org.mule.tools.devkit.sonar.rule.DocumentationImpl;
-import org.mule.tools.devkit.sonar.rule.PomRule;
-import org.mule.tools.devkit.sonar.rule.XmlRule;
+import org.mule.tools.devkit.sonar.rule.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,8 +17,9 @@ public class JsonRulesLoader {
     final static Map<String, RuleBuilder> builders = new HashMap<>();
 
     static {
-        builders.put("xml", XmlRule::new);
-        builders.put("pom", PomRule::new);
+        builders.put("source.xml", XmlRule::new);
+        builders.put("source.pom", PomRule::new);
+        builders.put("source.java", JavaSourceRule::new);
         builders.put("structure", DirectoryStructureRule::new);
     }
 
