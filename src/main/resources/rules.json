@@ -2,7 +2,7 @@
   "rules": [
     {
       "type": "source.xml",
-      "id": "bp_framework_overwritten",
+      "id": "source.xml.test",
       "brief": "Connector test framework must not be overwritten.",
       "description": "Connectors testing framework must not be overwritten. This could produce unexpected errors once the devkit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
       "section": "Best Practices",
@@ -11,7 +11,7 @@
     },
     {
       "type": "source.pom",
-      "id": "bp_framework_overwritten",
+      "id": "source.pm.framwork_overwritten",
       "brief": "Connector test framework must not be overwritten.",
       "description": "Connectors testing framework must not be overwritten. This could produce unexpected errors once the devkit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
       "section": "Best Practices",
@@ -19,7 +19,7 @@
     },
     {
       "type": "structure",
-      "id": "bp_structure_readme",
+      "id": "structure.readme",
       "brief": "Structure validation ...",
       "description": "",
       "section": "Best Practices",
@@ -28,28 +28,30 @@
     },
     {
       "type": "source.java",
-      "id": "bp_structure_readme",
-      "brief": "Structure validation ...",
+      "id": "connector.processor.default_payload",
+      "brief": "",
       "description": "",
       "section": "Best Practices",
-      "verifyExpression": "org.mule.tools.devkit.sonar.rule.svisitor.DefaultPayloadVerifier"
+      "acceptRegexp": ".+/.+Connector.java$",
+      "verifyExpression": "org.mule.tools.devkit.sonar.rule.sverifier.DefaultPayloadVerifier"
     },
     {
       "type": "source.java",
-      "id": "bp_structure_readme",
-      "brief": "Structure validation ...",
+      "id": "connector.processor.params",
+      "brief": "",
       "description": "It's strongly recommended that all mandatory parameters be defined as part of the payload. Consider creating a complex object as grouping all the parameters.",
       "section": "Best Practices",
-      "verifyExpression": "org.mule.tools.devkit.sonar.rule.svisitor.ProcessorParameterVerifier"
-    }
-  ,
+      "acceptRegexp": ".+/.+Connector.java$",
+      "verifyExpression": "org.mule.tools.devkit.sonar.rule.sverifier.ProcessorParametersVerifier"
+    },
     {
       "type": "source.java",
-      "id": "bp_structure_readme",
-      "brief": "Structure validation ...",
+      "id": "connector.processor.refonly",
+      "brief": "",
       "description": "Complex types should should be marked with @RefOnly.",
       "section": "Best Practices",
-      "verifyExpression": "org.mule.tools.devkit.sonar.rule.svisitor.RefOnlyParametersVerifier"
+      "acceptRegexp": ".+/.+Connector.java$",
+      "verifyExpression": "org.mule.tools.devkit.sonar.rule.sverifier.RefOnlyParametersVerifier"
     }
   ]
 }

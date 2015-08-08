@@ -15,7 +15,7 @@ public class Main {
             case "-v": {
                 final Set<Rule.Documentation> docs = validator.rulesDoc();
                 System.out.println("Supported certification rules:\n");
-                docs.forEach(doc -> System.out.printf("\t-> %2s - %s\n", doc.getId(), doc.getBrief()));
+                docs.forEach(doc -> System.out.printf("\t-> %s - %s\n", doc.getId(), doc.getBrief()));
                 break;
             }
             case "-h": {

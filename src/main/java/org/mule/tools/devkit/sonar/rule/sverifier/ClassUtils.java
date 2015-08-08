@@ -1,17 +1,23 @@
 package org.mule.tools.devkit.sonar.rule.sverifier;
 
 import com.sun.source.tree.AnnotationTree;
+import com.sun.source.tree.ImportTree;
 import com.sun.source.tree.Tree;
 import com.sun.source.tree.VariableTree;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
 class ClassUtils {
 
-    final private static Set<String> primitives = new HashSet<>();
+    final private static Logger logger = LoggerFactory.getLogger(ClassUtils.class);
+
+    private static final Set<String> primitives = new HashSet<>();
     private static final String REF_ONLY_CLASS = "@RefOnly";
     private static final String OPTIONAL_CLASS = "@Optional";
     private static final String DEFAULT_CLASS = "@Default";
@@ -77,13 +83,53 @@ class ClassUtils {
     }
 
     public static boolean isOptionalAnnotation(@NonNull final AnnotationTree annotation) {
-
         return annotation.toString().startsWith(OPTIONAL_CLASS);
-
     }
 
     public static boolean isRefOnlyAnnotation(@NonNull final AnnotationTree annotation) {
         return annotation.toString().startsWith(REF_ONLY_CLASS);
+    }
+
+    public static Optional<Class<?>> classForName(@NonNull final String className, @NonNull final Set<ImportTree> imports) {
+
+        Optional<Class<?>> result = Optional.empty();
+        try {
+            // Is the class name fully qualified ?
+            final boolean isFullQualified = className.contains(".");
+            if (isFullQualified) {
+                result = Optional.ofNullable(Class.forName(className));
+            }
+
+            // Object is a primitive type  ?
+            if (!result.isPresent()) {
+                if (primitivesClasses.contains(className)) {
+                    result = Optional.ofNullable(Class.forName("java.lang." + className));
+                }
+            }
+
+            // Type to resolved based on the imports ...
+            if (!result.isPresent()) {
+                final Optional<ImportTree> classImp = imports.stream().filter(imp -> !imp.isStatic() && imp.getQualifiedIdentifier().toString().endsWith("." + className))
+                        .findFirst();
+
+                if (classImp.isPresent()) {
+                    final String qualifiedName = classImp.get().getQualifiedIdentifier().toString();
+                    final Class<?> value = Class.forName(qualifiedName);
+                    result = Optional.ofNullable(value);
+
+                }
+            }
+
+        } catch (ClassNotFoundException e) {
+            // Ignore ..
+        }
+
+        logger.info("Class name -> {} , Resolved Class: {}", className, result.toString());
+        return result;
+    }
+
+    public static Optional<Class<?>> classForName(@NonNull final Tree type, @NonNull final Set<ImportTree> imports) {
+        return classForName(type.toString(), imports);
     }
 
 }

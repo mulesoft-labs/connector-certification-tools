@@ -16,9 +16,10 @@ import java.util.stream.Collectors;
 
 abstract public @Immutable class AbstractRule implements Rule {
 
+    final private static Logger logger = LoggerFactory.getLogger(AbstractRule.class);
+
     final private Documentation documentation;
     final private Pattern acceptRegexp;
-    final private static Logger logger = LoggerFactory.getLogger(AbstractRule.class);
 
     protected AbstractRule(@NonNull final Documentation documentation, @NonNull final String acceptRegexp) {
         this.documentation = documentation;
