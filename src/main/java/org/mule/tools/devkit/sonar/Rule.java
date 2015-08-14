@@ -1,6 +1,5 @@
 package org.mule.tools.devkit.sonar;
 
-import com.sun.istack.internal.NotNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.tools.devkit.sonar.exception.DevKitSonarRuntimeException;
@@ -14,7 +13,7 @@ public interface Rule {
 
     @NonNull Set<ValidationError> verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException;
 
-    @NotNull Documentation getDocumentation();
+    @NonNull Documentation getDocumentation();
 
     interface Documentation {
 

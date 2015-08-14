@@ -17,5 +17,9 @@ public interface Context {
 
         List<String> getProperty(@NonNull String var);
     }
+
+    static Context create(@NonNull final Path basePath) {
+        return new ContextImpl(basePath);
+    }
 }
 

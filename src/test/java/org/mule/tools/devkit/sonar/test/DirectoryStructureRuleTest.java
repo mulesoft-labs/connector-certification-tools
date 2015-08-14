@@ -36,7 +36,7 @@ public class DirectoryStructureRuleTest {
         final Rule rule = new DirectoryStructureRule(documentation, "README.md$", "README.md");
 
         final Path childPath = Paths.get("README.md");
-        final Path rootPath = TestData.rootPath();
+        final Path rootPath = TestData.noCompliantTestPath();
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
         assertTrue("File could not be found.", rule.verify(rootPath, childPath).isEmpty());
@@ -47,7 +47,7 @@ public class DirectoryStructureRuleTest {
 
         final Rule rule = new DirectoryStructureRule(documentation, "src/test/java", "src/test/java/${connector.package}/automation/functional/${processor.name}TestCases.java");
         final Path childPath = Paths.get("src/test/java");
-        final Path rootPath = TestData.rootPath();
+        final Path rootPath = TestData.noCompliantTestPath();
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
     }

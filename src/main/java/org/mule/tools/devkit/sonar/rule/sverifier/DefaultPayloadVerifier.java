@@ -24,8 +24,8 @@ public class DefaultPayloadVerifier extends ConnectorClassVerifier {
                 final Optional<Class<?>> paramClass = ClassUtils.classForName(p.getType(), getImports());
 
                 // I don't have warranty that the classes has been loaded in the classpath. Assume that the suffix could help to detect if it's an input stream ..
-                return (!paramClass.isPresent() && p.getType().toString().endsWith("InputStream")) || (paramClass.isPresent() && paramClass.get()
-                        .isAssignableFrom(InputStream.class));
+                return (!paramClass.isPresent() && p.getType().toString().endsWith("InputStream")) || (paramClass.isPresent() && (
+                        paramClass.get().isAssignableFrom(InputStream.class) || paramClass.get().isAssignableFrom(Enum.class)));
 
             }).findAny();
 

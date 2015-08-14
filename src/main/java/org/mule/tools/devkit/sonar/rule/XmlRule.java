@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,15 +18,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
 public class XmlRule extends AbstractRule {
 
     private final static XPathFactory xpathFactory = XPathFactory.newInstance();
-    private final XPathExpression xpath;
+    private final XPathExpression xpathExpression;
     final private static Logger logger = LoggerFactory.getLogger(AbstractRule.class);
 
     private final static DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
@@ -46,7 +44,7 @@ public class XmlRule extends AbstractRule {
         super(documentation, acceptRegexp);
         //@Todo: Load section...
 
-        // Compile xpath expression ...
+        // Compile xpathExpression expression ...
         final XPath xpath = xpathFactory.newXPath();
 
         // Set namespace context resolver...
@@ -56,7 +54,7 @@ public class XmlRule extends AbstractRule {
         }
 
         try {
-            this.xpath = xpath.compile(verifyExpression);
+            this.xpathExpression = xpath.compile(verifyExpression);
         } catch (XPathExpressionException e) {
             throw new DevKitSonarRuntimeException(e);
         }
@@ -66,20 +64,20 @@ public class XmlRule extends AbstractRule {
         return Optional.empty();
     }
 
-    @Override public Set<ValidationError> verify(@NonNull Path basePath, @NonNull final Path childPath) throws DevKitSonarRuntimeException {
+    @Override @NonNull public Set<ValidationError> verify(@NonNull Path basePath, @NonNull final Path childPath) throws DevKitSonarRuntimeException {
 
-        boolean result;
+        boolean success;
         try {
-            final InputStream is = Files.newInputStream(childPath);
+            final InputStream is = Files.newInputStream(basePath.resolve(childPath));
             final Document xmlDocument = builder.parse(is);
-            result = !(Boolean) xpath.evaluate(xmlDocument, XPathConstants.BOOLEAN);
+            success = (Boolean) xpathExpression.evaluate(xmlDocument, XPathConstants.BOOLEAN);
 
         } catch (SAXException | XPathExpressionException | IOException e) {
             throw new DevKitSonarRuntimeException(e);
         }
-        logger.debug("Rule {} applied to {} -> {}", this.getDocumentation().getId(), childPath.toString(), result);
+        logger.debug("Rule {} applied to {} -> {}", this.getDocumentation().getId(), childPath.toString(), success);
 
-        return buildError("Expression could not be found.");
+        return !success ? buildError("XML rule can not be satisfied " + xpathExpression) : Collections.<ValidationError>emptySet();
     }
 
     @Override public String toString() {
@@ -87,41 +85,3 @@ public class XmlRule extends AbstractRule {
     }
 }
 
-class NamespaceContextImpl implements NamespaceContext {
-
-    private final Map<String, String> namespaces;
-    private final String defaultNamespaceURI;
-
-    public NamespaceContextImpl(String defaultNamespaceURI, Map<String, String> namespaces) {
-        this.defaultNamespaceURI = defaultNamespaceURI;
-        this.namespaces = namespaces;
-    }
-
-    public Iterator getPrefixes(String namespaceURI) {
-        throw new IllegalStateException("Not Implemented.");
-    }
-
-    public String getPrefix(String namespaceURI) {
-        throw new IllegalStateException("Not Implemented.");
-    }
-
-    public String getNamespaceURI(String prefix) {
-        if (prefix == null) {
-            throw new IllegalArgumentException();
-        }
-        if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
-            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
-        }
-        if (prefix.equals(XMLConstants.XML_NS_PREFIX)) {
-            return XMLConstants.XML_NS_URI;
-        }
-        if (prefix.equals(XMLConstants.DEFAULT_NS_PREFIX)) {
-            return defaultNamespaceURI;
-        }
-        String result = namespaces.get(prefix);
-        if (result == null) {
-            result = XMLConstants.NULL_NS_URI;
-        }
-        return result;
-    }
-}

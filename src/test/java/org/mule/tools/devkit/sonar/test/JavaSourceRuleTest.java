@@ -20,14 +20,12 @@ import static org.junit.Assert.assertTrue;
 
 public class JavaSourceRuleTest {
 
-    private Context context;
-
     @Before public void setup() {
 
         final Context.ConnectorModel connectorModel = Mockito.mock(Context.ConnectorModel.class);
         Mockito.when(connectorModel.getProperty(null)).then(var -> Arrays.asList("Processor", "Processor2"));
 
-        this.context = Mockito.mock(Context.class);
+        Context context = Mockito.mock(Context.class);
         Mockito.when(context.getConnectorModel()).thenReturn(connectorModel);
     }
 
@@ -37,7 +35,7 @@ public class JavaSourceRuleTest {
 
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
 
-        final Path rootPath = TestData.rootPath();
+        final Path rootPath = TestData.noCompliantTestPath();
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
         final Set<ValidationError> verify = rule.verify(rootPath, childPath);
@@ -50,7 +48,7 @@ public class JavaSourceRuleTest {
 
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
 
-        final Path rootPath = TestData.rootPath();
+        final Path rootPath = TestData.noCompliantTestPath();
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
         final Set<ValidationError> verify = rule.verify(rootPath, childPath);
@@ -63,7 +61,7 @@ public class JavaSourceRuleTest {
 
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
 
-        final Path rootPath = TestData.rootPath();
+        final Path rootPath = TestData.noCompliantTestPath();
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
         final Set<ValidationError> verify = rule.verify(rootPath, childPath);
