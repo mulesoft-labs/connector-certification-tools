@@ -24,14 +24,14 @@ public class JavaSourceRule extends AbstractRule {
 
     private final SourceTreeVerifier sourceVisitor;
 
-    public JavaSourceRule(@NonNull final Documentation documentation, @NonNull String acceptRegexp, @NonNull final String verifyExpression) {
+    public JavaSourceRule(@NonNull final Documentation documentation, @NonNull String acceptRegexp, @NonNull final String assertExp) {
         super(documentation, acceptRegexp);
         try {
-            final Class<? extends SourceTreeVerifier> clazz = (Class<? extends SourceTreeVerifier>) Class.forName(verifyExpression);
+            final Class<? extends SourceTreeVerifier> clazz = (Class<? extends SourceTreeVerifier>) Class.forName(assertExp);
             this.sourceVisitor = clazz.newInstance();
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            throw new DevKitSonarRuntimeException("Visitor could not be loaded:" + verifyExpression, e);
+            throw new DevKitSonarRuntimeException("Visitor could not be loaded:" + assertExp, e);
         }
     }
 

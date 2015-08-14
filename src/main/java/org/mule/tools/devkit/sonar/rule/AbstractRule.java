@@ -20,7 +20,6 @@ abstract public @Immutable class AbstractRule implements Rule {
 
     final private Documentation documentation;
 
-
     final private Pattern acceptRegexp;
 
     protected AbstractRule(@NonNull final Documentation documentation, @NonNull final String acceptRegexp) {

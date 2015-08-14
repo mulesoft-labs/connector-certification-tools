@@ -15,7 +15,7 @@ public class PomNamespaceContext implements NamespaceContext {
 
     public PomNamespaceContext() {
         this.defaultNamespaceURI = POM_XML_NAMESPACE;
-        this.namespaces =  new HashMap<>();
+        this.namespaces = new HashMap<>();
         this.namespaces.put("pom", POM_XML_NAMESPACE);
 
     }

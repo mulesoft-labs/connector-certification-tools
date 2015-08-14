@@ -31,10 +31,10 @@ public class DirectoryStructureRule extends AbstractRule {
     private Template template;
     private Set<String> templateVars;
 
-    public DirectoryStructureRule(@NonNull final Documentation documentation, @NonNull String acceptRegexp, @NonNull final String verifyExpression) {
+    public DirectoryStructureRule(@NonNull final Documentation documentation, @NonNull String acceptRegexp, @NonNull final String assertExp) {
         super(documentation, acceptRegexp);
         try {
-            this.initTemplate(verifyExpression);
+            this.initTemplate(assertExp);
         } catch (ParseException e) {
             throw new DevKitSonarRuntimeException(e);
         }

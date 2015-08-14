@@ -40,7 +40,7 @@ public class XmlRule extends AbstractRule {
         }
     }
 
-    public XmlRule(final Rule.Documentation documentation, @NonNull String acceptRegexp, @NonNull final String verifyExpression) {
+    public XmlRule(final Rule.Documentation documentation, @NonNull String acceptRegexp, @NonNull final String assertExp) {
         super(documentation, acceptRegexp);
         //@Todo: Load section...
 
@@ -54,7 +54,7 @@ public class XmlRule extends AbstractRule {
         }
 
         try {
-            this.xpathExpression = xpath.compile(verifyExpression);
+            this.xpathExpression = xpath.compile(assertExp);
         } catch (XPathExpressionException e) {
             throw new DevKitSonarRuntimeException(e);
         }

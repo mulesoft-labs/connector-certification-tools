@@ -4,6 +4,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -11,12 +12,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,14 +67,59 @@ public class ProjectClassLoader extends URLClassLoader {
         final PomNamespaceContext context = new PomNamespaceContext();
         xpath.setNamespaceContext(context);
 
-        final XPathExpression expression = xpath.compile("/project/dependencies/dependency");
+        final XPathExpression expression = xpath.compile("/pom:project/pom:dependencies/pom:dependency");
         final InputStream is = Files.newInputStream(pomXml);
         final Document xmlDocument = builder.parse(is);
         final NodeList dependencies = (NodeList) expression.evaluate(xmlDocument, XPathConstants.NODESET);
 
-        System.out.println(dependencies.getLength());
+        // Process dependencies and jar path ...
+        for (int i = 0; i < dependencies.getLength(); i++) {
+            final NodeList dependency = dependencies.item(i).getChildNodes();
+            final Path jarPath = dependencyToJarPath(dependency);
+            result.add(jarPath.toUri().toURL());
+        }
 
         return result.toArray(new URL[result.size()]);
+    }
+
+    @NonNull private static Path dependencyToJarPath(@NonNull final NodeList dependency) {
+
+        String groupId = "", artifactId = "", version = "";
+
+        for (int j = 0; j < dependency.getLength(); j++) {
+            final Node node = dependency.item(j);
+            final String localName = node.getLocalName();
+
+            if (localName != null) {
+                switch (localName) {
+                    case "groupId": {
+                        groupId = node.getTextContent();
+                        break;
+                    }
+                    case "artifactId": {
+                        artifactId = node.getTextContent();
+                        break;
+                    }
+                    case "version": {
+                        version = node.getTextContent();
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Create maven default layout path ...
+        final Path mvnLocalRepo = findMvnLocalRepo();
+        final Path jarFolder = mvnLocalRepo.resolve(groupId.replace(".", File.separator)).resolve(artifactId).resolve(version);
+        final Path result = jarFolder.resolve(artifactId + "-" + version + ".jar");
+
+        return result;
+    }
+
+    @NonNull
+    private static Path findMvnLocalRepo() {
+        final String userHome = System.getProperty("user.home");
+        return Paths.get(userHome).resolve(".m2/repository");
     }
 
 }

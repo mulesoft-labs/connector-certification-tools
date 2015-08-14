@@ -5,38 +5,39 @@ import org.xml.sax.SAXException;
 
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Path;
 
-public class ContextImpl implements Context {
+class ContextImpl implements Context {
 
     private final Path basePath;
+    private ProjectClassLoader classLoader;
 
     public ContextImpl(@NonNull final Path basePath) {
         this.basePath = basePath;
-
     }
 
-    void init()  {
-
+    void init() {
         try {
-            final ProjectClassLoader projectClassloader = new ProjectClassLoader(basePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
+            this.classLoader = new ProjectClassLoader(basePath);
+        } catch (IOException | XPathExpressionException | SAXException e) {
+            throw new IllegalStateException(e);
         }
-
     }
 
     @NonNull public static Context getInstance(final @NonNull Path basePath) {
         return new ContextImpl(basePath);
     }
 
+    @Override public @NonNull String getDevKitVersion() {
+        throw new UnsupportedOperationException();
+    }
+
+    @NonNull @Override public ClassLoader getProjectClassLoader() {
+        return classLoader;
+    }
+
     @Override public @NonNull ConnectorModel getConnectorModel() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 }

@@ -1,21 +1,21 @@
 {
   "rules": [
     {
+      "type": "source.pom",
+      "id": "ctf_version_overwritten",
+      "brief": "Connector test framework must not be overwritten.",
+      "description": "Connectors testing framework must not be overwritten. This can produce unexpected errors once the DevKit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
+      "section": "Best Practices",
+      "assert": "not(/pom:project/pom:properties/pom:connector.test.version/node())"
+    },
+    {
       "type": "source.xml",
       "id": "sample",
       "brief": "Connector test framework must not be overwritten.",
       "description": "Connectors testing framework must not be overwritten. This could produce unexpected errors once the devkit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
       "section": "Best Practices",
       "acceptRegexp": ".+/some.xml$",
-      "verifyExpression": "boolean(/*[local-name() = 'project']/*[local-name() = 'properties']/*[local-name() = 'connector.test.version']/text())"
-    },
-    {
-      "type": "source.pom",
-      "id": "ctf_version_overwritten",
-      "brief": "Connector test framework must not be overwritten.",
-      "description": "Connectors testing framework must not be overwritten. This could produce unexpected errors once the devkit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
-      "section": "Best Practices",
-      "verifyExpression": "not(/pom:project/pom:properties/pom:connector.test.version/node())"
+      "assert": "boolean(/*[local-name() = 'project']/*[local-name() = 'properties']/*[local-name() = 'connector.test.version']/text())"
     },
     {
       "type": "structure",
@@ -24,7 +24,7 @@
       "description": "",
       "section": "Best Practices",
       "acceptRegexp": "src/test/java$",
-      "verifyExpression": "src/test/java/${connector.package}/automation/functional/${processor.name}TestCases.java"
+      "assert": "src/test/java/${connector.package}/automation/functional/${processor.name}TestCases.java"
     },
     {
       "type": "source.java",
@@ -33,7 +33,7 @@
       "description": "",
       "section": "Best Practices",
       "acceptRegexp": ".+/.+Connector.java$",
-      "verifyExpression": "org.mule.tools.devkit.sonar.rule.sverifier.DefaultPayloadVerifier"
+      "assert": "org.mule.tools.devkit.sonar.rule.sverifier.DefaultPayloadVerifier"
     },
     {
       "type": "source.java",
@@ -42,7 +42,7 @@
       "description": "It's strongly recommended that all mandatory parameters be defined as part of the payload. Consider creating a complex object as grouping all the parameters.",
       "section": "Best Practices",
       "acceptRegexp": ".+/.+Connector.java$",
-      "verifyExpression": "org.mule.tools.devkit.sonar.rule.sverifier.ProcessorParametersVerifier"
+      "assert": "org.mule.tools.devkit.sonar.rule.sverifier.ProcessorParametersVerifier"
     },
     {
       "type": "source.java",
@@ -51,7 +51,7 @@
       "description": "Complex types should should be marked with @RefOnly.",
       "section": "Best Practices",
       "acceptRegexp": ".+/.+Connector.java$",
-      "verifyExpression": "org.mule.tools.devkit.sonar.rule.sverifier.RefOnlyParametersVerifier"
+      "assert": "org.mule.tools.devkit.sonar.rule.sverifier.RefOnlyParametersVerifier"
     }
   ]
 }

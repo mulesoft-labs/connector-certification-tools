@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public class PomRule extends XmlRule {
 
-    public PomRule(final Rule.Documentation documentation, @NonNull String acceptRegexp, @Nullable final String verifyExpression) {
-        super(documentation, "pom.xml$", verifyExpression);
+    public PomRule(final Rule.Documentation documentation, @NonNull String acceptRegexp, @Nullable final String assertExp) {
+        super(documentation, "pom.xml$", assertExp);
     }
 
     @Override protected Optional<NamespaceContext> createXPathNsContext() {
