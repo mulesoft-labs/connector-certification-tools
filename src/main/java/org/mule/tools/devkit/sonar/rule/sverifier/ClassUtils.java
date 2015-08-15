@@ -5,6 +5,7 @@ import com.sun.source.tree.ImportTree;
 import com.sun.source.tree.Tree;
 import com.sun.source.tree.VariableTree;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.mule.tools.devkit.sonar.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,9 +115,11 @@ class ClassUtils {
 
                 if (classImp.isPresent()) {
                     final String qualifiedName = classImp.get().getQualifiedIdentifier().toString();
-                    final Class<?> value = Class.forName(qualifiedName);
-                    result = Optional.ofNullable(value);
+                    final Context instance = Context.getInstance();
+                    final ClassLoader classLoader = instance.getModuleClassLoader();
 
+                    final Class<?> value = Class.forName(qualifiedName, false, classLoader);
+                    result = Optional.ofNullable(value);
                 }
             }
 

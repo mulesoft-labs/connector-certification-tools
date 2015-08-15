@@ -8,7 +8,7 @@ public class Main {
 
     static public void main(String argv[]) throws IOException {
 
-        final ConnectorValidator validator = ConnectorValidator.create(Paths.get("."));
+        final ConnectorModuleValidator validator = ConnectorModuleValidator.create(Paths.get("."));
 
         final String arg = argv.length == 0 ? "-h" : argv[0];
         switch (arg) {

@@ -4,17 +4,12 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 
 public interface Context {
 
-    @NonNull static Context getInstance(@NonNull Path path) {
-        return ContextImpl.getInstance(path);
-    }
-
     @NonNull String getDevKitVersion();
 
-    @NonNull ClassLoader getProjectClassLoader();
+    @NonNull ClassLoader getModuleClassLoader();
 
     @NonNull ConnectorModel getConnectorModel();
 
@@ -29,10 +24,12 @@ public interface Context {
         List<String> getProperty(String var);
     }
 
-    static Context create(@NonNull final Path basePath) {
-        final ContextImpl result = new ContextImpl(basePath);
-        result.init();
-        return result;
+    @NonNull static Context getInstance(@NonNull final Path basePath) {
+        return ContextImpl.getInstance(basePath);
+    }
+
+    @NonNull static Context getInstance() {
+        return ContextImpl.getInstance();
     }
 }
 

@@ -86,7 +86,7 @@ public class DirectoryStructureRule extends AbstractRule {
         return buildError(msgs);
     }
 
-    @NonNull public Set<VelocityContext> buildContexts(@NonNull Path basePath) {
+    @NonNull public Set<VelocityContext> buildContexts(@NonNull final Path basePath) {
 
         // Find defined variables ...
         final Context context = Context.getInstance(basePath);

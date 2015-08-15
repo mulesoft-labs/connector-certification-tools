@@ -23,9 +23,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectClassLoader extends URLClassLoader {
+public class ModuleClassLoader extends URLClassLoader {
 
-    final private static Logger logger = LoggerFactory.getLogger(ProjectClassLoader.class);
+    final private static Logger logger = LoggerFactory.getLogger(ModuleClassLoader.class);
 
     private final static XPathFactory xpathFactory = XPathFactory.newInstance();
     private final static DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
@@ -40,7 +40,7 @@ public class ProjectClassLoader extends URLClassLoader {
         }
     }
 
-    public ProjectClassLoader(final @NonNull Path basePath) throws IOException, XPathExpressionException, SAXException {
+    public ModuleClassLoader(final @NonNull Path basePath) throws IOException, XPathExpressionException, SAXException {
         super(initUrls(basePath), null);
     }
 
@@ -111,13 +111,11 @@ public class ProjectClassLoader extends URLClassLoader {
         // Create maven default layout path ...
         final Path mvnLocalRepo = findMvnLocalRepo();
         final Path jarFolder = mvnLocalRepo.resolve(groupId.replace(".", File.separator)).resolve(artifactId).resolve(version);
-        final Path result = jarFolder.resolve(artifactId + "-" + version + ".jar");
 
-        return result;
+        return jarFolder.resolve(artifactId + "-" + version + ".jar");
     }
 
-    @NonNull
-    private static Path findMvnLocalRepo() {
+    @NonNull private static Path findMvnLocalRepo() {
         final String userHome = System.getProperty("user.home");
         return Paths.get(userHome).resolve(".m2/repository");
     }

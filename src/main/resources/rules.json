@@ -28,7 +28,7 @@
     },
     {
       "type": "source.java",
-      "id": "connector.processor.default_payload",
+      "id": "default_payload",
       "brief": "",
       "description": "",
       "section": "Best Practices",
@@ -37,7 +37,7 @@
     },
     {
       "type": "source.java",
-      "id": "connector.processor.params",
+      "id": "processor_params",
       "brief": "",
       "description": "It's strongly recommended that all mandatory parameters be defined as part of the payload. Consider creating a complex object as grouping all the parameters.",
       "section": "Best Practices",
@@ -46,7 +46,7 @@
     },
     {
       "type": "source.java",
-      "id": "connector.processor.refonly",
+      "id": "processor_params_readonly",
       "brief": "",
       "description": "Complex types should should be marked with @RefOnly.",
       "section": "Best Practices",

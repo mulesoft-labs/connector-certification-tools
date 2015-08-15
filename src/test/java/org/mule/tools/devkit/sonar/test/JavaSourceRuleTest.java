@@ -30,12 +30,11 @@ public class JavaSourceRuleTest {
     }
 
     @Test public void testProcessDefaultPayloadVerifier() throws IOException {
-        final Rule.Documentation documentation = new DocumentationImpl("id", "brief", "description", "section");
-        final Rule rule = new JavaSourceRule(documentation, ".*Connector.java$", "org.mule.tools.devkit.sonar.rule.sverifier.DefaultPayloadVerifier");
 
+        final Rule rule = TestData.findRule("default_payload");
+        final Path rootPath = TestData.noCompliantTestPath();
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
 
-        final Path rootPath = TestData.noCompliantTestPath();
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
         final Set<ValidationError> verify = rule.verify(rootPath, childPath);
@@ -43,12 +42,10 @@ public class JavaSourceRuleTest {
     }
 
     @Test public void testProcessParametersVerifier() throws IOException {
-        final Rule.Documentation documentation = new DocumentationImpl("id", "brief", "description", "section");
-        final Rule rule = new JavaSourceRule(documentation, ".*Connector.java$", "org.mule.tools.devkit.sonar.rule.sverifier.ProcessorParametersVerifier");
-
+        final Rule rule = TestData.findRule("processor_params");
+        final Path rootPath = TestData.noCompliantTestPath();
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
 
-        final Path rootPath = TestData.noCompliantTestPath();
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
         final Set<ValidationError> verify = rule.verify(rootPath, childPath);
@@ -56,12 +53,10 @@ public class JavaSourceRuleTest {
     }
 
     @Test public void testRefOnlyParametersVerifier() throws IOException {
-        final Rule.Documentation documentation = new DocumentationImpl("id", "brief", "description", "section");
-        final Rule rule = new JavaSourceRule(documentation, ".*Connector.java$", "org.mule.tools.devkit.sonar.rule.sverifier.RefOnlyParametersVerifier");
-
+        final Rule rule = TestData.findRule("processor_params_readonly");
+        final Path rootPath = TestData.noCompliantTestPath();
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
 
-        final Path rootPath = TestData.noCompliantTestPath();
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
         final Set<ValidationError> verify = rule.verify(rootPath, childPath);
