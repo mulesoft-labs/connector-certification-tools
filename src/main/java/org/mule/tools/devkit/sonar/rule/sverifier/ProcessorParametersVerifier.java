@@ -3,6 +3,7 @@ package org.mule.tools.devkit.sonar.rule.sverifier;
 import com.sun.source.tree.MethodTree;
 import com.sun.source.tree.VariableTree;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.mule.tools.devkit.sonar.ClassParserUtils;
 
 import java.util.List;
 import java.util.Set;
@@ -15,10 +16,10 @@ public class ProcessorParametersVerifier extends ConnectorClassVerifier {
 
 
         // Filter not optional params ...
-        final Stream<? extends VariableTree> nonOptionalParam = parameters.stream().filter(p -> !ClassUtils.isMarkedAsOptional(p));
+        final Stream<? extends VariableTree> nonOptionalParam = parameters.stream().filter(p -> !ClassParserUtils.isMarkedAsOptional(p));
 
         // Filter params with default value ...
-        final Set<VariableTree> mandatoryParams = nonOptionalParam.filter(p -> !ClassUtils.isMarkedAsDefault(p)).collect(Collectors.toSet());
+        final Set<VariableTree> mandatoryParams = nonOptionalParam.filter(p -> !ClassParserUtils.isMarkedAsDefault(p)).collect(Collectors.toSet());
 
         // Just one parameter must not be Optional or contains a default ...
         if (mandatoryParams.size() > 2) {

@@ -8,6 +8,7 @@ import org.apache.velocity.runtime.parser.ParseException;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.regex.qual.Regex;
+import org.mule.tools.devkit.sonar.ClassProperty;
 import org.mule.tools.devkit.sonar.Context;
 import org.mule.tools.devkit.sonar.ValidationError;
 import org.mule.tools.devkit.sonar.exception.DevKitSonarRuntimeException;
@@ -29,10 +30,12 @@ public class DirectoryStructureRule extends AbstractRule {
     final private static Logger logger = LoggerFactory.getLogger(DirectoryStructureRule.class);
 
     private Template template;
-    private Set<String> templateVars;
+    private final Set<ClassProperty> templateProperties;
 
     public DirectoryStructureRule(@NonNull final Documentation documentation, @NonNull String acceptRegexp, @NonNull final String assertExp) {
         super(documentation, acceptRegexp);
+        this.templateProperties = new LinkedHashSet<>();
+
         try {
             this.initTemplate(assertExp);
         } catch (ParseException e) {
@@ -58,20 +61,17 @@ public class DirectoryStructureRule extends AbstractRule {
         final Pattern pattern = Pattern.compile(VELOCITY_VARIABLE);
         final Matcher matcher = pattern.matcher(verifyExpression);
 
-        this.templateVars = new LinkedHashSet<>();
         while (matcher.find()) {
-            this.templateVars.add(matcher.group(1));
+            final String key = matcher.group(1);
+            final ClassProperty property = ClassProperty.to(key);
+            this.templateProperties.add(property);
         }
-
-        // Are valid supported templateVars ... ?
-        //@todo: Check that templateVars are supported ...
 
     }
 
     @Override public Set<ValidationError> verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException {
 
         final Set<VelocityContext> contexts = this.buildContexts(basePath);
-
         final List<String> msgs = new ArrayList<>();
         for (VelocityContext context : contexts) {
             final StringWriter sw = new StringWriter();
@@ -90,24 +90,24 @@ public class DirectoryStructureRule extends AbstractRule {
 
         // Find defined variables ...
         final Context context = Context.getInstance(basePath);
-        final List<List<String>> varValues = templateVars.stream().map(var -> context.getConnectorModel().getProperty(var)).collect(Collectors.toList());
+        final List<List<String>> varValues = templateProperties.stream().map(var -> context.getConnectorModel().getProperty(var)).collect(Collectors.toList());
         final List<List<String>> varValuesPerm = permute(varValues, 0);
 
         // Create contexts ...
         final Set<VelocityContext> result = new HashSet<>();
         for (final List<String> values : varValuesPerm) {
             final VelocityContext vcontext = new VelocityContext();
-            logger.debug("Value to process {} {}", templateVars, values);
+            logger.debug("Value to process {} {}", templateProperties, values);
 
             // Populate values ...
             int i = 0;
-            for (final String varName : templateVars) {
-                vcontext.put(varName, values.get(i));
+            for (final ClassProperty property : templateProperties) {
+                vcontext.put(property.toKey(), values.get(i));
                 i++;
             }
             result.add(vcontext);
         }
-        logger.debug("Velocity context:" + context);
+        logger.debug("Velocity context:" + result);
         return result;
     }
 

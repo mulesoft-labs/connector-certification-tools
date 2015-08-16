@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -15,16 +17,21 @@ import java.util.stream.Stream;
 public class ConnectorModuleValidator {
 
     final private static Logger logger = LoggerFactory.getLogger(ConnectorModuleValidator.class);
-    private final Path basePath;
-
     private Set<Rule> rules;
 
-    private ConnectorModuleValidator(@NonNull final Path rootPath) {
-        this.basePath = rootPath;
+    private static final Set<String> exclusions = new HashSet<>();
+
+    static {
+        exclusions.add(".");
+        exclusions.add("target");
     }
 
-    public static @NonNull ConnectorModuleValidator create(@NonNull final Path rootPath) throws IOException {
-        final ConnectorModuleValidator result = new ConnectorModuleValidator(rootPath);
+    private ConnectorModuleValidator() {
+
+    }
+
+    public static @NonNull ConnectorModuleValidator create() throws IOException {
+        final ConnectorModuleValidator result = new ConnectorModuleValidator();
         result.init();
         return result;
     }
@@ -32,32 +39,28 @@ public class ConnectorModuleValidator {
     private void init() throws IOException {
         // Load rules ...
         this.rules = RulesFactory.load();
+    }
+
+    @NonNull public Set<ValidationError> execute(@NonNull final Path basePath) throws IOException {
 
         // Init Context ...
         Context.getInstance(basePath);
-    }
-
-    public void validator() throws IOException {
 
         // Process rules ...
-        final Stream<Path> filteredHiddenDirs = Files.walk(basePath, FileVisitOption.FOLLOW_LINKS).filter(childPath -> !childPath.toString().contains("/."));
-        final Set<Set<ValidationError>> collect = filteredHiddenDirs.map(childPath -> {
+        final Stream<Path> filesToProgress = Files.walk(basePath, FileVisitOption.FOLLOW_LINKS).map(path -> basePath.relativize(path))
+                .filter(childPath -> !exclusions.stream().anyMatch(exc -> childPath.toString().startsWith(exc)));
 
-            final Path relativePath = childPath.relativize(childPath);
-            logger.debug("Processing file -> {} {}", basePath, relativePath);
+        final Set<Set<ValidationError>> result = filesToProgress.map(relativePath -> {
+            logger.info("Processing file -> '{}' '{}'", basePath, relativePath);
 
             // Filter rules ...
-            final Stream<Rule> filteredRules = rules.stream().filter(rule -> rule.accepts(basePath, childPath.relativize(childPath)));
+            final Stream<Rule> filteredRules = rules.stream().filter(rule -> rule.accepts(basePath, relativePath));
 
             // Apply rules ..
-            return filteredRules.map(rule -> {
-                // Fire verification ...
-                return rule.verify(basePath, childPath);
-            }).collect(Collectors.toSet());
-        }).filter(set -> !set.isEmpty()).flatMap(Set::stream).collect(Collectors.toSet());
+            return filteredRules.map(rule -> rule.verify(basePath, relativePath)).collect(Collectors.toSet());
+        }).filter(set -> !set.isEmpty()).flatMap(Collection::stream).collect(Collectors.toSet());
 
-        // Generate report ...
-        collect.forEach(System.err::println);
+        return result.stream().flatMap(Collection::stream).collect(Collectors.toSet());
     }
 
     @NonNull public Set<Rule.Documentation> rulesDoc() throws IOException {

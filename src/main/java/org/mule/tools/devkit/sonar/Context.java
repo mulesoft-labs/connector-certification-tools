@@ -4,6 +4,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 
 public interface Context {
 
@@ -15,13 +16,13 @@ public interface Context {
 
     interface ConnectorModel {
 
-        List<String> getProcessors();
+        @NonNull Set<String> getProcessors();
 
-        List<String> getSources();
+        @NonNull Set<String> getSources();
 
-        List<String> getPackage();
+        @NonNull String getPackage();
 
-        List<String> getProperty(String var);
+        @NonNull List<String> getProperty(ClassProperty property);
     }
 
     @NonNull static Context getInstance(@NonNull final Path basePath) {

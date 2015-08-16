@@ -1,11 +1,10 @@
-package org.mule.tools.devkit.sonar.rule.sverifier;
+package org.mule.tools.devkit.sonar;
 
 import com.sun.source.tree.AnnotationTree;
 import com.sun.source.tree.ImportTree;
 import com.sun.source.tree.Tree;
 import com.sun.source.tree.VariableTree;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.mule.tools.devkit.sonar.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,14 +13,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
-class ClassUtils {
+public class ClassParserUtils {
 
-    final private static Logger logger = LoggerFactory.getLogger(ClassUtils.class);
+    final private static Logger logger = LoggerFactory.getLogger(ClassParserUtils.class);
 
     private static final Set<String> primitives = new HashSet<>();
     private static final String REF_ONLY_CLASS = "@RefOnly";
-    private static final String OPTIONAL_CLASS = "@Optional";
     private static final String DEFAULT_CLASS = "@Default";
+    private static final String PROCESSOR_CLASS = "@Processor";
     private static final String DEFAULT_PAYLOAD_CLASS = "@Default(\"#[payload]\")";
 
     static {
@@ -47,7 +46,7 @@ class ClassUtils {
         primitivesClasses.add("Boolean");
     }
 
-    private ClassUtils() {
+    private ClassParserUtils() {
 
     }
 
@@ -60,19 +59,19 @@ class ClassUtils {
     }
 
     public static boolean isMarkedAsDefault(final @NonNull VariableTree variable) {
-        return containsAnnotation(variable, ClassUtils::isDefaultAnnotation);
+        return containsAnnotation(variable, ClassParserUtils::isDefaultAnnotation);
     }
 
     public static boolean isMarkedAsPayloadDefault(final @NonNull VariableTree variable) {
-        return containsAnnotation(variable, ClassUtils::isDefaultPayloadAnnotation);
+        return containsAnnotation(variable, ClassParserUtils::isDefaultPayloadAnnotation);
     }
 
     public static boolean isMarkedAsOptional(final @NonNull VariableTree variable) {
-        return containsAnnotation(variable, ClassUtils::isOptionalAnnotation);
+        return containsAnnotation(variable, ClassParserUtils::isOptionalAnnotation);
     }
 
     public static boolean isMarkedAsRefOnly(final @NonNull VariableTree variable) {
-        return containsAnnotation(variable, ClassUtils::isRefOnlyAnnotation);
+        return containsAnnotation(variable, ClassParserUtils::isRefOnlyAnnotation);
     }
 
     public static boolean isDefaultAnnotation(@NonNull final AnnotationTree annotation) {
@@ -83,8 +82,16 @@ class ClassUtils {
         return annotation.toString().startsWith(DEFAULT_PAYLOAD_CLASS);
     }
 
+    public static boolean isProcessortAnnotation(@NonNull final AnnotationTree annotation) {
+        return annotation.toString().startsWith(PROCESSOR_CLASS);
+    }
+
     public static boolean isOptionalAnnotation(@NonNull final AnnotationTree annotation) {
-        return annotation.toString().startsWith(OPTIONAL_CLASS);
+        return annotation.toString().startsWith("@Optional") || annotation.toString().startsWith("@org.mule.api.annotations.Optional");
+    }
+
+    public static boolean isConnectorAnnotation(@NonNull final AnnotationTree annotation) {
+        return annotation.toString().startsWith("@Connector") || annotation.toString().startsWith("@org.mule.api.annotations.Connector");
     }
 
     public static boolean isRefOnlyAnnotation(@NonNull final AnnotationTree annotation) {
