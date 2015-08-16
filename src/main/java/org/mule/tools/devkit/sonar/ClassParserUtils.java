@@ -8,9 +8,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -20,7 +18,7 @@ public class ClassParserUtils {
 
     private static final Set<String> primitives = new HashSet<>();
     private static final String REF_ONLY_CLASS = "RefOnly";
-    private static final String DEFAULT_PAYLOADCLASS = "Default(\"#[payload]\")";
+    private static final String DEFAULT_PAYLOAD_EXPRESSION = "Default(\"#[payload]\")";
     private static final String PROCESSOR_CLASSNAME = "Processor";
     private static final String OPTIONAL_CLASSNAME = "Optional";
     private static final String DEFAULT_CLASSNAME = "Default";
@@ -33,20 +31,35 @@ public class ClassParserUtils {
         primitives.add("float");
         primitives.add("char");
         primitives.add("byte");
+        primitives.add("short");
         primitives.add("boolean");
     }
 
-    final private static Set<String> primitivesClasses = new HashSet<>();
+    final private static Set<String> defaultImportedClasses = new HashSet<>();
 
     static {
-        primitivesClasses.add("Integer");
-        primitivesClasses.add("String");
-        primitivesClasses.add("Long");
-        primitivesClasses.add("Float");
-        primitivesClasses.add("Double");
-        primitivesClasses.add("Character");
-        primitivesClasses.add("Byte");
-        primitivesClasses.add("Boolean");
+        defaultImportedClasses.add("Integer");
+        defaultImportedClasses.add("String");
+        defaultImportedClasses.add("Long");
+        defaultImportedClasses.add("Float");
+        defaultImportedClasses.add("Double");
+        defaultImportedClasses.add("Character");
+        defaultImportedClasses.add("Byte");
+        defaultImportedClasses.add("Boolean");
+        defaultImportedClasses.add("Object");
+    }
+
+    final private static Map<String, Class<?>> primitiveToBoxedType = new HashMap<>();
+
+    static {
+        primitiveToBoxedType.put("int", java.lang.Integer.class);
+        primitiveToBoxedType.put("double", java.lang.Double.class);
+        primitiveToBoxedType.put("boolean", java.lang.Boolean.class);
+        primitiveToBoxedType.put("float", java.lang.Float.class);
+        primitiveToBoxedType.put("long", java.lang.Long.class);
+        primitiveToBoxedType.put("char", java.lang.Character.class);
+        primitiveToBoxedType.put("byte", java.lang.Byte.class);
+        primitiveToBoxedType.put("short", java.lang.Short.class);
     }
 
     private ClassParserUtils() {
@@ -54,7 +67,7 @@ public class ClassParserUtils {
     }
 
     public static boolean isPrimitive(@NonNull final Tree type) {
-        return primitives.contains(type.toString()) || primitivesClasses.contains(type.toString());
+        return primitives.contains(type.toString()) || defaultImportedClasses.contains(type.toString());
     }
 
     public static boolean isEnum(@NonNull final Tree type, @NonNull final Set<ImportTree> imports) {
@@ -87,7 +100,7 @@ public class ClassParserUtils {
     }
 
     public static boolean isDefaultPayloadAnnotation(@NonNull final AnnotationTree annotation) {
-        return isDevKitAnnotation(annotation, DEFAULT_PAYLOADCLASS);
+        return isDevKitAnnotation(annotation, DEFAULT_PAYLOAD_EXPRESSION);
     }
 
     public static boolean isProcessorAnnotation(@NonNull final AnnotationTree annotation) {
@@ -113,7 +126,7 @@ public class ClassParserUtils {
     public static Optional<Class<?>> classForName(@NonNull final String classNameDef, @NonNull final Set<ImportTree> imports) {
 
         // Is a generic declaration ?. Remove generic type ..
-        final String className = classNameDef.split("<")[0];
+        String className = classNameDef.split("<")[0];
 
         // Is the class name fully qualified ?
         Optional<Class<?>> result = Optional.empty();
@@ -122,9 +135,11 @@ public class ClassParserUtils {
             result = findClass(className);
         }
 
-        // Object is a primitive type  ?
+        // Object is a primitive class type  ?
         if (!result.isPresent()) {
-            if (primitivesClasses.contains(className)) {
+            if (primitives.contains(className)) {
+                result = Optional.of(primitiveToBoxedType.get(className));
+            } else if (defaultImportedClasses.contains(className)) {
                 result = findClass("java.lang." + className);
             }
         }
@@ -151,7 +166,9 @@ public class ClassParserUtils {
             result = fullQualifiedClasses.map(ClassParserUtils::findClass).filter(Optional::isPresent).map(Optional::get).findAny();
         }
 
-        logger.debug("Class name -> {} , Resolved Class: {}", className, result.toString());
+        if (!result.isPresent()) {
+            logger.warn("Class name can not be loaded -> {} , Resolved Class: {}", className, result.toString());
+        }
         return result;
     }
 

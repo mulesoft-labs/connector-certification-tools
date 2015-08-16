@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ModuleClassLoader extends URLClassLoader {
 
@@ -35,11 +36,12 @@ public class ModuleClassLoader extends URLClassLoader {
         for (int i = 0; i < dependencies.getLength(); i++) {
             final NodeList dependency = dependencies.item(i).getChildNodes();
             final Path jarPath = dependencyToJarPath(dependency, basePath);
-            if (!Files.exists(jarPath)) {
+            if (Files.exists(jarPath)) {
+                result.add(jarPath.toUri().toURL());
+                logger.debug("Project module jar {}", jarPath);
+            } else {
                 logger.error("Jar could not be found ->" + jarPath.toAbsolutePath());
             }
-            result.add(jarPath.toUri().toURL());
-            logger.debug("Project module jar {}", jarPath);
         }
 
         // Add maven module target dir ...
@@ -50,10 +52,21 @@ public class ModuleClassLoader extends URLClassLoader {
         }
         result.add(targetPath.toUri().toURL());
 
-        // Add DevKit annotations dependency ...
         final String devkitVersion = (String) XmlUtils.evalXPathOnPom(basePath, "/pom:project/pom:parent/pom:version/text()", XPathConstants.STRING);
+
+        // Add DevKit annotations dependency ...
         final Path devkitJar = dependencyToPath("org.mule.tools.devkit", "mule-devkit-annotations", devkitVersion);
         result.add(devkitJar.toUri().toURL());
+
+
+        // Add Mule Comments ...
+        final Path muleCommonJar = dependencyToPath("org.mule.common", "mule-common", devkitVersion);
+        result.add(muleCommonJar.toUri().toURL());
+
+        // Add Mule Comments ...
+        final Path muleCore = dependencyToPath("org.mule", "mule-core", devkitVersion);
+        result.add(muleCore.toUri().toURL());
+
 
         return result.toArray(new URL[result.size()]);
     }
@@ -77,20 +90,19 @@ public class ModuleClassLoader extends URLClassLoader {
                         break;
                     }
                     case "version": {
+                        // Replace dependency versions with pom properties ...
                         final String rawVersion = node.getTextContent();
-
-                        // @Todo: Complete support for variables replacement ...
-                        //                        VelocityContext context = new VelocityContext();
-                        //                        final NodeList propertiesNodes = (NodeList) XmlUtils.evalXPathOnPom(basePath, "/pom:project/pom:properties/*", XPathConstants.NODESET);
-                        //                        for (int i = 0; i < propertiesNodes.getLength(); i++) {
-                        //                            NodeList property = propertiesNodes.item(i).getChildNodes();
-                        //                            System.out.println(property.item(0).getLocalName());
-                        //                            context.put(property.getNodeName(), property.getNodeValue());
-                        //                        }
-                        //                        StringWriter sw = new StringWriter();
-                        //                        Velocity.evaluate(context, sw, "", rawVersion);
-                        //                        version = sw.toString();
+                        final NodeList propertiesNodes = (NodeList) XmlUtils.evalXPathOnPom(basePath, "/pom:project/pom:properties", XPathConstants.NODESET);
+                        final NodeList childNodes = propertiesNodes.item(0).getChildNodes();
                         version = rawVersion;
+                        for (int i = 0; i < childNodes.getLength(); i++) {
+                            if (childNodes.item(i).getNodeType() != Node.TEXT_NODE) {
+                                final Node property = childNodes.item(i);
+                                final String propName = property.getNodeName();
+                                final String propValue = property.getTextContent();
+                                version = version.replaceAll(Pattern.quote("${" + propName + "}"), propValue);
+                            }
+                        }
                         break;
                     }
                 }
