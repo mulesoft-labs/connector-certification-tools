@@ -41,7 +41,7 @@ public class DirectoryStructureRuleTest {
 
         assertTrue("File could not be found.", rule.verify(rootPath, childPath).isEmpty());
     }
-    
+
     @Test public void permutation() throws IOException {
         // Single line ...
         final List<List<String>> sample1 = Collections.singletonList(Arrays.asList("a1", "a2"));

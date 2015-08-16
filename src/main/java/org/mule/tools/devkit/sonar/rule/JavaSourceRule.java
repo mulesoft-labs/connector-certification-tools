@@ -29,7 +29,7 @@ public class JavaSourceRule extends AbstractRule {
     public JavaSourceRule(@NonNull final Documentation documentation, @NonNull String acceptRegexp, @NonNull final String assertExp) {
         super(documentation, acceptRegexp);
         try {
-            final Class<? extends SourceTreeVerifier> clazz = (Class<? extends SourceTreeVerifier>) Class.forName(assertExp);
+            final Class<? extends SourceTreeVerifier> clazz = (Class<? extends SourceTreeVerifier>) Class.forName(assertExp, true, Thread.currentThread().getContextClassLoader());
             this.sourceVisitor = clazz.newInstance();
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
