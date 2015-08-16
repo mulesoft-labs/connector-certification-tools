@@ -100,7 +100,8 @@ public class ClassParserUtils {
     }
 
     public static boolean isDefaultPayloadAnnotation(@NonNull final AnnotationTree annotation) {
-        return annotation.toString().startsWith("@" + DEFAULT_PAYLOAD_EXPRESSION) || annotation.toString().startsWith("@org.mule.api.annotations.param." + DEFAULT_PAYLOAD_EXPRESSION);
+        return annotation.toString().startsWith("@" + DEFAULT_PAYLOAD_EXPRESSION) || annotation.toString()
+                .startsWith("@org.mule.api.annotations.param." + DEFAULT_PAYLOAD_EXPRESSION);
     }
 
     public static boolean isProcessorAnnotation(@NonNull final AnnotationTree annotation) {
@@ -190,4 +191,7 @@ public class ClassParserUtils {
         return classForName(type.toString(), imports);
     }
 
+    public static boolean contains(@NonNull final List<? extends AnnotationTree> annotations, @NonNull final Class<?> annotationClass) {
+        return annotations.stream().anyMatch(a -> ClassParserUtils.is(a, annotationClass));
+    }
 }

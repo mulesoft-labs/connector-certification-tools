@@ -11,7 +11,7 @@ import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class SourceTreeVerifier extends TreePathScanner<Object, Trees> {
+abstract public class SourceTreeVerifier extends TreePathScanner<Object, Trees> {
 
     final private Set<String> errors = new HashSet<>();
     final private Set<ImportTree> imports = new HashSet<>();
@@ -50,8 +50,7 @@ public abstract class SourceTreeVerifier extends TreePathScanner<Object, Trees> 
         imports.clear();
     }
 
-    @NonNull
-    protected Set<ImportTree> getImports() {
+    @NonNull protected Set<ImportTree> getImports() {
         return imports;
     }
 }
