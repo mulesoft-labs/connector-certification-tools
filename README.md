@@ -16,7 +16,6 @@ Rules can be declared in the file src/main/resources/rules.json
 
 ## Usage
 
- mvn exec:java -Dexec.mainClass="org.mule.tools.devkit.sonar.Main" -Dexec.arguments="<connector-module-path>"
-
+mvn exec:java -Dexec.mainClass="org.mule.tools.devkit.sonar.Main" -Dexec.classpathScope=compile -Dexec.args="<connector-path>"
 
 
