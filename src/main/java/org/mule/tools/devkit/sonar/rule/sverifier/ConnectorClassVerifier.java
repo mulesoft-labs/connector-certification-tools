@@ -1,6 +1,7 @@
 package org.mule.tools.devkit.sonar.rule.sverifier;
 
 import com.sun.source.tree.AnnotationTree;
+import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.MethodTree;
 import com.sun.source.tree.VariableTree;
 import com.sun.source.util.Trees;
@@ -12,7 +13,12 @@ import java.util.Optional;
 
 abstract public class ConnectorClassVerifier extends SourceTreeVerifier {
 
-    @Override public Object visitMethod(@NonNull final MethodTree methodTree, Trees trees) {
+    @Override final public Object visitClass(@NonNull ClassTree classTree, @NonNull Trees trees) {
+        this.verifyConnector(classTree, trees);
+        return super.visitClass(classTree, trees);
+    }
+
+    @Override final public Object visitMethod(@NonNull final MethodTree methodTree, Trees trees) {
         final List<? extends AnnotationTree> annotations = methodTree.getModifiers().getAnnotations();
 
         // Map argument ...
@@ -44,6 +50,10 @@ abstract public class ConnectorClassVerifier extends SourceTreeVerifier {
     }
 
     protected void verifyProcessor(@NonNull final MethodTree method, @NonNull final List<? extends VariableTree> parameters) {
+    }
+
+    protected void verifyConnector(@NonNull ClassTree classTree, @NonNull Trees trees) {
+
     }
 
     private enum Type {

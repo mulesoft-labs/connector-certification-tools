@@ -10,6 +10,8 @@ public interface Context {
 
     @NonNull String getDevKitVersion();
 
+    @NonNull String getCategory();
+
     @NonNull ClassLoader getModuleClassLoader();
 
     @NonNull ConnectorModel getConnectorModel();

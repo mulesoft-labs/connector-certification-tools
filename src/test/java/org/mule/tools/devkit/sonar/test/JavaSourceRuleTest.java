@@ -6,8 +6,6 @@ import org.mockito.Mockito;
 import org.mule.tools.devkit.sonar.Context;
 import org.mule.tools.devkit.sonar.Rule;
 import org.mule.tools.devkit.sonar.ValidationError;
-import org.mule.tools.devkit.sonar.rule.DocumentationImpl;
-import org.mule.tools.devkit.sonar.rule.JavaSourceRule;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -61,6 +59,28 @@ public class JavaSourceRuleTest {
 
         final Set<ValidationError> verify = rule.verify(rootPath, childPath);
         assertEquals(9, verify.size());
+    }
+
+    @Test public void testCategoryVerifier() throws IOException {
+        final Rule rule = TestData.findRule("connector_category");
+        final Path rootPath = TestData.noCompliantTestPath();
+        final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
+
+        assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
+
+        final Set<ValidationError> verify = rule.verify(rootPath, childPath);
+        assertEquals(2, verify.size());
+    }
+
+    @Test public void testCategoryVerifierOk() throws IOException {
+        final Rule rule = TestData.findRule("connector_category");
+        final Path rootPath = TestData.perfectTestPath();
+        final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
+
+        assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
+
+        final Set<ValidationError> verify = rule.verify(rootPath, childPath);
+        assertEquals(0, verify.size());
     }
 
 }

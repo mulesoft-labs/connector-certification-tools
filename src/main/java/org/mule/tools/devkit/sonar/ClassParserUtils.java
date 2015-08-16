@@ -5,11 +5,16 @@ import com.sun.source.tree.ImportTree;
 import com.sun.source.tree.Tree;
 import com.sun.source.tree.VariableTree;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.mule.api.annotations.Connector;
+import org.mule.api.annotations.Processor;
+import org.mule.api.annotations.param.Default;
+import org.mule.api.annotations.param.RefOnly;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class ClassParserUtils {
@@ -17,12 +22,7 @@ public class ClassParserUtils {
     final private static Logger logger = LoggerFactory.getLogger(ClassParserUtils.class);
 
     private static final Set<String> primitives = new HashSet<>();
-    private static final String REF_ONLY_CLASS = "RefOnly";
     private static final String DEFAULT_PAYLOAD_EXPRESSION = "Default(\"#[payload]\")";
-    private static final String PROCESSOR_CLASSNAME = "Processor";
-    private static final String OPTIONAL_CLASSNAME = "Optional";
-    private static final String DEFAULT_CLASSNAME = "Default";
-    private static final String CONNECTOR_CLASSNAME = "Connector";
 
     static {
         primitives.add("int");
@@ -96,31 +96,32 @@ public class ClassParserUtils {
     }
 
     public static boolean isDefaultAnnotation(@NonNull final AnnotationTree annotation) {
-        return isDevKitAnnotation(annotation, DEFAULT_CLASSNAME);
+        return is(annotation, Default.class);
     }
 
     public static boolean isDefaultPayloadAnnotation(@NonNull final AnnotationTree annotation) {
-        return isDevKitAnnotation(annotation, DEFAULT_PAYLOAD_EXPRESSION);
+        return annotation.toString().startsWith("@" + DEFAULT_PAYLOAD_EXPRESSION) || annotation.toString().startsWith("@org.mule.api.annotations.param." + DEFAULT_PAYLOAD_EXPRESSION);
     }
 
     public static boolean isProcessorAnnotation(@NonNull final AnnotationTree annotation) {
-        return isDevKitAnnotation(annotation, PROCESSOR_CLASSNAME);
+        return is(annotation, Processor.class);
     }
 
     public static boolean isOptionalAnnotation(@NonNull final AnnotationTree annotation) {
-        return isDevKitAnnotation(annotation, OPTIONAL_CLASSNAME);
+        return is(annotation, org.mule.api.annotations.param.Optional.class);
     }
 
     public static boolean isConnectorAnnotation(@NonNull final AnnotationTree annotation) {
-        return isDevKitAnnotation(annotation, CONNECTOR_CLASSNAME);
-    }
-
-    private static boolean isDevKitAnnotation(@NonNull AnnotationTree annotation, @NonNull final String classsName) {
-        return annotation.toString().startsWith("@" + classsName) || annotation.toString().startsWith("@org.mule.api.annotations." + classsName);
+        return is(annotation, Connector.class);
     }
 
     public static boolean isRefOnlyAnnotation(@NonNull final AnnotationTree annotation) {
-        return isDevKitAnnotation(annotation, REF_ONLY_CLASS);
+        return is(annotation, RefOnly.class);
+    }
+
+    public static boolean is(@NonNull AnnotationTree annotation, @NonNull final Class<?> annotationClass) {
+        final String annotationSimpleName = annotation.toString().split(Pattern.quote("("))[0];
+        return annotationSimpleName.equals("@" + annotationClass.getSimpleName()) || annotationSimpleName.equals("@" + annotationClass.getCanonicalName());
     }
 
     public static Optional<Class<?>> classForName(@NonNull final String classNameDef, @NonNull final Set<ImportTree> imports) {

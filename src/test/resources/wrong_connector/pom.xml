@@ -18,7 +18,7 @@
         <junit.version>4.9</junit.version>
         <mockito.version>1.8.2</mockito.version>
         <jdk.version>1.7</jdk.version>
-        <category>Community</category>
+        <category>PREMIUM</category>
         <licensePath>LICENSE.md</licensePath>
         <devkit.studio.package.skip>false</devkit.studio.package.skip>
         <connector.test.version>2.0.1</connector.test.version>

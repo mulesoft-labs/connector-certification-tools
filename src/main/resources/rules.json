@@ -52,13 +52,22 @@
     {
       "type": "source.java",
       "id": "processor_params_readonly",
-      "severity": "minor",
       "severity": "major",
       "brief": "",
       "description": "Complex types should should be marked with @RefOnly.",
       "section": "Best Practices",
       "acceptRegexp": ".+/.+Connector.java$",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.RefOnlyParametersVerifier"
+    },
+    {
+      "type": "source.java",
+      "id": "connector_category",
+      "severity": "critical",
+      "brief": "Connector category must contain proper @RequiresEntitlement and @RequiresEnterpriseLicense",
+      "description": "",
+      "section": "",
+      "acceptRegexp": ".+/.+Connector.java$",
+      "assert": "org.mule.tools.devkit.sonar.rule.sverifier.LicenseByCategoryVerifier"
     },
     {
       "type": "source.xml",

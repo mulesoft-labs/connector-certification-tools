@@ -66,6 +66,10 @@ public class ContextImpl implements Context {
         return model;
     }
 
+    @Override @NonNull public String getCategory() {
+        return category.toUpperCase();
+    }
+
     @NonNull public static Context getInstance(@NonNull Path basePath) {
         Context context = instancesByPath.get(basePath);
         if (context == null) {
