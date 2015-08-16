@@ -25,5 +25,14 @@ public interface Rule {
 
         @NonNull String getDescription();
 
+        @NonNull Severity getSeverity();
+
+        enum Severity {
+            CRITICAL,
+            MAJOR,
+            MINOR,
+            INFO
+        }
     }
+
 }

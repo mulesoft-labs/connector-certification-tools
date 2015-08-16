@@ -32,7 +32,7 @@ public class DirectoryStructureRuleTest {
     }
 
     @Test public void validateSinglePath() throws IOException {
-        final Rule.Documentation documentation = new DocumentationImpl("id", "brief", "description", "section");
+        final Rule.Documentation documentation = new DocumentationImpl("id", "brief", "description", "section", Rule.Documentation.Severity.CRITICAL);
         final Rule rule = new DirectoryStructureRule(documentation, "README.md$", "README.md");
 
         final Path childPath = Paths.get("README.md");
@@ -43,7 +43,7 @@ public class DirectoryStructureRuleTest {
     }
 
     @Test public void validatePath() throws IOException {
-        final Rule.Documentation documentation = new DocumentationImpl("id", "brief", "description", "section");
+        final Rule.Documentation documentation = new DocumentationImpl("id", "brief", "description", "section", Rule.Documentation.Severity.CRITICAL);
 
         final Rule rule = new DirectoryStructureRule(documentation, "src/test/java", "src/test/java/${connector.package}/automation/functional/${processor.name}TestCases.java");
         final Path childPath = Paths.get("src/test/java");

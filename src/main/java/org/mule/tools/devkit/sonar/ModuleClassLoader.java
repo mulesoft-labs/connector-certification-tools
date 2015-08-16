@@ -30,14 +30,6 @@ public class ModuleClassLoader extends URLClassLoader {
     private static URL[] initUrls(@NonNull Path basePath) throws IOException, XPathExpressionException, SAXException {
         final List<URL> result = new ArrayList<>();
 
-        // Add maven module target dir ...
-        final Path targetPath = basePath.resolve("target/classes/");
-        if (!Files.exists(targetPath)) {
-            throw new IllegalStateException(
-                    "Maven target directory could not be found. Module must be compiled before executing analysis." + targetPath.toAbsolutePath().toString());
-        }
-        result.add(targetPath.toUri().toURL());
-
         // Process dependencies and jar path ...
         final NodeList dependencies = (NodeList) XmlUtils.evalXPathOnPom(basePath, "/pom:project/pom:dependencies/pom:dependency", XPathConstants.NODESET);
         for (int i = 0; i < dependencies.getLength(); i++) {
@@ -45,6 +37,14 @@ public class ModuleClassLoader extends URLClassLoader {
             final Path jarPath = dependencyToJarPath(dependency);
             result.add(jarPath.toUri().toURL());
         }
+
+        // Add maven module target dir ...
+        final Path targetPath = basePath.resolve("target/classes/");
+        if (!Files.exists(targetPath)) {
+            throw new IllegalStateException(
+                    "Maven target directory could not be found. Module must be compiled before executing analysis." + targetPath.toAbsolutePath().toString());
+        }
+        result.add(targetPath.toUri().toURL());
 
         return result.toArray(new URL[result.size()]);
     }

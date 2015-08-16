@@ -4,59 +4,44 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.tools.devkit.sonar.Rule;
 
-public  class DocumentationImpl implements Rule.Documentation {
+public class DocumentationImpl implements Rule.Documentation {
 
-    @NonNull
-    private final String id;
-    @NonNull
-    private final String brief;
-    @NonNull
-    private final String description;
-    @Nullable
-    private final String section;
+    @NonNull private final String id;
+    @NonNull private final String brief;
+    @NonNull private final String description;
+    @NonNull private final String section;
+    @NonNull private final Severity severity;
 
-    public DocumentationImpl(@NonNull String id, @NonNull String brief, @NonNull String description, @Nullable String section) {
+    public DocumentationImpl(@NonNull String id, @NonNull String brief, @NonNull String description, @Nullable String section, @NonNull Severity severity) {
+        this.id = id;
         this.brief = brief;
         this.description = description;
         this.section = section;
-        this.id = id;
+        this.severity = severity;
     }
 
-    public static Rule.@NonNull Documentation create(@NonNull String id, @NonNull final String brief, @NonNull final String description, @Nullable final String section) {
-        return new DocumentationImpl(id, brief, description, section);
+    public static Rule.@NonNull Documentation create(@NonNull String id, @NonNull final String brief, @NonNull final String description, @NonNull final String section,
+            @NonNull Severity severity) {
+        return new DocumentationImpl(id, brief, description, section, severity);
     }
 
-    @Override
-    @NonNull
-    public String getBrief() {
+    @Override @NonNull public String getBrief() {
         return brief;
     }
 
-    @Override
-    @NonNull
-    public String getDescription() {
+    @Override @NonNull public String getDescription() {
         return description;
     }
 
-    @Override
-    @Nullable
-    public String getSection() {
+    @Override public @NonNull Severity getSeverity() {
+        return severity;
+    }
+
+    @Override @Nullable public String getSection() {
         return section;
     }
 
-    @NonNull
-    public String getId() {
+    @NonNull public String getId() {
         return id;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("DocumentationImpl{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", brief='").append(brief).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", section='").append(section).append('\'');
-        sb.append('}');
-        return sb.toString();
     }
 }

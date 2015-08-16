@@ -3,6 +3,7 @@
     {
       "type": "source.pom",
       "id": "ctf_version_overwritten",
+      "severity": "minor",
       "brief": "Connector test framework must not be overwritten.",
       "description": "Connectors testing framework must not be overwritten. This can produce unexpected errors once the DevKit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
       "section": "Best Practices",
@@ -10,6 +11,7 @@
     },
     {
       "type": "source.xml",
+      "severity": "minor",
       "id": "sample",
       "brief": "Connector test framework must not be overwritten.",
       "description": "Connectors testing framework must not be overwritten. This could produce unexpected errors once the devkit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
@@ -20,15 +22,17 @@
     {
       "type": "structure",
       "id": "structure.readme",
-      "brief": "Structure validation ...",
-      "description": "",
+      "severity": "critical",
+      "brief": "There must be an unit test class per processor.",
+      "description": "There must be an unit test class per processor.",
       "section": "Best Practices",
       "acceptRegexp": "src/test/java$",
-      "assert": "src/test/java/${connector.package}/automation/functional/${connector.processor}TestCases.java"
+      "assert": "src/test/java/${connector_package}/automation/functional/${connector_processor}TestCases.java"
     },
     {
       "type": "source.java",
       "id": "default_payload",
+      "severity": "critical",
       "brief": "",
       "description": "",
       "section": "Best Practices",
@@ -38,6 +42,7 @@
     {
       "type": "source.java",
       "id": "processor_params",
+      "severity": "major",
       "brief": "",
       "description": "It's strongly recommended that all mandatory parameters be defined as part of the payload. Consider creating a complex object as grouping all the parameters.",
       "section": "Best Practices",
@@ -47,6 +52,8 @@
     {
       "type": "source.java",
       "id": "processor_params_readonly",
+      "severity": "minor",
+      "severity": "major",
       "brief": "",
       "description": "Complex types should should be marked with @RefOnly.",
       "section": "Best Practices",

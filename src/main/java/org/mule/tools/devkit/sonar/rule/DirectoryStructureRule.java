@@ -78,9 +78,9 @@ public class DirectoryStructureRule extends AbstractRule {
             template.merge(context, sw);
 
             // Does the file exists ?
-            final Path fullPath = basePath.resolve(sw.toString());
-            if (!Files.exists(fullPath)) {
-                msgs.add("File '" + fullPath + "' could not be found.");
+            final String child = sw.toString();
+            if (!Files.exists(basePath.resolve(child))) {
+                msgs.add("File '" + child + "' does not exists.");
             }
         }
         return buildError(msgs);

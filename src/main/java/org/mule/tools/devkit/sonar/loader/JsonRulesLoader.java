@@ -39,7 +39,8 @@ public class JsonRulesLoader {
             throw new IllegalStateException("Unsupported type:" + type);
         }
 
-        final Rule.Documentation documentation = DocumentationImpl.create(ruleDef.getId(), ruleDef.getBrief(), ruleDef.getDescription(), null);
+        final Rule.Documentation documentation = DocumentationImpl.create(ruleDef.getId(), ruleDef.getBrief(), ruleDef.getDescription(), ruleDef.getSection(),
+                Rule.Documentation.Severity.valueOf(ruleDef.getSeverity().toUpperCase()));
         return ruleBuilder.create(documentation, ruleDef.getAcceptRegexp(), ruleDef.getAssert());
 
     }

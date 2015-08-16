@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL) @Generated("org.jsonschema2pojo") @JsonPropertyOrder({
-        "id", "type", "acceptRegexp", "assert", "brief", "description" }) public class JsonRule {
+        "id", "type", "acceptRegexp", "assert", "brief", "description", "section", "severity" }) public class JsonRule {
 
     @JsonProperty("id") private String id;
     @JsonProperty("type") private String type;
@@ -15,8 +15,10 @@ import java.util.Map;
     @JsonProperty("assert") private String assertExp;
     @JsonProperty("brief") private String brief;
     @JsonProperty("description") private String description;
+    @JsonProperty("severity") private String severity;
 
     @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private String section;
 
     @JsonProperty("type") public String getType() {
         return type;
@@ -64,6 +66,22 @@ import java.util.Map;
 
     @JsonProperty("description") public void setDescription(String description) {
         this.description = description;
+    }
+
+    @JsonProperty("severity") public String getSeverity() {
+        return severity;
+    }
+
+    @JsonProperty("severity") public void setSeverity(String severity) {
+        this.severity = severity;
+    }
+
+    @JsonProperty("section") public String getSection() {
+        return section;
+    }
+
+    @JsonProperty("section") public void setSection(String section) {
+        this.section = section;
     }
 
     @JsonAnyGetter public Map<String, Object> getAdditionalProperties() {

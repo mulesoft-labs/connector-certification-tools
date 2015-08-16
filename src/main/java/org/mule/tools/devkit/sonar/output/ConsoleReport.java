@@ -1,14 +1,28 @@
 package org.mule.tools.devkit.sonar.output;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.mule.tools.devkit.sonar.Rule;
 import org.mule.tools.devkit.sonar.ValidationError;
 
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.mule.tools.devkit.sonar.output.AnsiEscapeCodesEnum.*;
 
 public class ConsoleReport implements Report {
+
+    private final static Map<Rule.Documentation.Severity, String> colorExp = new HashMap<>();
+
+    static {
+        colorExp.put(Rule.Documentation.Severity.CRITICAL, ANSI_RED.getCode() + "<*>" + ANSI_RESET.getCode());
+        colorExp.put(Rule.Documentation.Severity.MAJOR, ANSI_YELLOW.getCode() + "<*>" + ANSI_RESET.getCode());
+        colorExp.put(Rule.Documentation.Severity.MINOR, ANSI_GREEN.getCode() + "<*>" + ANSI_RESET.getCode());
+        colorExp.put(Rule.Documentation.Severity.INFO, ANSI_BLUE.getCode() + "<*>" + ANSI_RESET.getCode());
+    }
 
     public void process(final Path basePath, @NonNull Set<ValidationError> errors) {
 
@@ -17,11 +31,14 @@ public class ConsoleReport implements Report {
         if (!errors.isEmpty()) {
             System.out.println("Review the following violated inspections:");
 
-            for (ValidationError error : errors) {
-                System.out.printf("\t" + ANSI_RED.getCode() + "<*>" + ANSI_RESET.getCode() + " %s %s\n", error.getDocumentation().getBrief(), error.getMessage());
+            final List<ValidationError> sortedErrors = errors.stream().sorted((a, b) -> a.getDocumentation().getSeverity().compareTo(b.getDocumentation().getSeverity()))
+                    .collect(Collectors.toList());
+            for (ValidationError error : sortedErrors) {
+                final String description = error.getDocumentation().getDescription();
+                System.out.printf("\t%s %s %s\n", colorExp.get(error.getDocumentation().getSeverity()), error.getMessage(), description);
             }
         } else {
-            System.out.printf(ANSI_GREEN.getCode() + "Congrats. All inspections has been satisfied." + ANSI_RESET.getCode() + "\n");
+            System.out.printf(ANSI_GREEN.getCode() + "Congrats. All inspections rules has been satisfied." + ANSI_RESET.getCode() + "\n");
         }
 
     }
