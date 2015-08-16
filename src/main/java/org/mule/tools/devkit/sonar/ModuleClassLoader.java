@@ -36,6 +36,7 @@ public class ModuleClassLoader extends URLClassLoader {
             final NodeList dependency = dependencies.item(i).getChildNodes();
             final Path jarPath = dependencyToJarPath(dependency);
             result.add(jarPath.toUri().toURL());
+            logger.debug("Project module jar {}", jarPath);
         }
 
         // Add maven module target dir ...
@@ -45,6 +46,11 @@ public class ModuleClassLoader extends URLClassLoader {
                     "Maven target directory could not be found. Module must be compiled before executing analysis." + targetPath.toAbsolutePath().toString());
         }
         result.add(targetPath.toUri().toURL());
+
+        // Add DevKit annotations dependency ...
+        final String devkitVersion = (String) XmlUtils.evalXPathOnPom(basePath, "/pom:project/pom:parent/pom:version/text()", XPathConstants.STRING);
+        final Path devkitJar = dependencyToPath("org.mule.tools.devkit", "mule-devkit-annotations", devkitVersion);
+        result.add(devkitJar.toUri().toURL());
 
         return result.toArray(new URL[result.size()]);
     }
@@ -74,11 +80,14 @@ public class ModuleClassLoader extends URLClassLoader {
                 }
             }
         }
+        return dependencyToPath(groupId, artifactId, version);
 
+    }
+
+    @NonNull private static Path dependencyToPath(String groupId, String artifactId, String version) {
         // Create maven default layout path ...
         final Path mvnLocalRepo = findMvnLocalRepo();
         final Path jarFolder = mvnLocalRepo.resolve(groupId.replace(".", File.separator)).resolve(artifactId).resolve(version);
-
         return jarFolder.resolve(artifactId + "-" + version + ".jar");
     }
 

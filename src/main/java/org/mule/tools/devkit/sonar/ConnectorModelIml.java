@@ -81,7 +81,7 @@ public class ConnectorModelIml implements Context.ConnectorModel {
         @Override public Object visitMethod(MethodTree method, Trees trees) {
 
             final List<? extends AnnotationTree> annotations = method.getModifiers().getAnnotations();
-            if (annotations.stream().anyMatch(ClassParserUtils::isProcessortAnnotation)) {
+            if (annotations.stream().anyMatch(ClassParserUtils::isProcessorAnnotation)) {
                 ConnectorModelIml.this.addProcessor(method.getName().toString());
             }
 

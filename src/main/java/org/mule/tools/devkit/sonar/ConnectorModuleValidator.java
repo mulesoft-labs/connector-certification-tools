@@ -51,7 +51,7 @@ public class ConnectorModuleValidator {
                 .filter(childPath -> !exclusions.stream().anyMatch(exc -> childPath.toString().startsWith(exc)));
 
         final Set<Set<ValidationError>> result = filesToProgress.map(relativePath -> {
-            logger.info("Processing file -> '{}' '{}'", basePath, relativePath);
+            logger.debug("Processing file -> '{}' '{}'", basePath, relativePath);
 
             // Filter rules ...
             final Stream<Rule> filteredRules = rules.stream().filter(rule -> rule.accepts(basePath, relativePath));

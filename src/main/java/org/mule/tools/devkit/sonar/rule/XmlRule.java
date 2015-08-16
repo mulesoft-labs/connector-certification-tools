@@ -40,9 +40,11 @@ public class XmlRule extends AbstractRule {
         }
     }
 
+    private final String assertExp;
+
     public XmlRule(final Rule.Documentation documentation, @NonNull String acceptRegexp, @NonNull final String assertExp) {
         super(documentation, acceptRegexp);
-        //@Todo: Load section...
+        this.assertExp = assertExp;
 
         // Compile xpathExpression expression ...
         final XPath xpath = xpathFactory.newXPath();
@@ -77,7 +79,7 @@ public class XmlRule extends AbstractRule {
         }
         logger.debug("Rule {} applied to {} -> {}", this.getDocumentation().getId(), childPath.toString(), success);
 
-        return !success ? buildError("XML rule can not be satisfied " + xpathExpression) : Collections.<ValidationError>emptySet();
+        return !success ? buildError("Assertion failed '" + assertExp + "'.") : Collections.<ValidationError>emptySet();
     }
 
     @Override public String toString() {

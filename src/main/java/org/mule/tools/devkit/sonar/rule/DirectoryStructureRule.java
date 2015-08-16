@@ -91,22 +91,29 @@ public class DirectoryStructureRule extends AbstractRule {
         // Find defined variables ...
         final Context context = Context.getInstance(basePath);
         final List<List<String>> varValues = templateProperties.stream().map(var -> context.getConnectorModel().getProperty(var)).collect(Collectors.toList());
-        final List<List<String>> varValuesPerm = permute(varValues, 0);
 
-        // Create contexts ...
         final Set<VelocityContext> result = new HashSet<>();
-        for (final List<String> values : varValuesPerm) {
-            final VelocityContext vcontext = new VelocityContext();
-            logger.debug("Value to process {} {}", templateProperties, values);
+        if (!templateProperties.isEmpty()) {
+            final List<List<String>> varValuesPerm = permute(varValues, 0);
 
-            // Populate values ...
-            int i = 0;
-            for (final ClassProperty property : templateProperties) {
-                vcontext.put(property.toKey(), values.get(i));
-                i++;
+            // Create contexts ...
+            for (final List<String> values : varValuesPerm) {
+                final VelocityContext vcontext = new VelocityContext();
+                logger.debug("Value to process {} {}", templateProperties, values);
+
+                // Populate values ...
+                int i = 0;
+                for (final ClassProperty property : templateProperties) {
+                    vcontext.put(property.toKey(), values.get(i));
+                    i++;
+                }
+                result.add(vcontext);
             }
-            result.add(vcontext);
+        } else {
+            // If not variable is part of the expression, the expression must be evaluated ...
+            result.add(new VelocityContext());
         }
+
         logger.debug("Velocity context:" + result);
         return result;
     }

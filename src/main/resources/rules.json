@@ -1,33 +1,33 @@
 {
   "rules": [
     {
+      "type": "structure",
+      "id": "processor_tests",
+      "severity": "critical",
+      "brief": "There must be an unit test class per processor.",
+      "description": "There must be an unit test class per processor.",
+      "section": "Directory Structure",
+      "acceptRegexp": "src/test/java$",
+      "assert": "src/test/java/${connector_package}/automation/functional/${connector_processor}TestCases.java"
+    },
+    {
+      "type": "structure",
+      "id": "readme",
+      "severity": "critical",
+      "brief": "README.md must be part of the connector project.",
+      "description": "README.md must be part of the connector project. Refer to the certification for the template file.",
+      "section": "Directory Structure",
+      "acceptRegexp": "",
+      "assert": "README.md"
+    },
+    {
       "type": "source.pom",
       "id": "ctf_version_overwritten",
-      "severity": "minor",
+      "severity": "critical",
       "brief": "Connector test framework must not be overwritten.",
       "description": "Connectors testing framework must not be overwritten. This can produce unexpected errors once the DevKit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
       "section": "Best Practices",
       "assert": "not(/pom:project/pom:properties/pom:connector.test.version/node())"
-    },
-    {
-      "type": "source.xml",
-      "severity": "minor",
-      "id": "sample",
-      "brief": "Connector test framework must not be overwritten.",
-      "description": "Connectors testing framework must not be overwritten. This could produce unexpected errors once the devkit version is migrated. Remove the property 'connector.test.version' from the pom.xml.",
-      "section": "Best Practices",
-      "acceptRegexp": ".+/some.xml$",
-      "assert": "boolean(/*[local-name() = 'project']/*[local-name() = 'properties']/*[local-name() = 'connector.test.version']/text())"
-    },
-    {
-      "type": "structure",
-      "id": "structure.readme",
-      "severity": "critical",
-      "brief": "There must be an unit test class per processor.",
-      "description": "There must be an unit test class per processor.",
-      "section": "Best Practices",
-      "acceptRegexp": "src/test/java$",
-      "assert": "src/test/java/${connector_package}/automation/functional/${connector_processor}TestCases.java"
     },
     {
       "type": "source.java",
@@ -59,6 +59,16 @@
       "section": "Best Practices",
       "acceptRegexp": ".+/.+Connector.java$",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.RefOnlyParametersVerifier"
+    },
+    {
+      "type": "source.xml",
+      "severity": "minor",
+      "id": "sample",
+      "brief": "",
+      "description": "",
+      "section": "",
+      "acceptRegexp": ".+/some.xml$",
+      "assert": "boolean(/*[local-name() = 'project']/*[local-name() = 'properties']/*[local-name() = 'connector.test.version']/text())"
     }
   ]
 }

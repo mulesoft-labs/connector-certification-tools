@@ -12,16 +12,20 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ClassParserUtils {
 
     final private static Logger logger = LoggerFactory.getLogger(ClassParserUtils.class);
 
     private static final Set<String> primitives = new HashSet<>();
-    private static final String REF_ONLY_CLASS = "@RefOnly";
-    private static final String DEFAULT_CLASS = "@Default";
-    private static final String PROCESSOR_CLASS = "@Processor";
-    private static final String DEFAULT_PAYLOAD_CLASS = "@Default(\"#[payload]\")";
+    private static final String REF_ONLY_CLASS = "RefOnly";
+    private static final String DEFAULT_PAYLOADCLASS = "Default(\"#[payload]\")";
+    private static final String PROCESSOR_CLASSNAME = "Processor";
+    private static final String OPTIONAL_CLASSNAME = "Optional";
+    private static final String DEFAULT_CLASSNAME = "Default";
+    private static final String CONNECTOR_CLASSNAME = "Connector";
 
     static {
         primitives.add("int");
@@ -54,6 +58,12 @@ public class ClassParserUtils {
         return primitives.contains(type.toString()) || primitivesClasses.contains(type.toString());
     }
 
+    public static boolean isEnum(@NonNull final Tree type, @NonNull final Set<ImportTree> imports) {
+        final Optional<Class<?>> optional = classForName(type, imports);
+        final boolean result = optional.isPresent() && optional.get().isEnum();
+        return result;
+    }
+
     private static boolean containsAnnotation(final @NonNull VariableTree variable, final @NonNull Predicate<AnnotationTree> predicate) {
         return variable.getModifiers().getAnnotations().stream().anyMatch(predicate);
     }
@@ -75,27 +85,31 @@ public class ClassParserUtils {
     }
 
     public static boolean isDefaultAnnotation(@NonNull final AnnotationTree annotation) {
-        return annotation.toString().startsWith(DEFAULT_CLASS);
+        return isDevKitAnnotation(annotation, DEFAULT_CLASSNAME);
     }
 
     public static boolean isDefaultPayloadAnnotation(@NonNull final AnnotationTree annotation) {
-        return annotation.toString().startsWith(DEFAULT_PAYLOAD_CLASS);
+        return isDevKitAnnotation(annotation, DEFAULT_PAYLOADCLASS);
     }
 
-    public static boolean isProcessortAnnotation(@NonNull final AnnotationTree annotation) {
-        return annotation.toString().startsWith(PROCESSOR_CLASS);
+    public static boolean isProcessorAnnotation(@NonNull final AnnotationTree annotation) {
+        return isDevKitAnnotation(annotation, PROCESSOR_CLASSNAME);
     }
 
     public static boolean isOptionalAnnotation(@NonNull final AnnotationTree annotation) {
-        return annotation.toString().startsWith("@Optional") || annotation.toString().startsWith("@org.mule.api.annotations.Optional");
+        return isDevKitAnnotation(annotation, OPTIONAL_CLASSNAME);
     }
 
     public static boolean isConnectorAnnotation(@NonNull final AnnotationTree annotation) {
-        return annotation.toString().startsWith("@Connector") || annotation.toString().startsWith("@org.mule.api.annotations.Connector");
+        return isDevKitAnnotation(annotation, CONNECTOR_CLASSNAME);
+    }
+
+    private static boolean isDevKitAnnotation(@NonNull AnnotationTree annotation, @NonNull final String classsName) {
+        return annotation.toString().startsWith("@" + classsName) || annotation.toString().startsWith("@org.mule.api.annotations." + classsName);
     }
 
     public static boolean isRefOnlyAnnotation(@NonNull final AnnotationTree annotation) {
-        return annotation.toString().startsWith(REF_ONLY_CLASS);
+        return isDevKitAnnotation(annotation, REF_ONLY_CLASS);
     }
 
     public static Optional<Class<?>> classForName(@NonNull final String className, @NonNull final Set<ImportTree> imports) {
@@ -117,11 +131,11 @@ public class ClassParserUtils {
 
             // Type to resolved based on the imports ...
             if (!result.isPresent()) {
-                final Optional<ImportTree> classImp = imports.stream().filter(imp -> !imp.isStatic() && imp.getQualifiedIdentifier().toString().endsWith("." + className))
+                final Optional<ImportTree> classImport = imports.stream().filter(imp -> !imp.isStatic() && imp.getQualifiedIdentifier().toString().endsWith("." + className))
                         .findFirst();
 
-                if (classImp.isPresent()) {
-                    final String qualifiedName = classImp.get().getQualifiedIdentifier().toString();
+                if (classImport.isPresent()) {
+                    final String qualifiedName = classImport.get().getQualifiedIdentifier().toString();
                     final Context instance = Context.getInstance();
                     final ClassLoader classLoader = instance.getModuleClassLoader();
 
@@ -130,11 +144,24 @@ public class ClassParserUtils {
                 }
             }
 
+            // @Todo: Type to resolved based on the based on wildcard ...
+//            if (!result.isPresent()) {
+//                final Set<ImportTree> importsWithWildcard = imports.stream().filter(imp -> !imp.isStatic() && imp.getQualifiedIdentifier().toString().endsWith(".*"))
+//                        .collect(Collectors.toSet());
+//
+//                final Stream<@NonNull String> fullQualifiedClasses = importsWithWildcard.stream().map(imp -> imp.toString().substring(0, imp.toString().length() - 1) + className);
+//
+//                final Context instance = Context.getInstance();
+//                final ClassLoader classLoader = instance.getModuleClassLoader();
+//
+//                fullQualifiedClasses.filter(fullClassName -> {Class.forName(fullClassName, false, classLoader)})
+//            }
+
         } catch (ClassNotFoundException e) {
             // Ignore ..
         }
 
-        logger.info("Class name -> {} , Resolved Class: {}", className, result.toString());
+        logger.debug("Class name -> {} , Resolved Class: {}", className, result.toString());
         return result;
     }
 

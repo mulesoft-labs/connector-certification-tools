@@ -43,11 +43,10 @@ public class DirectoryStructureRuleTest {
     }
 
     @Test public void validatePath() throws IOException {
-        final Rule.Documentation documentation = new DocumentationImpl("id", "brief", "description", "section", Rule.Documentation.Severity.CRITICAL);
-
-        final Rule rule = new DirectoryStructureRule(documentation, "src/test/java", "src/test/java/${connector.package}/automation/functional/${processor.name}TestCases.java");
-        final Path childPath = Paths.get("src/test/java");
+        final Rule rule = TestData.findRule("processor_tests");
         final Path rootPath = TestData.noCompliantTestPath();
+        final Path childPath = Paths.get("src/");
+
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
     }

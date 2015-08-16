@@ -31,8 +31,13 @@ public class ConsoleReport implements Report {
         if (!errors.isEmpty()) {
             System.out.println("Review the following violated inspections:");
 
-            final List<ValidationError> sortedErrors = errors.stream().sorted((a, b) -> a.getDocumentation().getSeverity().compareTo(b.getDocumentation().getSeverity()))
-                    .collect(Collectors.toList());
+            final List<ValidationError> sortedErrors = errors.stream().sorted((a, b) -> {
+                final Rule.Documentation adoc = a.getDocumentation();
+                final Rule.Documentation bdoc = b.getDocumentation();
+
+                final int result = adoc.getSeverity().compareTo(bdoc.getSeverity());
+                return result != 0 ? result : adoc.getId().compareTo(bdoc.getId());
+            }).collect(Collectors.toList());
             for (ValidationError error : sortedErrors) {
                 final String description = error.getDocumentation().getDescription();
                 System.out.printf("\t%s %s %s\n", colorExp.get(error.getDocumentation().getSeverity()), error.getMessage(), description);

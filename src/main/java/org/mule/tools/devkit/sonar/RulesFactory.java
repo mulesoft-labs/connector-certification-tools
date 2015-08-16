@@ -19,7 +19,7 @@ public class RulesFactory
 
         // Load JSON declared rules ...
         final Set<Rule> result = JsonRulesLoader.build();
-        logger.info(result.toString());
+        logger.debug(result.toString());
 
         return result;
     }

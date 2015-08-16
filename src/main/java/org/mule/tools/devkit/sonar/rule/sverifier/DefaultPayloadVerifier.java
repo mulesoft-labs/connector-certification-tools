@@ -17,7 +17,7 @@ public class DefaultPayloadVerifier extends ConnectorClassVerifier {
         final boolean hasDefaultPayload = parameters.stream().anyMatch(ClassParserUtils::isMarkedAsPayloadDefault);
 
         if (!hasDefaultPayload) {
-            this.addError("Processor '%s' does not define default payload.", methodTree.getName().toString());
+            this.addError("Processor '%s' must define one parameter as @Default(\"#[payload]\").", methodTree.getName().toString());
         } else {
 
             // Is there any InputStream param ?. If this is the case, it should be the default param ...

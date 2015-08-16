@@ -1,6 +1,5 @@
 package org.mule.tools.devkit.sonar;
 
-import com.sun.istack.internal.NotNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.regex.qual.Regex;
 import org.slf4j.Logger;
@@ -36,7 +35,7 @@ class XmlUtils {
         }
     }
 
-    @NotNull static Object evalXPathOnPom(@NotNull final Path basePath, @NotNull @Regex final String xpathExp, @NonNull QName constant) {
+    @NonNull static Object evalXPathOnPom(@NonNull final Path basePath, @NonNull @Regex final String xpathExp, @NonNull QName constant) {
         final Path pomXml = basePath.resolve("pom.xml");
         if (!Files.exists(pomXml)) {
             throw new IllegalStateException("Project pom.xml could not be found." + basePath.toAbsolutePath().toString());
