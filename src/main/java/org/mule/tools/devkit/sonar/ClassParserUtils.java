@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class ClassParserUtils {
 
@@ -58,8 +59,7 @@ public class ClassParserUtils {
 
     public static boolean isEnum(@NonNull final Tree type, @NonNull final Set<ImportTree> imports) {
         final Optional<Class<?>> optional = classForName(type, imports);
-        final boolean result = optional.isPresent() && optional.get().isEnum();
-        return result;
+        return optional.isPresent() && optional.get().isEnum();
     }
 
     private static boolean containsAnnotation(final @NonNull VariableTree variable, final @NonNull Predicate<AnnotationTree> predicate) {
@@ -110,10 +110,13 @@ public class ClassParserUtils {
         return isDevKitAnnotation(annotation, REF_ONLY_CLASS);
     }
 
-    public static Optional<Class<?>> classForName(@NonNull final String className, @NonNull final Set<ImportTree> imports) {
+    public static Optional<Class<?>> classForName(@NonNull final String classNameDef, @NonNull final Set<ImportTree> imports) {
 
-        Optional<Class<?>> result = Optional.empty();
+        // Is a generic declaration ?. Remove generic type ..
+        final String className = classNameDef.split("<")[0];
+
         // Is the class name fully qualified ?
+        Optional<Class<?>> result = Optional.empty();
         final boolean isFullQualified = className.contains(".");
         if (isFullQualified) {
             result = findClass(className);
@@ -137,18 +140,16 @@ public class ClassParserUtils {
             }
         }
 
-        // @Todo: Type to resolved based on the based on wildcard ...
-        //            if (!result.isPresent()) {
-        //                final Set<ImportTree> importsWithWildcard = imports.stream().filter(imp -> !imp.isStatic() && imp.getQualifiedIdentifier().toString().endsWith(".*"))
-        //                        .collect(Collectors.toSet());
-        //
-        //                final Stream<@NonNull String> fullQualifiedClasses = importsWithWildcard.stream().map(imp -> imp.toString().substring(0, imp.toString().length() - 1) + className);
-        //
-        //                final Context instance = Context.getInstance();
-        //                final ClassLoader classLoader = instance.getModuleClassLoader();
-        //
-        //                fullQualifiedClasses.filter(fullClassName -> {Class.forName(fullClassName, false, classLoader)})
-        //            }
+        if (!result.isPresent()) {
+            final Stream<ImportTree> statementsWithWildcard = imports.stream().filter(imp -> !imp.isStatic() && imp.getQualifiedIdentifier().toString().endsWith(".*"));
+            final Stream<String> importsWithWildcard = statementsWithWildcard.map(imp -> {
+                final String statementStr = imp.getQualifiedIdentifier().toString();
+                return statementStr.substring(0, statementStr.length() - 1);
+            });
+
+            final Stream<@NonNull String> fullQualifiedClasses = importsWithWildcard.map(importStr -> importStr + className);
+            result = fullQualifiedClasses.map(ClassParserUtils::findClass).filter(Optional::isPresent).map(Optional::get).findAny();
+        }
 
         logger.debug("Class name -> {} , Resolved Class: {}", className, result.toString());
         return result;

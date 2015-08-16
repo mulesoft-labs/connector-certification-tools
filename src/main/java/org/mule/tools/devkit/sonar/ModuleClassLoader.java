@@ -34,7 +34,10 @@ public class ModuleClassLoader extends URLClassLoader {
         final NodeList dependencies = (NodeList) XmlUtils.evalXPathOnPom(basePath, "/pom:project/pom:dependencies/pom:dependency", XPathConstants.NODESET);
         for (int i = 0; i < dependencies.getLength(); i++) {
             final NodeList dependency = dependencies.item(i).getChildNodes();
-            final Path jarPath = dependencyToJarPath(dependency);
+            final Path jarPath = dependencyToJarPath(dependency, basePath);
+            if (!Files.exists(jarPath)) {
+                logger.error("Jar could not be found ->" + jarPath.toAbsolutePath());
+            }
             result.add(jarPath.toUri().toURL());
             logger.debug("Project module jar {}", jarPath);
         }
@@ -55,7 +58,7 @@ public class ModuleClassLoader extends URLClassLoader {
         return result.toArray(new URL[result.size()]);
     }
 
-    @NonNull private static Path dependencyToJarPath(@NonNull final NodeList dependency) {
+    private static Path dependencyToJarPath(@NonNull final NodeList dependency, @NonNull Path basePath) {
 
         String groupId = "", artifactId = "", version = "";
 
@@ -74,7 +77,20 @@ public class ModuleClassLoader extends URLClassLoader {
                         break;
                     }
                     case "version": {
-                        version = node.getTextContent();
+                        final String rawVersion = node.getTextContent();
+
+                        // @Todo: Complete support for variables replacement ...
+                        //                        VelocityContext context = new VelocityContext();
+                        //                        final NodeList propertiesNodes = (NodeList) XmlUtils.evalXPathOnPom(basePath, "/pom:project/pom:properties/*", XPathConstants.NODESET);
+                        //                        for (int i = 0; i < propertiesNodes.getLength(); i++) {
+                        //                            NodeList property = propertiesNodes.item(i).getChildNodes();
+                        //                            System.out.println(property.item(0).getLocalName());
+                        //                            context.put(property.getNodeName(), property.getNodeValue());
+                        //                        }
+                        //                        StringWriter sw = new StringWriter();
+                        //                        Velocity.evaluate(context, sw, "", rawVersion);
+                        //                        version = sw.toString();
+                        version = rawVersion;
                         break;
                     }
                 }

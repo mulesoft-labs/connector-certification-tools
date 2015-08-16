@@ -54,7 +54,7 @@ class XmlUtils {
             final Document xmlDocument = builder.parse(is);
             return expression.evaluate(xmlDocument, constant);
         } catch (Exception e) {
-            throw new IllegalStateException("Pom could not parsed ->" + basePath.toAbsolutePath().toString());
+            throw new IllegalStateException("Pom could not parsed ->" + basePath.toAbsolutePath().toString(),e);
 
         }
     }
