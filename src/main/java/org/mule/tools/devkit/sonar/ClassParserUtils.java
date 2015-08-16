@@ -12,8 +12,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ClassParserUtils {
 
@@ -115,53 +113,57 @@ public class ClassParserUtils {
     public static Optional<Class<?>> classForName(@NonNull final String className, @NonNull final Set<ImportTree> imports) {
 
         Optional<Class<?>> result = Optional.empty();
-        try {
-            // Is the class name fully qualified ?
-            final boolean isFullQualified = className.contains(".");
-            if (isFullQualified) {
-                result = Optional.ofNullable(Class.forName(className));
-            }
-
-            // Object is a primitive type  ?
-            if (!result.isPresent()) {
-                if (primitivesClasses.contains(className)) {
-                    result = Optional.ofNullable(Class.forName("java.lang." + className));
-                }
-            }
-
-            // Type to resolved based on the imports ...
-            if (!result.isPresent()) {
-                final Optional<ImportTree> classImport = imports.stream().filter(imp -> !imp.isStatic() && imp.getQualifiedIdentifier().toString().endsWith("." + className))
-                        .findFirst();
-
-                if (classImport.isPresent()) {
-                    final String qualifiedName = classImport.get().getQualifiedIdentifier().toString();
-                    final Context instance = Context.getInstance();
-                    final ClassLoader classLoader = instance.getModuleClassLoader();
-
-                    final Class<?> value = Class.forName(qualifiedName, false, classLoader);
-                    result = Optional.ofNullable(value);
-                }
-            }
-
-            // @Todo: Type to resolved based on the based on wildcard ...
-//            if (!result.isPresent()) {
-//                final Set<ImportTree> importsWithWildcard = imports.stream().filter(imp -> !imp.isStatic() && imp.getQualifiedIdentifier().toString().endsWith(".*"))
-//                        .collect(Collectors.toSet());
-//
-//                final Stream<@NonNull String> fullQualifiedClasses = importsWithWildcard.stream().map(imp -> imp.toString().substring(0, imp.toString().length() - 1) + className);
-//
-//                final Context instance = Context.getInstance();
-//                final ClassLoader classLoader = instance.getModuleClassLoader();
-//
-//                fullQualifiedClasses.filter(fullClassName -> {Class.forName(fullClassName, false, classLoader)})
-//            }
-
-        } catch (ClassNotFoundException e) {
-            // Ignore ..
+        // Is the class name fully qualified ?
+        final boolean isFullQualified = className.contains(".");
+        if (isFullQualified) {
+            result = findClass(className);
         }
 
+        // Object is a primitive type  ?
+        if (!result.isPresent()) {
+            if (primitivesClasses.contains(className)) {
+                result = findClass("java.lang." + className);
+            }
+        }
+
+        // Type to resolved based on the imports ...
+        if (!result.isPresent()) {
+            final Optional<ImportTree> classImport = imports.stream().filter(imp -> !imp.isStatic() && imp.getQualifiedIdentifier().toString().endsWith("." + className))
+                    .findFirst();
+
+            if (classImport.isPresent()) {
+                final String qualifiedName = classImport.get().getQualifiedIdentifier().toString();
+                result = findClass(qualifiedName);
+            }
+        }
+
+        // @Todo: Type to resolved based on the based on wildcard ...
+        //            if (!result.isPresent()) {
+        //                final Set<ImportTree> importsWithWildcard = imports.stream().filter(imp -> !imp.isStatic() && imp.getQualifiedIdentifier().toString().endsWith(".*"))
+        //                        .collect(Collectors.toSet());
+        //
+        //                final Stream<@NonNull String> fullQualifiedClasses = importsWithWildcard.stream().map(imp -> imp.toString().substring(0, imp.toString().length() - 1) + className);
+        //
+        //                final Context instance = Context.getInstance();
+        //                final ClassLoader classLoader = instance.getModuleClassLoader();
+        //
+        //                fullQualifiedClasses.filter(fullClassName -> {Class.forName(fullClassName, false, classLoader)})
+        //            }
+
         logger.debug("Class name -> {} , Resolved Class: {}", className, result.toString());
+        return result;
+    }
+
+    @NonNull private static Optional<Class<?>> findClass(@NonNull String className) {
+        Optional<Class<?>> result = Optional.empty();
+
+        try {
+            final Context instance = Context.getInstance();
+            final ClassLoader classLoader = instance.getModuleClassLoader();
+            result = Optional.ofNullable(Class.forName(className, false, classLoader));
+        } catch (ClassNotFoundException e) {
+            // Ignore ...
+        }
         return result;
     }
 
