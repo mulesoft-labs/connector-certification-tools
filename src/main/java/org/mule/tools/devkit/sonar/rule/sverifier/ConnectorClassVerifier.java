@@ -6,6 +6,7 @@ import com.sun.source.tree.MethodTree;
 import com.sun.source.tree.VariableTree;
 import com.sun.source.util.Trees;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
 import org.mule.api.annotations.Source;
 import org.mule.tools.devkit.sonar.ClassParserUtils;
@@ -15,8 +16,14 @@ import java.util.List;
 abstract class ConnectorClassVerifier extends SourceTreeVerifier {
 
     @Override @NonNull final public Object visitClass(@NonNull ClassTree classTree, @NonNull Trees trees) {
-        this.verifyConnector(classTree, trees);
-        return super.visitClass(classTree, trees);
+        Object result = null;
+
+        // Process if it's a connector class ...
+        if (ClassParserUtils.contains(classTree.getModifiers().getAnnotations(), Connector.class)) {
+            this.verifyConnector(classTree, trees);
+            result = super.visitClass(classTree, trees);
+        }
+        return result;
     }
 
     @Override @NonNull final public Object visitMethod(@NonNull final MethodTree methodTree, Trees trees) {
