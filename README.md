@@ -16,6 +16,9 @@ Rules can be declared in the file src/main/resources/rules.json
 
 ## Usage
 
-analize.sh "<connector-path>"
+Execution could be started executing:
+
+
+> analize.sh connector-module-path
 
 
