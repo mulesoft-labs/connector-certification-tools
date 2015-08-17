@@ -194,4 +194,9 @@ public class ClassParserUtils {
     public static boolean contains(@NonNull final List<? extends AnnotationTree> annotations, @NonNull final Class<?> annotationClass) {
         return annotations.stream().anyMatch(a -> ClassParserUtils.is(a, annotationClass));
     }
+
+    public static Optional<? extends AnnotationTree> find(@NonNull final List<? extends AnnotationTree> annotations, @NonNull final Class<?> annotationClass) {
+        return annotations.stream().filter(a -> ClassParserUtils.is(a, annotationClass)).findFirst();
+    }
+
 }

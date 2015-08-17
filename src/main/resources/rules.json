@@ -30,6 +30,46 @@
       "assert": "not(/pom:project/pom:properties/pom:connector.test.version/node())"
     },
     {
+      "type": "source.pom",
+      "id": "dist_management_premium",
+      "severity": "critical",
+      "brief": "pom.xml distributionManagement must be properly configured.",
+      "description": "???",
+      "section": "???",
+      "acceptRegexp": "/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select']",
+      "assert": "/pom:project/pom:distributionManagement/pom:repository/pom:id[text()='mule-ee-releases'] and /pom:project/pom:distributionManagement/pom:repository/pom:url[text()='https://repository-master.mulesoft.org/nexus/content/repositories/releases-ee/']"
+    },
+    {
+      "type": "source.pom",
+      "id": "dist_management_premium_snapshot",
+      "severity": "critical",
+      "brief": "pom.xml distributionManagement must be properly configured.",
+      "description": "???",
+      "section": "???",
+      "acceptRegexp": "/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select']",
+      "assert": "/pom:project/pom:distributionManagement/pom:snapshotRepository/pom:id[text()='mule-ee-snapshots'] and /pom:project/pom:distributionManagement/pom:snapshotRepository/pom:url[text()='https://repository-master.mulesoft.org/nexus/content/repositories/ci-snapshots/']"
+    },
+    {
+      "type": "source.pom",
+      "id": "dist_management_other",
+      "severity": "critical",
+      "brief": "pom.xml distributionManagement must be properly configured.",
+      "description": "???",
+      "section": "???",
+      "acceptRegexp": "not(/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select'])",
+      "assert": "/pom:project/pom:distributionManagement/pom:repository/pom:id[text()='mulesoft-releases'] and /pom:project/pom:distributionManagement/pom:repository/pom:url[text()='http://repository-master.mulesoft.org/releases/']"
+    },
+    {
+      "type": "source.pom",
+      "id": "dist_management_other_snapshot",
+      "severity": "critical",
+      "brief": "pom.xml distributionManagement must be properly configured.",
+      "description": "???",
+      "section": "???",
+      "acceptRegexp": "not(/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select'])",
+      "assert": "/pom:project/pom:distributionManagement/pom:snapshotRepository/pom:id[text()='mulesoft-snapshots'] and /pom:project/pom:distributionManagement/pom:snapshotRepository/pom:url[text()='http://repository-master.mulesoft.org/snapshots/']"
+    },
+    {
       "type": "source.java",
       "id": "default_payload",
       "severity": "critical",
@@ -68,6 +108,16 @@
       "section": "",
       "acceptRegexp": ".+/.+Connector.java$",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.LicenseByCategoryVerifier"
+    },
+    {
+      "type": "source.java",
+      "id": "metadata_category",
+      "severity": "major",
+      "brief": "@MetadataCategory 'friendlyName' must follow a convention",
+      "description": "???",
+      "section": "???",
+      "acceptRegexp": ".+/.+Connector.java$",
+      "assert": "org.mule.tools.devkit.sonar.rule.sverifier.MetadataCategoriesVerifier"
     },
     {
       "type": "source.xml",

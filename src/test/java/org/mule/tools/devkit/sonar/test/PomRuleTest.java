@@ -36,4 +36,15 @@ public class PomRuleTest {
         assertEquals(0, verify.size());
     }
 
+    @Test public void testDistributionManagementOk() throws IOException {
+        final Rule rule = TestData.findRule("dist_management_premium");
+        final Path rootPath = TestData.perfectTestPath();
+        final Path childPath = Paths.get("pom.xml");
+
+        assertTrue("File was not accepted.", rule.accepts(rootPath, childPath));
+
+        final Set<ValidationError> verify = rule.verify(rootPath, childPath);
+        assertEquals(0, verify.size());
+    }
+
 }

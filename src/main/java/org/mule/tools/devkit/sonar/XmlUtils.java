@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-class XmlUtils {
+public class XmlUtils {
 
     final private static Logger logger = LoggerFactory.getLogger(XmlUtils.class);
 
@@ -35,7 +35,7 @@ class XmlUtils {
         }
     }
 
-    @NonNull static Object evalXPathOnPom(@NonNull final Path basePath, @NonNull @Regex final String xpathExp, @NonNull QName constant) {
+    @NonNull public static Object evalXPathOnPom(@NonNull final Path basePath, @NonNull @Regex final String xpathExp, @NonNull QName constant) {
         final Path pomXml = basePath.resolve("pom.xml");
         if (!Files.exists(pomXml)) {
             throw new IllegalStateException("Project pom.xml could not be found." + basePath.toAbsolutePath().toString());
@@ -54,8 +54,7 @@ class XmlUtils {
             final Document xmlDocument = builder.parse(is);
             return expression.evaluate(xmlDocument, constant);
         } catch (Exception e) {
-            throw new IllegalStateException("Pom could not parsed ->" + basePath.toAbsolutePath().toString(),e);
-
+            throw new IllegalStateException("Pom could not parsed ->" + basePath.toAbsolutePath().toString(), e);
         }
     }
 }
