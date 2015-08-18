@@ -52,9 +52,9 @@ public class JavaSourceRule extends AbstractRule {
         // Does the class annotation ....
         boolean result = super.accepts(basePath, childPath);
         if (result && acceptAnnotation.isPresent()) {
-            final JavacTask task = this.getJavacTask(basePath, childPath);
-
             try {
+                final JavacTask task = this.getJavacTask(basePath, childPath);
+
                 Trees trees;
                 final Iterable<? extends CompilationUnitTree> asts = task.parse();
                 trees = Trees.instance(task);
@@ -71,8 +71,8 @@ public class JavaSourceRule extends AbstractRule {
                     result = verifier.getResult();
                 }
 
-            } catch (IOException e) {
-                throw new DevKitSonarRuntimeException(e);
+            } catch (IOException | IllegalArgumentException e) {
+                throw new DevKitSonarRuntimeException("Expression can not supported '" + acceptAnnotation.get() + "' for file '" + childPath + "'", e);
             }
         }
         return result;

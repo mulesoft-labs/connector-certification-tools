@@ -25,7 +25,7 @@ public class ModuleClassLoader extends URLClassLoader {
     final private static Logger logger = LoggerFactory.getLogger(ModuleClassLoader.class);
 
     public ModuleClassLoader(final @NonNull Path basePath) throws IOException, XPathExpressionException, SAXException {
-        super(initUrls(basePath), null);
+        super(initUrls(basePath), ModuleClassLoader.class.getClassLoader());
     }
 
     private static URL[] initUrls(@NonNull Path basePath) throws IOException, XPathExpressionException, SAXException {

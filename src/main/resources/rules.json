@@ -125,7 +125,7 @@
       "brief": "@MetadataCategory 'friendlyName' must follow a convention",
       "description": "???",
       "section": "???",
-      "accept": ".+/.+.java$;org.mule.api.annotations.components.MetaDataCategory",
+      "accept": ".+/.+.\\.java$;org.mule.api.annotations.components.MetaDataCategory",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.MetadataCategoriesVerifier"
     },
     {

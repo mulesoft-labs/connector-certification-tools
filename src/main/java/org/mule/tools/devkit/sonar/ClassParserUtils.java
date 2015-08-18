@@ -169,7 +169,7 @@ public class ClassParserUtils {
         }
 
         if (!result.isPresent()) {
-            logger.warn("Class name can not be loaded -> {} , Resolved Class: {}", className, result.toString());
+            logger.warn("Class name can not be loaded '{}'", className);
         }
         return result;
     }
@@ -180,6 +180,7 @@ public class ClassParserUtils {
         try {
             final Context instance = Context.getInstance();
             final ClassLoader classLoader = instance.getModuleClassLoader();
+
             result = Optional.ofNullable(Class.forName(className, false, classLoader));
         } catch (ClassNotFoundException e) {
             // Ignore ...
