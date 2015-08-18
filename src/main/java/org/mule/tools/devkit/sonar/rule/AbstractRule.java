@@ -16,20 +16,20 @@ import java.util.stream.Collectors;
 
 abstract public @Immutable class AbstractRule implements Rule {
 
-    final private static Logger logger = LoggerFactory.getLogger(AbstractRule.class);
-
-    final private Documentation documentation;
-
-    final private Pattern accept;
+    private final static Logger logger = LoggerFactory.getLogger(AbstractRule.class);
+    private final Documentation documentation;
+    private final Pattern acceptPattern;
+    private final String accept;
 
     protected AbstractRule(@NonNull final Documentation documentation, @NonNull final String accept) {
         this.documentation = documentation;
-        this.accept = Pattern.compile(accept);
+        this.acceptPattern = Pattern.compile(accept);
+        this.accept = accept;
     }
 
     @Override public boolean accepts(@NonNull Path basePath, @NonNull Path childPath) {
         final String pathStr = childPath.toFile().toString();
-        final boolean result = accept.matcher(pathStr).matches();
+        final boolean result = acceptPattern.matcher(pathStr).matches();
         logger.debug("File {} accepted -> {}", pathStr, result);
 
         return result;
@@ -46,4 +46,9 @@ abstract public @Immutable class AbstractRule implements Rule {
     @NonNull Set<ValidationError> buildError(@NonNull String... msgs) {
         return buildError(Arrays.asList(msgs));
     }
+
+    @NonNull protected String getAccept() {
+        return accept;
+    }
+
 }

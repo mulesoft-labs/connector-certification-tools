@@ -85,7 +85,7 @@
       "brief": "",
       "description": "",
       "section": "Best Practices",
-      "accept": ".+/.+Connector.java$",
+      "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.DefaultPayloadVerifier"
     },
     {
@@ -95,7 +95,7 @@
       "brief": "",
       "description": "It's strongly recommended that all mandatory parameters be defined as part of the payload. Consider creating a complex object as grouping all the parameters.",
       "section": "Best Practices",
-      "accept": ".+/.+Connector.java$",
+      "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.ProcessorParametersVerifier"
     },
     {
@@ -105,7 +105,7 @@
       "brief": "",
       "description": "Complex types should should be marked with @RefOnly.",
       "section": "Best Practices",
-      "accept": ".+/.+Connector.java$",
+      "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.RefOnlyParametersVerifier"
     },
     {
@@ -115,7 +115,7 @@
       "brief": "Connector category must contain proper @RequiresEntitlement and @RequiresEnterpriseLicense",
       "description": "",
       "section": "",
-      "accept": ".+/.+Connector.java$",
+      "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.LicenseByCategoryVerifier"
     },
     {
@@ -125,7 +125,7 @@
       "brief": "@MetadataCategory 'friendlyName' must follow a convention",
       "description": "???",
       "section": "???",
-      "accept": ".+/.+Connector.java$",
+      "accept": ".+/.+.java$;org.mule.api.annotations.components.MetaDataCategory",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.MetadataCategoriesVerifier"
     },
     {
