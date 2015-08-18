@@ -15,7 +15,7 @@ There are 4 types of different rules supported. New rules can be configured in t
 * **section**: Section within the certification documentation where this rule is declared.
 * **accept**: If the expression is satisfied over the processed file, the *assert* expression will be executed. The type of *accept* expressions depends on the rule type. 
 * **assert**: Assert expression to be verified over the file being processed. The type of expression depends on the rule type.
-* 
+
 ### Rule Type 'source.pom'
 
 This rules can be configured with a XPath expression that needs to be satisfied. Both assert and accept expresion are XPath expressions. **accept** and **assert**  must be a valid XPath expressions.
