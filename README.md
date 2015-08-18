@@ -3,19 +3,19 @@
 The objective of this project is to automate most of the current certification rules
 http://mulesoft.github.io/connector-certification-docs/.
 
-* type: Rule id to be used. The following types are currently supported: source.pom, source.xml,source.java, structure.
-* id: Unique id assigned to this rule.
-* severity: Criticity of the rule. It can be 'critical', 'major' or 'minor'.
-* brief: Short description of the objective of the rule. 
-* description: Full description of the objective of the rule.
-* section: Section within the certification documentation where this rule is declared.
-* accept: If the expression is satisfied over the processed file, the **assert** expression will be executed. The type of **accept** expressions depends on the rule type. 
-* assert: Assert expression to be verified over the file being processed. The type of expression depends on the rule type.
- 
 ## Features
 
 There are 4 types of different rules supported. New rules can be configured in the file src/main/resources/rules.json. For each rule, the following attributes must be declared:
 
+* **type**: Rule id to be used. The following types are currently supported: *source.pom*, *source.xml*,*source.java*  and *structure*.
+* **id**: Unique id assigned to this rule.
+* **severity**: Criticity of the rule. It can be either *critical*, *major* or *minor*.
+* **brief**: Short description of the objective of the rule. 
+* **description**: Full description of the objective of the rule.
+* **section**: Section within the certification documentation where this rule is declared.
+* **accept**: If the expression is satisfied over the processed file, the *assert* expression will be executed. The type of *accept* expressions depends on the rule type. 
+* **assert**: Assert expression to be verified over the file being processed. The type of expression depends on the rule type.
+* 
 ### Rule Type 'source.pom'
 
 This rules can be configured with a XPath expression that needs to be satisfied. Both assert and accept expresion are XPath expressions. **accept** and **assert**  must be a valid XPath expressions.
