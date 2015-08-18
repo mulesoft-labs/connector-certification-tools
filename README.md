@@ -5,7 +5,7 @@ http://mulesoft.github.io/connector-certification-docs/
 
 ## Features
 
-There are 4 types of different rules supported.
+There are 4 types of different rules supported. New rules can be declared in the file src/main/resources/rules.json.
 
 ### Rule Type 'source.pom'
 
@@ -26,11 +26,10 @@ This rules can be configured with a XPath expression that needs to be satisfied.
 
 ### Rule Type 'source.xml
 
-###source.java
+### Rule Type 'source.java'
 
 ### Rule Type 'structure'
 
-Rules can be declared in the file src/main/resources/rules.json
 
 ## Usage
 
