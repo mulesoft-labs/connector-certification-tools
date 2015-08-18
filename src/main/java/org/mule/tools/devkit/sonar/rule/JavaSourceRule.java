@@ -3,7 +3,6 @@ package org.mule.tools.devkit.sonar.rule;
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.ImportTree;
-import com.sun.source.tree.MethodTree;
 import com.sun.source.util.JavacTask;
 import com.sun.source.util.TreePathScanner;
 import com.sun.source.util.Trees;
@@ -68,7 +67,7 @@ public class JavaSourceRule extends AbstractRule {
                     // Is valid ?
                     final ClassAnnotatedVerifier verifier = new ClassAnnotatedVerifier(acceptAnnotation.get());
                     verifier.scan(ast, trees);
-                    result = verifier.getResult();
+                    result = verifier.getHasMarched();
                 }
 
             } catch (IOException | IllegalArgumentException e) {
@@ -144,7 +143,7 @@ public class JavaSourceRule extends AbstractRule {
 
         final private Set<ImportTree> imports = new HashSet<>();
         private final String annotationExpression;
-        private boolean result;
+        private boolean hasMarched;
 
         public ClassAnnotatedVerifier(@NonNull String annotationExpression) {
             this.annotationExpression = annotationExpression;
@@ -162,17 +161,17 @@ public class JavaSourceRule extends AbstractRule {
             if (!annotation.isPresent()) {
                 throw new DevKitSonarRuntimeException("Class '" + annotationExpression + "' could not be found. Please, review the accept expression.");
             }
-            this.result = ClassParserUtils.contains(classTree.getModifiers().getAnnotations(), annotation.get());
-            return super.visitClass(classTree, trees);
+            this.hasMarched = ClassParserUtils.contains(classTree.getModifiers().getAnnotations(), annotation.get());
+
+            Object result = null;
+            if (!hasMarched) {
+                result = super.visitClass(classTree, trees);
+            }
+            return result;
         }
 
-        @Override public Object visitMethod(MethodTree methodTree, Trees trees) {
-
-            return super.visitMethod(methodTree, trees);
-        }
-
-        @NonNull public boolean getResult() {
-            return this.result;
+        @NonNull public boolean getHasMarched() {
+            return this.hasMarched;
         }
 
     }
