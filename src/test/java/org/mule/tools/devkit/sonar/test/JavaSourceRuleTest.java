@@ -74,7 +74,7 @@ public class JavaSourceRuleTest {
 
     @Test public void testCategoryVerifierOk() throws IOException {
         final Rule rule = TestData.findRule("connector_category");
-        final Path rootPath = TestData.perfectTestPath();
+        final Path rootPath = TestData.compliantTestPath();
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
 
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
@@ -85,7 +85,7 @@ public class JavaSourceRuleTest {
 
     @Test public void testMetadataCategory() throws IOException {
         final Rule rule = TestData.findRule("metadata_category");
-        final Path rootPath = TestData.perfectTestPath();
+        final Path rootPath = TestData.compliantTestPath();
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
 
         // @Todo: Complete...

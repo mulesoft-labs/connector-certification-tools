@@ -18,7 +18,7 @@ interface TestData {
     }
 
     @NonNull
-    static Path perfectTestPath() {
+    static Path compliantTestPath() {
         return Paths.get("src/test/resources/perfect_connector").toAbsolutePath();
     }
 
