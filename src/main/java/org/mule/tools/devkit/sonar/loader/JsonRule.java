@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL) @Generated("org.jsonschema2pojo") @JsonPropertyOrder({
-        "id", "type", "acceptRegexp", "assert", "brief", "description", "section", "severity" }) public class JsonRule {
+        "id", "type", "accept", "assert", "brief", "description", "section", "severity" }) public class JsonRule {
 
     @JsonProperty("id") private String id;
     @JsonProperty("type") private String type;
-    @JsonProperty("acceptRegexp") private String acceptRegexp;
+    @JsonProperty("accept") private String accept;
     @JsonProperty("assert") private String assertExp;
     @JsonProperty("brief") private String brief;
     @JsonProperty("description") private String description;
@@ -28,12 +28,12 @@ import java.util.Map;
         this.type = type;
     }
 
-    @JsonProperty("acceptRegexp") public String getAcceptRegexp() {
-        return acceptRegexp;
+    @JsonProperty("accept") public String getAccept() {
+        return accept;
     }
 
-    @JsonProperty("acceptRegexp") public void setAcceptRegexp(String acceptRegexp) {
-        this.acceptRegexp = acceptRegexp;
+    @JsonProperty("accept") public void setAccept(String accept) {
+        this.accept = accept;
     }
 
     @JsonProperty("assert") public String getAssert() {

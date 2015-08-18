@@ -7,7 +7,7 @@
       "brief": "There must be an unit test class per processor.",
       "description": "There must be an unit test class per processor.",
       "section": "Directory Structure",
-      "acceptRegexp": "src/test/java$",
+      "accept": "src/test/java$",
       "assert": "src/test/java/${connector_package}/automation/functional/${connector_processor}TestCases.java"
     },
     {
@@ -17,7 +17,7 @@
       "brief": "README.md must be part of the connector project.",
       "description": "README.md must be part of the connector project. Refer to the certification for the template file.",
       "section": "Directory Structure",
-      "acceptRegexp": "",
+      "accept": "",
       "assert": "README.md"
     },
     {
@@ -36,7 +36,7 @@
       "brief": "pom.xml distributionManagement must be properly configured.",
       "description": "???",
       "section": "???",
-      "acceptRegexp": "/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select']",
+      "accept": "/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select']",
       "assert": "/pom:project/pom:distributionManagement/pom:repository/pom:id[text()='mule-ee-releases'] and /pom:project/pom:distributionManagement/pom:repository/pom:url[text()='https://repository-master.mulesoft.org/nexus/content/repositories/releases-ee/']"
     },
     {
@@ -46,7 +46,7 @@
       "brief": "pom.xml distributionManagement must be properly configured.",
       "description": "???",
       "section": "???",
-      "acceptRegexp": "/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select']",
+      "accept": "/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select']",
       "assert": "/pom:project/pom:distributionManagement/pom:snapshotRepository/pom:id[text()='mule-ee-snapshots'] and /pom:project/pom:distributionManagement/pom:snapshotRepository/pom:url[text()='https://repository-master.mulesoft.org/nexus/content/repositories/ci-snapshots/']"
     },
     {
@@ -56,7 +56,7 @@
       "brief": "pom.xml distributionManagement must be properly configured.",
       "description": "???",
       "section": "???",
-      "acceptRegexp": "not(/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select'])",
+      "accept": "not(/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select'])",
       "assert": "/pom:project/pom:distributionManagement/pom:repository/pom:id[text()='mulesoft-releases'] and /pom:project/pom:distributionManagement/pom:repository/pom:url[text()='http://repository-master.mulesoft.org/releases/']"
     },
     {
@@ -66,7 +66,7 @@
       "brief": "pom.xml distributionManagement must be properly configured.",
       "description": "???",
       "section": "???",
-      "acceptRegexp": "not(/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select'])",
+      "accept": "not(/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select'])",
       "assert": "/pom:project/pom:distributionManagement/pom:snapshotRepository/pom:id[text()='mulesoft-snapshots'] and /pom:project/pom:distributionManagement/pom:snapshotRepository/pom:url[text()='http://repository-master.mulesoft.org/snapshots/']"
     },
     {
@@ -76,7 +76,7 @@
       "brief": "",
       "description": "",
       "section": "Best Practices",
-      "acceptRegexp": ".+/.+Connector.java$",
+      "accept": ".+/.+Connector.java$",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.DefaultPayloadVerifier"
     },
     {
@@ -86,7 +86,7 @@
       "brief": "",
       "description": "It's strongly recommended that all mandatory parameters be defined as part of the payload. Consider creating a complex object as grouping all the parameters.",
       "section": "Best Practices",
-      "acceptRegexp": ".+/.+Connector.java$",
+      "accept": ".+/.+Connector.java$",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.ProcessorParametersVerifier"
     },
     {
@@ -96,7 +96,7 @@
       "brief": "",
       "description": "Complex types should should be marked with @RefOnly.",
       "section": "Best Practices",
-      "acceptRegexp": ".+/.+Connector.java$",
+      "accept": ".+/.+Connector.java$",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.RefOnlyParametersVerifier"
     },
     {
@@ -106,7 +106,7 @@
       "brief": "Connector category must contain proper @RequiresEntitlement and @RequiresEnterpriseLicense",
       "description": "",
       "section": "",
-      "acceptRegexp": ".+/.+Connector.java$",
+      "accept": ".+/.+Connector.java$",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.LicenseByCategoryVerifier"
     },
     {
@@ -116,7 +116,7 @@
       "brief": "@MetadataCategory 'friendlyName' must follow a convention",
       "description": "???",
       "section": "???",
-      "acceptRegexp": ".+/.+Connector.java$",
+      "accept": ".+/.+Connector.java$",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.MetadataCategoriesVerifier"
     },
     {
@@ -126,7 +126,7 @@
       "brief": "",
       "description": "",
       "section": "",
-      "acceptRegexp": ".+/some.xml$",
+      "accept": ".+/some.xml$",
       "assert": "boolean(/*[local-name() = 'project']/*[local-name() = 'properties']/*[local-name() = 'connector.test.version']/text())"
     }
   ]

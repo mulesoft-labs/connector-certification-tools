@@ -26,8 +26,8 @@ public class JavaSourceRule extends AbstractRule {
 
     private final SourceTreeVerifier sourceVisitor;
 
-    public JavaSourceRule(@NonNull final Documentation documentation, @NonNull String acceptRegexp, @NonNull final String assertExp) {
-        super(documentation, acceptRegexp);
+    public JavaSourceRule(@NonNull final Documentation documentation, @NonNull String accept, @NonNull final String assertExp) {
+        super(documentation, accept);
         try {
             final Class<? extends SourceTreeVerifier> clazz = (Class<? extends SourceTreeVerifier>) Class.forName(assertExp, true, Thread.currentThread().getContextClassLoader());
             this.sourceVisitor = clazz.newInstance();

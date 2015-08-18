@@ -41,7 +41,7 @@ public class JsonRulesLoader {
 
         final Rule.Documentation documentation = DocumentationImpl.create(ruleDef.getId(), ruleDef.getBrief(), ruleDef.getDescription(), ruleDef.getSection(),
                 Rule.Documentation.Severity.valueOf(ruleDef.getSeverity().toUpperCase()));
-        return ruleBuilder.create(documentation, ruleDef.getAcceptRegexp(), ruleDef.getAssert());
+        return ruleBuilder.create(documentation, ruleDef.getAccept(), ruleDef.getAssert());
 
     }
 

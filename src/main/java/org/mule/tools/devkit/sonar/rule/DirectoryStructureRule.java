@@ -32,8 +32,8 @@ public class DirectoryStructureRule extends AbstractRule {
     private Template template;
     private final Set<ClassProperty> templateProperties;
 
-    public DirectoryStructureRule(@NonNull final Documentation documentation, @NonNull String acceptRegexp, @NonNull final String assertExp) {
-        super(documentation, acceptRegexp);
+    public DirectoryStructureRule(@NonNull final Documentation documentation, @NonNull String accept, @NonNull final String assertExp) {
+        super(documentation, accept);
         this.templateProperties = new LinkedHashSet<>();
 
         try {

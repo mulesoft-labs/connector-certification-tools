@@ -42,8 +42,8 @@ public class XmlRule extends AbstractRule {
 
     private final String assertExp;
 
-    public XmlRule(final Rule.Documentation documentation, @NonNull String acceptRegexp, @NonNull final String assertExp) {
-        super(documentation, acceptRegexp);
+    public XmlRule(final Rule.Documentation documentation, @NonNull String accept, @NonNull final String assertExp) {
+        super(documentation, accept);
         this.assertExp = assertExp;
 
         // Compile xpathExpression expression ...

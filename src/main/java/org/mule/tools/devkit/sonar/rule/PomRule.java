@@ -15,19 +15,19 @@ import java.util.Set;
 
 public class PomRule extends AbstractRule {
 
-    private final String acceptRegexp;
+    private final String accept;
     private final String assertExp;
 
-    public PomRule(final Rule.Documentation documentation, @NonNull String acceptRegexp, @Nullable final String assertExp) {
+    public PomRule(final Rule.Documentation documentation, @NonNull String accept, @Nullable final String assertExp) {
         super(documentation, "pom.xml$");
-        this.acceptRegexp = acceptRegexp;
+        this.accept = accept;
         this.assertExp = assertExp;
     }
 
     @Override public boolean accepts(@NonNull final Path basePath, @NonNull final Path childPath) {
         boolean result = super.accepts(basePath, childPath);
-        if (!StringUtils.isBlank(acceptRegexp)) {
-            result = (boolean) XmlUtils.evalXPathOnPom(basePath, acceptRegexp, XPathConstants.BOOLEAN);
+        if (!StringUtils.isBlank(accept)) {
+            result = (boolean) XmlUtils.evalXPathOnPom(basePath, accept, XPathConstants.BOOLEAN);
         }
         return result;
     }

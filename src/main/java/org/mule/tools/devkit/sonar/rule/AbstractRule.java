@@ -20,16 +20,16 @@ abstract public @Immutable class AbstractRule implements Rule {
 
     final private Documentation documentation;
 
-    final private Pattern acceptRegexp;
+    final private Pattern accept;
 
-    protected AbstractRule(@NonNull final Documentation documentation, @NonNull final String acceptRegexp) {
+    protected AbstractRule(@NonNull final Documentation documentation, @NonNull final String accept) {
         this.documentation = documentation;
-        this.acceptRegexp = Pattern.compile(acceptRegexp);
+        this.accept = Pattern.compile(accept);
     }
 
     @Override public boolean accepts(@NonNull Path basePath, @NonNull Path childPath) {
         final String pathStr = childPath.toFile().toString();
-        final boolean result = acceptRegexp.matcher(pathStr).matches();
+        final boolean result = accept.matcher(pathStr).matches();
         logger.debug("File {} accepted -> {}", pathStr, result);
 
         return result;
