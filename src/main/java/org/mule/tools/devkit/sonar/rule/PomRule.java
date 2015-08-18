@@ -26,7 +26,7 @@ public class PomRule extends AbstractRule {
 
     @Override public boolean accepts(@NonNull final Path basePath, @NonNull final Path childPath) {
         boolean result = super.accepts(basePath, childPath);
-        if (!StringUtils.isBlank(accept)) {
+        if (!StringUtils.isBlank(accept) && result) {
             result = (boolean) XmlUtils.evalXPathOnPom(basePath, accept, XPathConstants.BOOLEAN);
         }
         return result;

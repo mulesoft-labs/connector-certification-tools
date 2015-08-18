@@ -31,6 +31,15 @@
     },
     {
       "type": "source.pom",
+      "id": "devkit_version",
+      "severity": "critical",
+      "brief": "DevKit 3.7.0 should be used.",
+      "description": "DevKit 3.7.0 is the supported version for the certification.",
+      "section": "Best Practices",
+      "assert": "/pom:project/pom:parent/pom:version[text()='3.7.0']"
+    },
+    {
+      "type": "source.pom",
       "id": "dist_management_premium",
       "severity": "critical",
       "brief": "pom.xml distributionManagement must be properly configured.",
