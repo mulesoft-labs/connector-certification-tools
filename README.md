@@ -30,7 +30,7 @@ This rules can be configured with a XPath expression that needs to be satisfied.
       "section": "3.3 Code Compliance.",
       "accept": "not(/pom:project/pom:properties/pom:category[text()='Premium' or text()='Select'])",
       "assert": "/pom:project/pom:distributionManagement/pom:repository/pom:id[text()='mulesoft-releases'] and /pom:project/pom:distributionManagement/pom:repository/pom:url[text()='http://repository-master.mulesoft.org/releases/']"
-    }
+}
 ```
 
 ### Rule Type 'source.xml
@@ -54,7 +54,8 @@ Execution could be started executing:
 * Improve documentation
 * Complete structure checks
 * Integrate with Sonar 
-* Create a Mojo project
-* 
+* Create a Maven Mojo
+* Extend support of expressions variables such as connector_name and category
+
 
 
