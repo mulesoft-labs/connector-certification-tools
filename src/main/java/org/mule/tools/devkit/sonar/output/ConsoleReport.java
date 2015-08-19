@@ -31,17 +31,18 @@ public class ConsoleReport implements Report {
         if (!errors.isEmpty()) {
             System.out.println("Review the following violated inspections:");
 
-            final List<ValidationError> sortedErrors = errors.stream().sorted((a, b) -> {
-                final Rule.Documentation adoc = a.getDocumentation();
-                final Rule.Documentation bdoc = b.getDocumentation();
+            // Print group by error type ...
+            final Map<Rule.Documentation, List<ValidationError>> errorsByType = errors.stream().collect(Collectors.groupingBy(ValidationError::getDocumentation));
+            final List<Rule.Documentation> docs = errorsByType.keySet().stream().sorted((a, b) -> a.getSeverity().compareTo(b.getSeverity())).collect(Collectors.toList());
+            for (Rule.Documentation doc : docs) {
+                final List<ValidationError> verrors = errorsByType.get(doc);
+                System.out.printf(" %s %s: \n", colorExp.get(doc.getSeverity()), doc.getBrief());
+                for (ValidationError error : verrors) {
+                    System.out.printf("\t<*> %s (id: '%s')\n", error.getMessage(), error.getUUID());
+                }
 
-                final int result = adoc.getSeverity().compareTo(bdoc.getSeverity());
-                return result != 0 ? result : adoc.getId().compareTo(bdoc.getId());
-            }).collect(Collectors.toList());
-            for (ValidationError error : sortedErrors) {
-                final String description = error.getDocumentation().getDescription();
-                System.out.printf("\t%s %s %s\n", colorExp.get(error.getDocumentation().getSeverity()), error.getMessage(), description);
             }
+
         } else {
             System.out.printf(ANSI_GREEN.getCode() + "Congrats. All inspections rules has been satisfied." + ANSI_RESET.getCode() + "\n");
         }

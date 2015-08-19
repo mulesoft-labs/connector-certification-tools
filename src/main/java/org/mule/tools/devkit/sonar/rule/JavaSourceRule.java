@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class JavaSourceRule extends AbstractRule {
 
@@ -109,7 +108,7 @@ public class JavaSourceRule extends AbstractRule {
             sourceVisitor.clearErrors();
         }
 
-        return result.stream().map(msg -> ValidationError.create(this.getDocumentation(), msg)).collect(Collectors.toSet());
+        return ValidationError.create(this.getDocumentation(), result);
     }
 
     @NonNull private JavacTask getJavacTask(@NonNull Path basePath, @NonNull Path childPath) {
