@@ -4,11 +4,16 @@ import org.mule.tools.devkit.sonar.output.ConsoleReport;
 import org.mule.tools.devkit.sonar.output.Report;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.Set;
 
 public class Main {
+
+    private static final String CERTIGNORE_FILE_NAME = ".certignore";
 
     static public void main(String argv[]) throws IOException {
 
@@ -28,9 +33,22 @@ public class Main {
             }
             default: {
 
+                // Load ignore properties ...
                 final Path modulePath = Paths.get(arg);
+                final Path ignorePath = modulePath.resolve(CERTIGNORE_FILE_NAME);
+                if (Files.exists(ignorePath)) {
+                    final InputStream is = Files.newInputStream(ignorePath);
+
+                    final Properties ignoreProps = new Properties();
+                    ignoreProps.load(is);
+                    validator.setIgnore(ignoreProps);
+                }
+
+                // Execute validator ...
                 final Set<ValidationError> errors = validator.execute(modulePath);
 
+
+                // Print report ....
                 final Report report = new ConsoleReport();
                 report.process(modulePath, errors);
             }

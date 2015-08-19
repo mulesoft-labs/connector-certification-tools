@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,7 +19,7 @@ public class ConnectorModuleValidator {
 
     final private static Logger logger = LoggerFactory.getLogger(ConnectorModuleValidator.class);
     private Set<Rule> rules;
-
+    private Properties ignore;
     private static final Set<String> exclusions = new HashSet<>();
 
     static {
@@ -31,8 +32,13 @@ public class ConnectorModuleValidator {
     }
 
     public static @NonNull ConnectorModuleValidator create() throws IOException {
+        return create(new Properties());
+    }
+
+    public static @NonNull ConnectorModuleValidator create(@NonNull Properties ignore) throws IOException {
         final ConnectorModuleValidator result = new ConnectorModuleValidator();
         result.init();
+        result.setIgnore(ignore);
         return result;
     }
 
@@ -60,10 +66,17 @@ public class ConnectorModuleValidator {
             return filteredRules.map(rule -> rule.verify(basePath, relativePath)).collect(Collectors.toSet());
         }).filter(set -> !set.isEmpty()).flatMap(Collection::stream).collect(Collectors.toSet());
 
-        return result.stream().flatMap(Collection::stream).collect(Collectors.toSet());
+        final Stream<ValidationError> errors = result.stream().flatMap(Collection::stream);
+
+        // Filter ignored errors ....
+        return errors.filter(e -> ignore.get(e.getUUID()) == null).collect(Collectors.toSet());
     }
 
     @NonNull public Set<Rule.Documentation> rulesDoc() throws IOException {
         return rules.stream().map(Rule::getDocumentation).collect(Collectors.toSet());
+    }
+
+    public void setIgnore(@NonNull Properties ignore) {
+        this.ignore = ignore;
     }
 }
