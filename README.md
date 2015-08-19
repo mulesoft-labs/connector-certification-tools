@@ -32,10 +32,24 @@ This rules can be configured with a XPath expression that needs to be satisfied.
       "assert": "/pom:project/pom:distributionManagement/pom:repository/pom:id[text()='mulesoft-releases'] and /pom:project/pom:distributionManagement/pom:repository/pom:url[text()='http://repository-master.mulesoft.org/releases/']"
 }
 ```
-
-### Rule Type 'source.xml
-
 ### Rule Type 'source.java'
+
+This rule enables the inspections of source java classes. In this case, the *accept* expression can be a XPath expression of the file name and an annotation for the classes. The *assert* must be a class implementing the org.mule.tools.devkit.sonar.rule.sverifier.SourceTreeVerifier class or either org.mule.tools.devkit.sonar.rule.sverifier.ConnectorClassVerifier. 
+
+```json
+{
+      "type": "source.java",
+      "id": "processor_params",
+      "severity": "major",
+      "brief": "Mandatory parameters should be part of the payload.",
+      "description": "It's strongly recommended that all mandatory parameters be defined as part of the payload. Consider creating a complex object as grouping all the parameters.",
+      "section": "Best Practices",
+      "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
+      "assert": "org.mule.tools.devkit.sonar.rule.sverifier.ProcessorParametersVerifier"
+}
+```
+### Rule Type 'source.xml'
+
 
 ### Rule Type 'structure'
 
