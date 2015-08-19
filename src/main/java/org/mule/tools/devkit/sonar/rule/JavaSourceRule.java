@@ -7,10 +7,7 @@ import com.sun.source.util.JavacTask;
 import com.sun.source.util.TreePathScanner;
 import com.sun.source.util.Trees;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.mule.tools.devkit.sonar.ClassParserUtils;
-import org.mule.tools.devkit.sonar.Context;
-import org.mule.tools.devkit.sonar.ContextImpl;
-import org.mule.tools.devkit.sonar.ValidationError;
+import org.mule.tools.devkit.sonar.*;
 import org.mule.tools.devkit.sonar.exception.DevKitSonarRuntimeException;
 import org.mule.tools.devkit.sonar.rule.sverifier.SourceTreeVerifier;
 
@@ -38,9 +35,10 @@ public class JavaSourceRule extends AbstractRule {
 
         try {
             final Class<? extends SourceTreeVerifier> clazz = (Class<? extends SourceTreeVerifier>) Class.forName(assertExp, true, Thread.currentThread().getContextClassLoader());
-            this.sourceVisitor = clazz.newInstance();
+            final Documentation doc = this.getDocumentation();
+            this.sourceVisitor = clazz.getConstructor(Rule.Documentation.class).newInstance(doc);
 
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        } catch (Exception e) {
             throw new DevKitSonarRuntimeException("Visitor could not be loaded:" + assertExp, e);
         }
     }
@@ -93,7 +91,7 @@ public class JavaSourceRule extends AbstractRule {
         }
 
         // Fire processing ...
-        final Set<String> result = new HashSet<>();
+        final Set<ValidationError> result = new HashSet<>();
         try {
             for (CompilationUnitTree ast : asts) {
                 // Set up in thread local ...
@@ -108,7 +106,7 @@ public class JavaSourceRule extends AbstractRule {
             sourceVisitor.clearErrors();
         }
 
-        return ValidationError.create(this.getDocumentation(), result);
+        return result;
     }
 
     @NonNull private JavacTask getJavacTask(@NonNull Path basePath, @NonNull Path childPath) {

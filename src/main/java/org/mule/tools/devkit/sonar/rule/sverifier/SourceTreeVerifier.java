@@ -6,6 +6,9 @@ import com.sun.source.tree.MethodTree;
 import com.sun.source.util.TreePathScanner;
 import com.sun.source.util.Trees;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.mule.tools.devkit.sonar.Rule;
+import org.mule.tools.devkit.sonar.ValidationError;
 
 import java.util.Formatter;
 import java.util.HashSet;
@@ -13,11 +16,12 @@ import java.util.Set;
 
 abstract public class SourceTreeVerifier extends TreePathScanner<Object, Trees> {
 
-    final private Set<String> errors = new HashSet<>();
+    final private Set<ValidationError> errors = new HashSet<>();
     final private Set<ImportTree> imports = new HashSet<>();
+    private final Rule.Documentation doc;
 
-    SourceTreeVerifier() {
-
+    SourceTreeVerifier(final Rule.@NonNull Documentation doc) {
+        this.doc = doc;
     }
 
     @Override public Object visitImport(ImportTree node, Trees trees) {
@@ -36,13 +40,15 @@ abstract public class SourceTreeVerifier extends TreePathScanner<Object, Trees> 
         return super.visitMethod(methodTree, trees);
     }
 
-    @NonNull public Set<String> getErrors() {
+    public Set<ValidationError> getErrors() {
         return errors;
     }
 
-    void addError(@NonNull final String msg, @NonNull Object... argv) {
+    void addError(@Nullable String uuid, @NonNull final String msg, @NonNull Object... argv) {
         final Formatter formatter = new Formatter();
-        errors.add(formatter.format(msg, argv).toString());
+        final String formatedMsg = formatter.format(msg, argv).toString();
+        final ValidationError validationError = ValidationError.create(doc, uuid, formatedMsg);
+        errors.add(validationError);
     }
 
     public void clearErrors() {

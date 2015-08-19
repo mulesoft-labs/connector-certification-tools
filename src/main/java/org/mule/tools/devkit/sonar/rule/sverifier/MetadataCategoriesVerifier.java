@@ -7,6 +7,7 @@ import com.sun.source.util.Trees;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.api.annotations.components.MetaDataCategory;
 import org.mule.tools.devkit.sonar.ClassParserUtils;
+import org.mule.tools.devkit.sonar.Rule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,10 @@ import java.util.Optional;
 public class MetadataCategoriesVerifier extends SourceTreeVerifier {
 
     final List<String> metadataClassesName = new ArrayList<>();
+
+    public  MetadataCategoriesVerifier(Rule.@NonNull Documentation doc) {
+        super(doc);
+    }
 
     @Override @NonNull final public Object visitClass(@NonNull ClassTree classTree, @NonNull Trees trees) {
         final Object result = super.visitClass(classTree, trees);

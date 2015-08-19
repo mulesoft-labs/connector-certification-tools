@@ -9,11 +9,16 @@ import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
 import org.mule.api.annotations.licensing.RequiresEntitlement;
 import org.mule.tools.devkit.sonar.ClassParserUtils;
 import org.mule.tools.devkit.sonar.Context;
+import org.mule.tools.devkit.sonar.Rule;
 
 import java.util.List;
 import java.util.Optional;
 
 public class LicenseByCategoryVerifier extends ConnectorClassVerifier {
+
+    public LicenseByCategoryVerifier(Rule.@NonNull Documentation doc) {
+        super(doc);
+    }
 
     @Override protected void verifyConnector(@NonNull ClassTree classTree, @NonNull Trees trees) {
 
@@ -25,14 +30,14 @@ public class LicenseByCategoryVerifier extends ConnectorClassVerifier {
         switch (context.getCategory()) {
             case "PREMIUM": {
                 if (!hasEnterpriseAnnotation || !hasEntitlementAnnotation) {
-                    addError("@RequiresEnterpriseLicense and @RequiresEntitlement need to be defined for Premium category.");
+                    addError(null, "@RequiresEnterpriseLicense and @RequiresEntitlement need to be defined for Premium category.");
                 }
 
                 final Optional<? extends AnnotationTree> annotation = annotations.stream().filter(a -> ClassParserUtils.is(a, RequiresEntitlement.class)).findAny();
                 if (annotation.isPresent()) {
                     final List<? extends ExpressionTree> arguments = annotation.get().getArguments();
                     if (!arguments.stream().anyMatch(a -> a.toString().startsWith("name"))) {
-                        addError("'name' attribute must be defined for @RequiresEntitlement using connector name.");
+                        addError(null, "'name' attribute must be defined for @RequiresEntitlement using connector name.");
                     }
                 }
 
@@ -41,13 +46,13 @@ public class LicenseByCategoryVerifier extends ConnectorClassVerifier {
             case "SELECT":
             case "STANDARD": {
                 if (!hasEnterpriseAnnotation || hasEntitlementAnnotation) {
-                    addError("@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Standard category.");
+                    addError(null, "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Standard category.");
                 }
                 break;
             }
             case "COMMUNITY": {
                 if (hasEnterpriseAnnotation || hasEntitlementAnnotation) {
-                    addError("@RequiresEnterpriseLicense and @RequiresEntitlement must not be present for Community category.");
+                    addError(null, "@RequiresEnterpriseLicense and @RequiresEntitlement must not be present for Community category.");
                 }
                 break;
             }

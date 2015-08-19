@@ -10,10 +10,15 @@ import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
 import org.mule.api.annotations.Source;
 import org.mule.tools.devkit.sonar.ClassParserUtils;
+import org.mule.tools.devkit.sonar.Rule;
 
 import java.util.List;
 
 abstract class ConnectorClassVerifier extends SourceTreeVerifier {
+
+    public ConnectorClassVerifier(Rule.@NonNull Documentation doc) {
+        super(doc);
+    }
 
     @Override @NonNull final public Object visitClass(@NonNull ClassTree classTree, @NonNull Trees trees) {
         Object result = null;
