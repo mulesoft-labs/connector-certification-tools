@@ -34,7 +34,7 @@ This rules can be configured with a XPath expression that needs to be satisfied.
 ```
 ### Rule Type 'source.java'
 
-This rule enables the inspections of source java classes. In this case, the *accept" expression can be a XPath expression of the file name and an annotation for the classes. The *assert" must be a class implementing the org.mule.tools.devkit.sonar.rule.sverifier.SourceTreeVerifier class or either org.mule.tools.devkit.sonar.rule.sverifier.ConnectorClassVerifier. 
+This rule enables the inspections of source java classes. In this case, the *accept* expression can be a XPath expression of the file name and an annotation for the classes. The *assert* must be a class implementing the org.mule.tools.devkit.sonar.rule.sverifier.SourceTreeVerifier class or either org.mule.tools.devkit.sonar.rule.sverifier.ConnectorClassVerifier. 
 
 ```json
 {
