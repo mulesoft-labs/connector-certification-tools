@@ -53,6 +53,15 @@ This rule enables the inspections of source java classes. In this case, the *acc
 
 ### Rule Type 'structure'
 
+## Ignoring Inspections 
+
+In some cases, connector could have false positives and you would like to ignore them. For this, a *.certignore* file can be added to the root of the connector to disable the inspection error. An example of this:
+
+```java
+
+processor_params_readonly:8618418230f5dc96127d2c5d5e3cc6c5 = The processor setPassword requires complex object due the complexity of the system.
+
+```
 
 ## Usage
 
