@@ -59,9 +59,10 @@ In some cases, connector could have false positives and you would like to ignore
 
 ```java
 
-processor_params_readonly:8618418230f5dc96127d2c5d5e3cc6c5 = The processor setPassword requires complex object due the complexity of the system.
+processor_params_readonly:createBatchForQuery = The processor setPassword requires complex object due the complexity of the system.
 
 ```
+Error UUID will be reported as part of the report.
 
 ## Usage
 
