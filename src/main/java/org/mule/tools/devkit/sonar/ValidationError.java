@@ -11,17 +11,11 @@ public interface ValidationError {
     @NonNull String getUUID();
 
     @NonNull static ValidationError create(Rule.@NonNull Documentation doc, @NonNull String message) {
-        return new ValidationErrorImpl(doc, message);
+        return new ValidationErrorImpl(doc, null, message);
     }
 
     @NonNull static ValidationError create(Rule.@NonNull Documentation doc, @NonNull String uuid, @NonNull String message) {
         return new ValidationErrorImpl(doc, uuid, message);
     }
-
-    //
-    //    @NonNull
-    //    static Set<ValidationError> create(Rule.@NonNull Documentation doc, @NonNull Set<String> messages) {
-    //        return messages.stream().map(m -> new ValidationErrorImpl(doc, m, false)).collect(Collectors.toSet());
-    //    }
 
 }
