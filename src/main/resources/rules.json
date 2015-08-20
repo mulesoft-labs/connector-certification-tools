@@ -82,7 +82,7 @@
       "type": "source.java",
       "id": "default_payload",
       "severity": "critical",
-      "brief": "As good practice one processor parameter must marked as @Default(\"#[payload]\")",
+      "brief": "@Default(\"#[payload]\") usage best practices",
       "description": "",
       "section": "Best Practices",
       "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",

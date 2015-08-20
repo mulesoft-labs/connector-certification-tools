@@ -23,7 +23,7 @@ public class DefaultPayloadVerifier extends ConnectorClassVerifier {
 
         final String processorName = methodTree.getName().toString();
         if (!hasDefaultPayload) {
-            this.addError("Processor '%s' must define one parameter as @Default(\"#[payload]\").", processorName);
+            this.addError(processorName, "Processor '%s' must define one parameter as @Default(\"#[payload]\").", processorName);
         } else {
 
             // Is there any InputStream param ?. If this is the case, it should be the default param ...
@@ -38,7 +38,7 @@ public class DefaultPayloadVerifier extends ConnectorClassVerifier {
 
             if (inputStreamParam.isPresent()) {
                 if (!ClassParserUtils.isMarkedAsDefault(inputStreamParam.get())) {
-                    this.addError("Processor '%s' contains a parameter of type InputStream not masked @Default(\"#[payload]\").", processorName);
+                    this.addError(processorName, "Processor '%s' contains a parameter of type InputStream not masked @Default(\"#[payload]\").", processorName);
                 }
             }
         }

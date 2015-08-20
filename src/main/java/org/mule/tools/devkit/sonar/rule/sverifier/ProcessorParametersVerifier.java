@@ -28,7 +28,7 @@ public class ProcessorParametersVerifier extends ConnectorClassVerifier {
 
         // Just one parameter must not be Optional or contains a default ...
         if (mandatoryParams.size() > 2) {
-            addError(null,"Processor '%s' contains more than one mandatory parameter.", method.getName().toString());
+            addError(null,"Processor '%s' contains more than one mandatory parameter", method.getName().toString());
         }
 
     }
