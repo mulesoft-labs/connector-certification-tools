@@ -9,7 +9,7 @@ There are 4 types of different rules supported. New rules can be configured in t
 
 * **type**: Rule id to be used. The following types are currently supported: *source.pom*, *source.xml*,*source.java*  and *structure*.
 * **id**: Unique id assigned to this rule.
-* **severity**: Criticity of the rule. It can be either *critical*, *major* or *minor*.
+* **severity**: Criticity of the rule. It can be either *critical*, *major* , *minor* or *<info>*.
 * **brief**: Short description of the objective of the rule. 
 * **description**: Full description of the objective of the rule.
 * **section**: Section within the certification documentation where this rule is declared.
@@ -48,10 +48,29 @@ This rule enables the inspections of source java classes. In this case, the *acc
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.ProcessorParametersVerifier"
 }
 ```
-### Rule Type 'source.xml'
-
 
 ### Rule Type 'structure'
+
+This rule allows the existences of files within the project. Assert expressions could contains variables that can be used to express file patterns. Supported variables are 
+
+* *connector_package*: Connector package using file separators insteaf of ''..
+* *connector_processor*: Connectors processor name in camel case format.
+
+```json
+{
+      "type": "structure",
+      "id": "test_by_processor",
+      "severity": "critical",
+      "brief": "There must be an unit test class per processor",
+      "description": "There must be an unit test class per processor",
+      "section": "Directory Structure",
+      "assert": "src/test/java/${connector_package}/automation/functional/${connector_processor}TestCases.java"
+}
+```
+
+### Rule Type 'source.xml'
+
+TBD
 
 ## Ignoring Inspections 
 
