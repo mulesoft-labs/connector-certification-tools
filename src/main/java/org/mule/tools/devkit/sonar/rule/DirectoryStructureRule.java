@@ -33,7 +33,7 @@ public class DirectoryStructureRule extends AbstractRule {
     private final Set<ClassProperty> templateProperties;
 
     public DirectoryStructureRule(@NonNull final Documentation documentation, @NonNull String accept, @NonNull final String assertExp) {
-        super(documentation, accept);
+        super(documentation, "pom.xml$");
         this.templateProperties = new LinkedHashSet<>();
 
         try {

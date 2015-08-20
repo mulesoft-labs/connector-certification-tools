@@ -7,7 +7,6 @@
       "brief": "There must be an unit test class per processor",
       "description": "There must be an unit test class per processor",
       "section": "Directory Structure",
-      "accept": "src/test/java$",
       "assert": "src/test/java/${connector_package}/automation/functional/${connector_processor}TestCases.java"
     },
     {
@@ -17,7 +16,6 @@
       "brief": "README.md must be part of the connector project",
       "description": "README.md must be part of the connector project. Refer to the certification for the template file",
       "section": "Directory Structure",
-      "accept": "",
       "assert": "README.md"
     },
     {
