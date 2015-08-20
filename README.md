@@ -53,7 +53,7 @@ This rule enables the inspections of source java classes. In this case, the *acc
 
 This rule allows the existences of files within the project. Assert expressions could contains variables that can be used to express file patterns. Supported variables are 
 
-* *connector_package*: Connector package using file separators insteaf of ''..
+* *connector_package*: Connector package using file separators insteaf of '.'.
 * *connector_processor*: Connectors processor name in camel case format.
 
 ```json
@@ -93,12 +93,12 @@ Execution could be started executing:
 
 ## Pendings
 
-* Support disabling errors per project. 
 * Improve documentation
 * Complete structure checks
 * Integrate with Sonar 
 * Create a Maven Mojo
 * Extend support of expressions variables such as connector_name and category
+* What else is required ?
 
 
 
