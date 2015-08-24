@@ -19,7 +19,7 @@ public class RefOnlyParametersVerifier extends ConnectorClassVerifier {
 
         // Filter complex types ...
         final Stream<? extends VariableTree> nonSimpleTypes = params.stream()
-                .filter(param -> !ClassParserUtils.isPrimitive(param.getType()) && !ClassParserUtils.isEnum(param.getType(), getImports()));
+                .filter(param -> !ClassParserUtils.isPrimitive(param.getType(), getImports()) && !ClassParserUtils.isEnum(param.getType(), getImports()));
 
         // Filter the types with without @RefOnly ...
         final Stream<? extends VariableTree> complexParams = nonSimpleTypes

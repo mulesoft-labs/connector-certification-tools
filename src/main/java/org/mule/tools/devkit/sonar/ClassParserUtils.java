@@ -66,8 +66,9 @@ public class ClassParserUtils {
 
     }
 
-    public static boolean isPrimitive(@NonNull final Tree type) {
-        return primitives.contains(type.toString()) || defaultImportedClasses.contains(type.toString());
+    public static boolean isPrimitive(@NonNull final Tree type, @NonNull Set<ImportTree> imports) {
+        Optional<Class<?>> clazz = classForName(type, imports);
+        return clazz.isPresent() && clazz.get().isPrimitive();
     }
 
     public static boolean isEnum(@NonNull final Tree type, @NonNull final Set<ImportTree> imports) {
@@ -174,7 +175,8 @@ public class ClassParserUtils {
         return result;
     }
 
-    @NonNull private static Optional<Class<?>> findClass(@NonNull String className) {
+    @NonNull
+    private static Optional<Class<?>> findClass(@NonNull String className) {
         Optional<Class<?>> result = Optional.empty();
 
         try {
@@ -189,7 +191,13 @@ public class ClassParserUtils {
     }
 
     public static Optional<Class<?>> classForName(@NonNull final Tree type, @NonNull final Set<ImportTree> imports) {
-        return classForName(type.toString(), imports);
+        String classNameDef = type.toString();
+        if (type.getKind() == Tree.Kind.VARIABLE) {
+            // In case of variables, they contain the variable ...
+            String[] split = classNameDef.split(" ");
+            classNameDef = split[split.length - 2];
+        }
+        return classForName(classNameDef, imports);
     }
 
     public static boolean contains(@NonNull final List<? extends AnnotationTree> annotations, @NonNull final Class<?> annotationClass) {

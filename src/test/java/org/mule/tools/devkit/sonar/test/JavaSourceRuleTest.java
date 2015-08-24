@@ -18,7 +18,8 @@ import static org.junit.Assert.assertTrue;
 
 public class JavaSourceRuleTest {
 
-    @Before public void setup() {
+    @Before
+    public void setup() {
 
         final Context.ConnectorModel connectorModel = Mockito.mock(Context.ConnectorModel.class);
         Mockito.when(connectorModel.getProperty(null)).then(var -> Arrays.asList("Processor", "Processor2"));
@@ -27,7 +28,8 @@ public class JavaSourceRuleTest {
         Mockito.when(context.getConnectorModel()).thenReturn(connectorModel);
     }
 
-    @Test public void testProcessDefaultPayloadVerifier() throws IOException {
+    @Test
+    public void testProcessDefaultPayloadVerifier() throws IOException {
 
         final Rule rule = TestData.findRule("default_payload");
         final Path rootPath = TestData.noCompliantTestPath();
@@ -36,10 +38,11 @@ public class JavaSourceRuleTest {
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
         final Set<ValidationError> verify = rule.verify(rootPath, childPath);
-        assertEquals(16, verify.size());
+        assertEquals(15, verify.size());
     }
 
-    @Test public void testProcessParametersVerifier() throws IOException {
+    @Test
+    public void testProcessParametersVerifier() throws IOException {
         final Rule rule = TestData.findRule("processor_params");
         final Path rootPath = TestData.noCompliantTestPath();
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
@@ -50,7 +53,8 @@ public class JavaSourceRuleTest {
         assertEquals(2, verify.size());
     }
 
-    @Test public void testRefOnlyParametersVerifier() throws IOException {
+    @Test
+    public void testRefOnlyParametersVerifier() throws IOException {
         final Rule rule = TestData.findRule("processor_params_readonly");
         final Path rootPath = TestData.noCompliantTestPath();
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
@@ -58,10 +62,11 @@ public class JavaSourceRuleTest {
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
         final Set<ValidationError> verify = rule.verify(rootPath, childPath);
-        assertEquals(9, verify.size());
+        assertEquals(18, verify.size());
     }
 
-    @Test public void testCategoryVerifier() throws IOException {
+    @Test
+    public void testCategoryVerifier() throws IOException {
         final Rule rule = TestData.findRule("connector_category");
         final Path rootPath = TestData.noCompliantTestPath();
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
@@ -72,7 +77,8 @@ public class JavaSourceRuleTest {
         assertEquals(2, verify.size());
     }
 
-    @Test public void testCategoryVerifierOk() throws IOException {
+    @Test
+    public void testCategoryVerifierOk() throws IOException {
         final Rule rule = TestData.findRule("connector_category");
         final Path rootPath = TestData.compliantTestPath();
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
@@ -83,7 +89,8 @@ public class JavaSourceRuleTest {
         assertEquals(0, verify.size());
     }
 
-    @Test public void testMetadataCategory() throws IOException {
+    @Test
+    public void testMetadataCategory() throws IOException {
         final Rule rule = TestData.findRule("metadata_category");
         final Path rootPath = TestData.compliantTestPath();
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
@@ -91,9 +98,8 @@ public class JavaSourceRuleTest {
         // @Todo: Complete...
         assertTrue("File could not be found.", !rule.accepts(rootPath, childPath));
 
-//        final Set<ValidationError> verify = rule.verify(rootPath, childPath);
-//        assertEquals(0, verify.size());
+        //        final Set<ValidationError> verify = rule.verify(rootPath, childPath);
+        //        assertEquals(0, verify.size());
     }
-
 
 }

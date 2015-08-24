@@ -1,8 +1,8 @@
 /**
  * Mule CloudHub Connector
- *
+ * <p/>
  * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
- *
+ * <p/>
  * The software in this package is published under the terms of the CPAL v1.0
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
@@ -48,15 +48,12 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  *
  * @author MuleSoft, Inc.
  */
-@RequiresEnterpriseLicense
-@RequiresEntitlement(name = "cloudhub")
-@Connector(name = "cloudhub", schemaVersion = "2.0", friendlyName = "Cloudhub", minMuleVersion = "3.6.0")
-public class MyConnector {
+@RequiresEnterpriseLicense @RequiresEntitlement(name = "cloudhub") @Connector(name = "cloudhub", schemaVersion = "2.0", friendlyName = "Cloudhub", minMuleVersion = "3.6.0") public class MyConnector {
 
     public static final String TENANT_ID_PROPERTY = "tenantId";
     public static final String DOMAIN_SYSTEM_PROPERTY = "domain";
 
-    private static final Logger  logger = LoggerFactory.getLogger(CloudHubConnector.class);
+    private static final Logger logger = LoggerFactory.getLogger(CloudHubConnector.class);
 
     @org.mule.api.annotations.Config
     private Config config;
@@ -116,9 +113,9 @@ public class MyConnector {
      * @return The created application
      */
     @Processor
-    public Application createApplication(String domain, @Default("3.7.0") String muleVersion, @Default("1") Integer workersCount,
-                                         @Optional WorkerType workerSize, @Optional Map<String, String> environmentVariables, @Optional Boolean persistentQueues, @Optional Boolean multitenanted,
-                                         @Optional Boolean vpnEnabled, @Optional Boolean autoRestartMonitoring) {
+    public Application createApplication(String domain, @Default("3.7.0") String muleVersion, @Default("1") Integer workersCount, @Optional WorkerType workerSize,
+            @Optional Map<String, String> environmentVariables, @Optional Boolean persistentQueues, @Optional Boolean multitenanted, @Optional Boolean vpnEnabled,
+            @Optional Boolean autoRestartMonitoring) {
         Application app = buildApplication(domain, muleVersion, workersCount, workerSize, environmentVariables, persistentQueues, multitenanted, vpnEnabled, autoRestartMonitoring);
         return client().createApplication(app);
     }
@@ -140,9 +137,9 @@ public class MyConnector {
      * @param autoRestartMonitoring
      */
     @Processor
-    public Application updateApplication(String domain, @Default("3.7.0") String muleVersion, @Default("1") Integer workersCount,
-                                         @Optional WorkerType workerSize, @Optional Map<String, String> environmentVariables, @Optional Boolean persistentQueues, @Optional Boolean multitenanted,
-                                         @Optional Boolean vpnEnabled, @Optional Boolean autoRestartMonitoring) {
+    public Application updateApplication(String domain, @Default("3.7.0") String muleVersion, @Default("1") Integer workersCount, @Optional WorkerType workerSize,
+            @Optional Map<String, String> environmentVariables, @Optional Boolean persistentQueues, @Optional Boolean multitenanted, @Optional Boolean vpnEnabled,
+            @Optional Boolean autoRestartMonitoring) {
         Application app = buildApplication(domain, muleVersion, workersCount, workerSize, environmentVariables, persistentQueues, multitenanted, vpnEnabled, autoRestartMonitoring);
 
         ApplicationUpdateInfo appUpdateInfo = new ApplicationUpdateInfo(app);
@@ -192,7 +189,7 @@ public class MyConnector {
      */
     @Processor
     public LogResults retrieveApplicationLogs(String domain, @Optional String endDate, @Optional String startDate, @Default("100") Integer limit, @Optional Integer offset,
-                                              @Optional LogPriority priority, @Optional String search, @Optional Boolean tail, @Optional String worker) {
+            @Optional LogPriority priority, @Optional String search, @Optional Boolean tail, @Optional String worker) {
 
         Map<String, String> queryParams = new HashMap<String, String>();
         addToMapIfNotNull("endDate", endDate, queryParams);
@@ -306,8 +303,7 @@ public class MyConnector {
      * @since 1.4
      */
     @Processor
-    public void createNotification(String message, Notification.NotificationLevelDO priority, String domain,
-            @Optional Map<String, String> customProperties, MuleEvent muleEvent) {
+    public void createNotification(String message, Notification.NotificationLevelDO priority, String domain, @Optional Map<String, String> customProperties, MuleEvent muleEvent) {
 
         Notification notification = new Notification();
         notification.setPriority(priority);
@@ -433,17 +429,15 @@ public class MyConnector {
         client().connectWithDomain(domain).deleteTenant(tenantId);
     }
 
-    /**
-     * <p>
-     * Deletes all tenants for a given domain
-     * </p>
-     * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:delete-tenants}
-     *
-     * @param domain    the domain you want to clear of tenants
-     * @param tenantIds a list with tenant ids to be deleted
-     */
+    private Map<String, String> testGenerics(Map<String, String> customProperties) {
+        return null;
+    }
+
+    @Processor
+    private Map<String, String> testParamsWithFinal(final String customProperties) {
+        return null;
+    }
+
     @Processor
     public void deleteTenants(String domain, List<String> tenantIds) {
         client().connectWithDomain(domain).deleteTenants(tenantIds);
@@ -500,7 +494,8 @@ public class MyConnector {
         return config.getClient();
     }
 
-    private Application buildApplication(String domain, String muleVersion,Integer workersCount, WorkerType workerSize, Map<String, String> environmentVariables, Boolean persistentQueues, Boolean multitenanted, Boolean vpnEnabled, Boolean autoRestartMonitoring) {
+    private Application buildApplication(String domain, String muleVersion, Integer workersCount, WorkerType workerSize, Map<String, String> environmentVariables,
+            Boolean persistentQueues, Boolean multitenanted, Boolean vpnEnabled, Boolean autoRestartMonitoring) {
         Application app = new Application();
         app.setMuleVersion(muleVersion);
         app.setProperties(environmentVariables);
