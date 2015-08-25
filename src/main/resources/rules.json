@@ -79,9 +79,9 @@
     {
       "type": "source.java",
       "id": "default_payload",
-      "severity": "critical",
+      "severity": "major",
       "brief": "@Default(\"#[payload]\") usage best practices",
-      "description": "",
+      "description": "@Default(\"#[payload]\") should be used to mark complex type mandatory parameter",
       "section": "Best Practices",
       "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
       "assert": "org.mule.tools.devkit.sonar.rule.sverifier.DefaultPayloadVerifier"
