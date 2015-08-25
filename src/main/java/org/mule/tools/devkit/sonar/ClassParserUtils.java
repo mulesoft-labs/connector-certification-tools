@@ -4,6 +4,7 @@ import com.sun.source.tree.AnnotationTree;
 import com.sun.source.tree.ImportTree;
 import com.sun.source.tree.Tree;
 import com.sun.source.tree.VariableTree;
+import org.apache.commons.lang3.ClassUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
@@ -68,7 +69,14 @@ public class ClassParserUtils {
 
     public static boolean isPrimitive(@NonNull final Tree type, @NonNull Set<ImportTree> imports) {
         Optional<Class<?>> clazz = classForName(type, imports);
-        return clazz.isPresent() && clazz.get().isPrimitive();
+        return clazz.isPresent() && ClassUtils.isPrimitiveWrapper(clazz.get());
+    }
+
+    public static boolean isSimpleType(@NonNull final Tree type, @NonNull Set<ImportTree> imports) {
+        Optional<Class<?>> clazz = classForName(type, imports);
+        boolean result = isPrimitive(type, imports) || isEnum(type, imports) || (clazz.isPresent() && clazz.get().getName().endsWith("java.lang.String"));
+        logger.debug("Type '{}' is a simple type -> '{}'", type.toString(), result);
+        return result;
     }
 
     public static boolean isEnum(@NonNull final Tree type, @NonNull final Set<ImportTree> imports) {
@@ -191,13 +199,19 @@ public class ClassParserUtils {
     }
 
     public static Optional<Class<?>> classForName(@NonNull final Tree type, @NonNull final Set<ImportTree> imports) {
+        String classNameDef = extractType(type);
+        return classForName(classNameDef, imports);
+    }
+
+    private static String extractType(@NonNull Tree type) {
         String classNameDef = type.toString();
         if (type.getKind() == Tree.Kind.VARIABLE) {
-            // In case of variables, they contain the variable ...
+            // In case of variables, they contain the variable (eg: Modifier Type Name)
             String[] split = classNameDef.split(" ");
             classNameDef = split[split.length - 2];
         }
-        return classForName(classNameDef, imports);
+
+        return classNameDef;
     }
 
     public static boolean contains(@NonNull final List<? extends AnnotationTree> annotations, @NonNull final Class<?> annotationClass) {

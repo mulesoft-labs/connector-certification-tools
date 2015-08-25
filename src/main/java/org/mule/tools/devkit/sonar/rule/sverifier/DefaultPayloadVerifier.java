@@ -26,7 +26,7 @@ public class DefaultPayloadVerifier extends ConnectorClassVerifier {
 
         // Simple types can be rendered nicely by Studio
         Set<ImportTree> imports = getImports();
-        boolean isSimpleTypes = parameters.stream().allMatch(t -> ClassParserUtils.isPrimitive(t, imports) || ClassParserUtils.isEnum(t, imports));
+        boolean isSimpleTypes = parameters.stream().allMatch(t -> ClassParserUtils.isSimpleType(t, imports));
         if (!isSimpleTypes) {
 
             final String processorName = methodTree.getName().toString();
