@@ -1,8 +1,5 @@
 *.class
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
 # Package Files #
 *.jar
 *.war
@@ -15,3 +12,6 @@ hs_err_pid*
 .idea/
 target/
 .DS_Store
+
+!src/test/resources/perfect_connector/target
+!src/test/resources/wrong_connector/target
