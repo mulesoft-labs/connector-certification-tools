@@ -4,6 +4,7 @@ import com.sun.source.tree.AnnotationTree;
 import com.sun.source.tree.ImportTree;
 import com.sun.source.tree.Tree;
 import com.sun.source.tree.VariableTree;
+import com.sun.tools.javac.tree.JCTree;
 import org.apache.commons.lang3.ClassUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.api.annotations.Connector;
@@ -206,9 +207,7 @@ public class ClassParserUtils {
     private static String extractType(@NonNull Tree type) {
         String classNameDef = type.toString();
         if (type.getKind() == Tree.Kind.VARIABLE) {
-            // In case of variables, they contain the variable (eg: Modifier Type Name)
-            String[] split = classNameDef.split(" ");
-            classNameDef = split[split.length - 2];
+            classNameDef = ((JCTree.JCVariableDecl) type).getType().toString();
         }
 
         return classNameDef;

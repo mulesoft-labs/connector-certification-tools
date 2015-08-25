@@ -38,7 +38,7 @@ public class JavaSourceRuleTest {
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
         final Set<ValidationError> verify = rule.verify(rootPath, childPath);
-        assertEquals(11, verify.size());
+        assertEquals(9, verify.size());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class JavaSourceRuleTest {
         assertTrue("File could not be found.", rule.accepts(rootPath, childPath));
 
         final Set<ValidationError> verify = rule.verify(rootPath, childPath);
-        assertEquals(11, verify.size());
+        assertEquals(9, verify.size());
     }
 
     @Test
