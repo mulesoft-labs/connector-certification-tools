@@ -77,10 +77,10 @@ public class DirectoryStructureRule extends AbstractRule {
             final StringWriter sw = new StringWriter();
             template.merge(context, sw);
 
-            // Does the file exists ?
+            // Does the file exist?
             final String child = sw.toString();
             if (!Files.exists(basePath.resolve(child))) {
-                msgs.add("File '" + child + "' does not exists.");
+                msgs.add("File '" + child + "' does not exist.");
             }
         }
         return buildError(msgs);
