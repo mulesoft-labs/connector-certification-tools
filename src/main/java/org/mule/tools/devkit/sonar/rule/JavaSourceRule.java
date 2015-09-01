@@ -9,7 +9,7 @@ import com.sun.source.util.Trees;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.tools.devkit.sonar.*;
 import org.mule.tools.devkit.sonar.exception.DevKitSonarRuntimeException;
-import org.mule.tools.devkit.sonar.rule.sverifier.SourceTreeVerifier;
+import org.mule.tools.devkit.sonar.rule.verifier.java.SourceTreeVerifier;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;

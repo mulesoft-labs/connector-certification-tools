@@ -84,7 +84,7 @@
       "description": "@Default(\"#[payload]\") should be used to mark complex type mandatory parameter",
       "section": "Best Practices",
       "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
-      "assert": "org.mule.tools.devkit.sonar.rule.sverifier.DefaultPayloadVerifier"
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.DefaultPayloadVerifier"
     },
     {
       "type": "source.java",
@@ -94,7 +94,7 @@
       "description": "It's strongly recommended that all mandatory parameters be defined as part of the payload. Consider creating a complex object as grouping all the parameters",
       "section": "Best Practices",
       "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
-      "assert": "org.mule.tools.devkit.sonar.rule.sverifier.ProcessorParametersVerifier"
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.ProcessorParametersVerifier"
     },
     {
       "type": "source.java",
@@ -104,7 +104,7 @@
       "description": "Complex types should should be marked with @RefOnly",
       "section": "Best Practices",
       "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
-      "assert": "org.mule.tools.devkit.sonar.rule.sverifier.RefOnlyParametersVerifier"
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.RefOnlyParametersVerifier"
     },
     {
       "type": "source.java",
@@ -114,7 +114,17 @@
       "description": "",
       "section": "",
       "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
-      "assert": "org.mule.tools.devkit.sonar.rule.sverifier.LicenseByCategoryVerifier"
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.LicenseByCategoryVerifier"
+    },
+    {
+      "type": "source.java",
+      "id": "transform_resolver",
+      "severity": "info",
+      "brief": "@TransformerResolver should only transform connector domain model entities",
+      "description": "@TransformerResolver applied globally to all the flows. Due to that it's important that registered transformation are from/to connector model objects",
+      "section": "Best Practices",
+      "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.TransformerResolverVerifier"
     },
     {
       "type": "source.java",
@@ -124,7 +134,7 @@
       "description": "???",
       "section": "???",
       "accept": ".+/.+.\\.java$;org.mule.api.annotations.components.MetaDataCategory",
-      "assert": "org.mule.tools.devkit.sonar.rule.sverifier.MetadataCategoriesVerifier"
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.MetadataCategoriesVerifier"
     },
     {
       "type": "source.xml",

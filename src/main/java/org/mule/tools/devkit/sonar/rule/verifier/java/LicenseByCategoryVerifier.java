@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.rule.sverifier;
+package org.mule.tools.devkit.sonar.rule.verifier.java;
 
 import com.sun.source.tree.AnnotationTree;
 import com.sun.source.tree.ClassTree;

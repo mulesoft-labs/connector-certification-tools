@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.rule.sverifier;
+package org.mule.tools.devkit.sonar.rule.verifier.java;
 
 import com.sun.source.tree.MethodTree;
 import com.sun.source.tree.VariableTree;
@@ -17,8 +17,8 @@ public class ProcessorParametersVerifier extends ConnectorClassVerifier {
         super(doc);
     }
 
-    @Override protected void verifyProcessor(@NonNull MethodTree method,@NonNull final List<? extends VariableTree> parameters) {
-
+    @Override
+    protected void verifyProcessor(@NonNull MethodTree method, @NonNull final List<? extends VariableTree> parameters) {
 
         // Filter not optional params ...
         final Stream<? extends VariableTree> nonOptionalParam = parameters.stream().filter(p -> !ClassParserUtils.isMarkedAsOptional(p));
@@ -28,7 +28,7 @@ public class ProcessorParametersVerifier extends ConnectorClassVerifier {
 
         // Just one parameter must not be Optional or contains a default ...
         if (mandatoryParams.size() > 2) {
-            addError(null,"Processor '%s' contains more than one mandatory parameter", method.getName().toString());
+            addError(null, "Processor '%s' contains more than one mandatory parameter", method.getName().toString());
         }
 
     }
