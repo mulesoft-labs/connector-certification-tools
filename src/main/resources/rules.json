@@ -31,10 +31,10 @@
       "type": "source.pom",
       "id": "devkit_version",
       "severity": "critical",
-      "brief": "DevKit 3.7.0 should be used",
-      "description": "DevKit 3.7.0 is the supported version for the certification",
+      "brief": "DevKit 3.7.1 should be used",
+      "description": "DevKit 3.7.1 is the supported version for the certification",
       "section": "Best Practices",
-      "assert": "/pom:project/pom:parent/pom:version[text()='3.7.0']"
+      "assert": "/pom:project/pom:parent/pom:version[text()='3.7.1']"
     },
     {
       "type": "source.pom",
@@ -125,6 +125,16 @@
       "section": "Best Practices",
       "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
       "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.TransformerResolverVerifier"
+    },
+    {
+      "type": "source.java",
+      "id": "restcall_reprecated",
+      "severity": "critical",
+      "brief": "@RestCall support is deprecated",
+      "description": "@RestCall support has been deprecated in favor of RAML. Consider migrate your connector to Rest Connect",
+      "section": "Best Practices",
+      "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.RestCallIsDeprecatedVerifier"
     },
     {
       "type": "source.java",

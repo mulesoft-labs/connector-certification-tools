@@ -24,18 +24,21 @@ abstract public class SourceTreeVerifier extends TreePathScanner<Object, Trees> 
         this.doc = doc;
     }
 
-    @Override public Object visitImport(ImportTree node, Trees trees) {
+    @Override
+    public Object visitImport(ImportTree node, Trees trees) {
 
         imports.add(node);
         return super.visitImport(node, trees);
     }
 
-    @Override public Object visitClass(@NonNull final ClassTree classTree, @NonNull final Trees trees) {
+    @Override
+    public Object visitClass(@NonNull final ClassTree classTree, @NonNull final Trees trees) {
 
         return super.visitClass(classTree, trees);
     }
 
-    @Override public Object visitMethod(MethodTree methodTree, Trees trees) {
+    @Override
+    public Object visitMethod(MethodTree methodTree, Trees trees) {
 
         return super.visitMethod(methodTree, trees);
     }
@@ -56,7 +59,8 @@ abstract public class SourceTreeVerifier extends TreePathScanner<Object, Trees> 
         imports.clear();
     }
 
-    @NonNull protected Set<ImportTree> getImports() {
+    @NonNull
+    protected Set<ImportTree> getImports() {
         return imports;
     }
 }
