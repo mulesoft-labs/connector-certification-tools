@@ -19,7 +19,7 @@ public class ModuleClassLoaderTest {
         final ModuleClassLoader classLoader = new ModuleClassLoader(path);
         final URL[] urls = classLoader.getURLs();
 
-        assertEquals(5, urls.length);
+        assertEquals(6, urls.length);
 
     }
 }
