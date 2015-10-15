@@ -155,8 +155,7 @@
       "section": "",
       "accept": ".+/some.xml$",
       "assert": "boolean(/*[local-name() = 'project']/*[local-name() = 'properties']/*[local-name() = 'connector.test.version']/text())"
-    }
-           
+    },
     {
       "type": "structure",
       "id": "Test Data",
