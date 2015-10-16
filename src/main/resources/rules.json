@@ -90,7 +90,7 @@
       "type": "source.java",
       "id": "processor_params",
       "severity": "major",
-      "brief": "",
+      "brief": "More than one mandatory parameters in processor",
       "description": "It's strongly recommended that all mandatory parameters be defined as part of the payload. Consider creating a complex object as grouping all the parameters",
       "section": "Best Practices",
       "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
@@ -98,10 +98,10 @@
     },
     {
       "type": "source.java",
-      "id": "processor_params_readonly",
+      "id": "processor_params_refonly",
       "severity": "major",
-      "brief": "",
-      "description": "Complex types should should be marked with @RefOnly",
+      "brief": "Complex types should be marked with @RefOnly",
+      "description": "Complex types should be marked with @RefOnly",
       "section": "Best Practices",
       "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
       "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.RefOnlyParametersVerifier"
