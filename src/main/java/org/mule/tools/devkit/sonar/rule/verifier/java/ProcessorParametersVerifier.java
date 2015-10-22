@@ -20,6 +20,10 @@ public class ProcessorParametersVerifier extends ConnectorClassVerifier {
     @Override
     protected void verifyProcessor(@NonNull MethodTree method, @NonNull final List<? extends VariableTree> parameters) {
 
+        if(parameters.size() >= 5){
+            addError(null, "Processor '%s' contains %s parameters. Consider wrapping them in a separate POJO class", method.getName().toString(), parameters.size());
+        }
+
         // Filter not optional params ...
         final Stream<? extends VariableTree> nonOptionalParam = parameters.stream().filter(p -> !ClassParserUtils.isMarkedAsOptional(p));
 
