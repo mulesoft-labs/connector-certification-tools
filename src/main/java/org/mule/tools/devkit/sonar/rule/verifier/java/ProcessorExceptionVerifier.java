@@ -25,10 +25,10 @@ public class ProcessorExceptionVerifier extends ConnectorClassVerifier {
         // Get list of thrown exceptions ...
         final List<? extends ExpressionTree> exceptions = method.getThrows();
 
-        if(exceptions.size() > 0){
-            for(ExpressionTree exp : exceptions){
-                String name =  ((JCTree.JCIdent)exp).getName().toString();
-                if(name.contains("Connector")){
+        if (exceptions.size() > 0) {
+            for (ExpressionTree exp : exceptions) {
+                String name = ((JCTree.JCIdent) exp).getName().toString();
+                if (name.contains("Connector")) {
                     String newName = name.replace("Connector", "");
                     addError(null, "Exception '%s' in processor '%s' should be renamed to %s", name, method.getName().toString(), newName);
                 }

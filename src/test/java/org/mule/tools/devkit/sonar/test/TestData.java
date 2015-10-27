@@ -1,6 +1,5 @@
 package org.mule.tools.devkit.sonar.test;
 
-
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.tools.devkit.sonar.Rule;
 import org.mule.tools.devkit.sonar.loader.JsonRulesLoader;
@@ -13,7 +12,8 @@ import java.util.Set;
 
 interface TestData {
 
-    @NonNull static Path noCompliantTestPath() {
+    @NonNull
+    static Path noCompliantTestPath() {
         return Paths.get("src/test/resources/wrong_connector").toAbsolutePath();
     }
 

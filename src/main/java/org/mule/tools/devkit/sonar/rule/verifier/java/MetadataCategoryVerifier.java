@@ -21,7 +21,9 @@ public class MetadataCategoryVerifier extends SourceTreeVerifier {
         super(doc);
     }
 
-    @Override @NonNull final public Object visitClass(@NonNull ClassTree classTree, @NonNull Trees trees) {
+    @Override
+    @NonNull
+    final public Object visitClass(@NonNull ClassTree classTree, @NonNull Trees trees) {
         final Object result = super.visitClass(classTree, trees);
 
         final Optional<? extends AnnotationTree> metadataCategory = ClassParserUtils.find(classTree.getModifiers().getAnnotations(), MetaDataCategory.class);
@@ -33,7 +35,9 @@ public class MetadataCategoryVerifier extends SourceTreeVerifier {
         return result;
     }
 
-    @Override @NonNull final public Object visitMethod(@NonNull final MethodTree methodTree, Trees trees) {
+    @Override
+    @NonNull
+    final public Object visitMethod(@NonNull final MethodTree methodTree, Trees trees) {
         final Optional<? extends AnnotationTree> metadataCategory = ClassParserUtils.find(methodTree.getModifiers().getAnnotations(), MetaDataCategory.class);
         if (metadataCategory.isPresent()) {
             metadataClassesName.add(metadataCategory.get().toString());

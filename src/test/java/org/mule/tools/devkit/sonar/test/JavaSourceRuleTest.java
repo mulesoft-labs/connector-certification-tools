@@ -98,8 +98,8 @@ public class JavaSourceRuleTest {
         // @Todo: Complete...
         assertTrue("File could not be found.", !rule.accepts(rootPath, childPath));
 
-        //        final Set<ValidationError> verify = rule.verify(rootPath, childPath);
-        //        assertEquals(0, verify.size());
+        // final Set<ValidationError> verify = rule.verify(rootPath, childPath);
+        // assertEquals(0, verify.size());
     }
 
 }

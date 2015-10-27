@@ -36,19 +36,19 @@ import java.util.Map;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
- * Provides the ability to interact with Mule CloudHub from within a Mule
- * application. There are operations to deploy, start, stop, and update
- * applications as well as send notifications from your application to CloudHub.
+ * Provides the ability to interact with Mule CloudHub from within a Mule application. There are operations to deploy, start, stop, and update applications as well as send
+ * notifications from your application to CloudHub.
  * <p/>
- * When running this connector in an application inside CloudHub, it will use
- * token based authentication to access the API. This will allow access and
- * usage of the CloudHub APIs without the need to specify your username and
- * password.
+ * When running this connector in an application inside CloudHub, it will use token based authentication to access the API. This will allow access and usage of the CloudHub APIs
+ * without the need to specify your username and password.
  * <p/>
  *
  * @author MuleSoft, Inc.
  */
-@RequiresEnterpriseLicense @RequiresEntitlement(name = "cloudhub") @Connector(name = "cloudhub", schemaVersion = "2.0", friendlyName = "Cloudhub", minMuleVersion = "3.6.0") public class MyConnector {
+@RequiresEnterpriseLicense
+@RequiresEntitlement(name = "cloudhub")
+@Connector(name = "cloudhub", schemaVersion = "2.0", friendlyName = "Cloudhub", minMuleVersion = "3.6.0")
+public class MyConnector {
 
     public static final String TENANT_ID_PROPERTY = "tenantId";
     public static final String DOMAIN_SYSTEM_PROPERTY = "domain";
@@ -61,12 +61,12 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
     /**
      * Deploy specified application.
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:deploy-application}
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:deploy-application}
      *
-     * @param file   mule application to deploy, Input Object type:
-     *               java.io.InputStream
-     * @param domain The application domain.
+     * @param file
+     *            mule application to deploy, Input Object type: java.io.InputStream
+     * @param domain
+     *            The application domain.
      */
     @Processor
     public void deployApplication(@Default("#[payload]") InputStream file, String domain) {
@@ -74,18 +74,20 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
     }
 
     /**
-     * Tries creating the specified application (if it doesn't exist already)
-     * and deploying afterwards.
+     * Tries creating the specified application (if it doesn't exist already) and deploying afterwards.
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:create-and-deploy-application}
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:create-and-deploy-application}
      *
-     * @param file                 mule application to deploy, Input Object type:
-     *                             java.io.InputStream
-     * @param domain               The application domain.
-     * @param muleVersion          The version of Mule, e.g. 3.7.0.
-     * @param workersCount          The number of workers to deploy.
-     * @param environmentVariables Environment variables for you application.
+     * @param file
+     *            mule application to deploy, Input Object type: java.io.InputStream
+     * @param domain
+     *            The application domain.
+     * @param muleVersion
+     *            The version of Mule, e.g. 3.7.0.
+     * @param workersCount
+     *            The number of workers to deploy.
+     * @param environmentVariables
+     *            Environment variables for you application.
      */
     @Processor
     public void createAndDeployApplication(InputStream file, String domain, @Default("3.7.0") String muleVersion, @Default("1") Integer workersCount,
@@ -101,15 +103,24 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
     /**
      * Creates an application with out deploying a Mule App
      *
-     * @param domain                The application domain
-     * @param muleVersion           The version of Mule to use. e.g. 3.7.0
-     * @param environmentVariables  Environment variables for your Mule Application
-     * @param workersCount          Number of workers to deploy
-     * @param workerSize            Size of each worker (Micro/Small/Medium/Large/xLarge)
-     * @param persistentQueues      Support for presistent queues
-     * @param multitenanted         Support for multi tenancy
-     * @param vpnEnabled            Support for VPN
-     * @param autoRestartMonitoring Support for auto restart monitoring
+     * @param domain
+     *            The application domain
+     * @param muleVersion
+     *            The version of Mule to use. e.g. 3.7.0
+     * @param environmentVariables
+     *            Environment variables for your Mule Application
+     * @param workersCount
+     *            Number of workers to deploy
+     * @param workerSize
+     *            Size of each worker (Micro/Small/Medium/Large/xLarge)
+     * @param persistentQueues
+     *            Support for presistent queues
+     * @param multitenanted
+     *            Support for multi tenancy
+     * @param vpnEnabled
+     *            Support for VPN
+     * @param autoRestartMonitoring
+     *            Support for auto restart monitoring
      * @return The created application
      */
     @Processor
@@ -124,9 +135,9 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
      * Updates an application.
      *
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:update-application}
-     *  @param domain
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:update-application}
+     * 
+     * @param domain
      * @param muleVersion
      * @param workersCount
      * @param workerSize
@@ -149,8 +160,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
     /**
      * List applications.
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:list-applications}
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:list-applications}
      *
      * @return A list of applications.
      */
@@ -162,10 +172,10 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
     /**
      * Get an application.
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:get-application}
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:get-application}
      *
-     * @param domain The application domain.
+     * @param domain
+     *            The application domain.
      * @return An application.
      */
     @Processor
@@ -207,8 +217,10 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
     /**
      * Change Application Status
      *
-     * @param domain           The application domain
-     * @param newDesiredStatus New application desired status (Start/Stop)
+     * @param domain
+     *            The application domain
+     * @param newDesiredStatus
+     *            New application desired status (Start/Stop)
      */
     @Processor
     public void changeApplicationStatus(String domain, ApplicationStatusChange.DesiredApplicationStatus newDesiredStatus) {
@@ -221,12 +233,12 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
      * Delete an application.
      * </p>
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:delete-application}
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:delete-application}
      *
-     * @param domain <p>
-     *               The application domain.
-     *               </p>
+     * @param domain
+     *            <p>
+     *            The application domain.
+     *            </p>
      */
     @Processor
     public void deleteApplication(String domain) {
@@ -239,23 +251,23 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
      * </p>
      * <p/>
      * <p>
-     * In the case of a multitenant application it searches for the
-     * notifications registered for the current tenant.
+     * In the case of a multitenant application it searches for the notifications registered for the current tenant.
      * </p>
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:list-notifications}
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:list-notifications}
      *
-     * @param maxResults <p>
-     *                   The maximum number of results to retrieve.
-     *                   </p>
-     * @param offset     <p>
-     *                   The offset to start listing alerts from.
-     *                   </p>
+     * @param maxResults
+     *            <p>
+     *            The maximum number of results to retrieve.
+     *            </p>
+     * @param offset
+     *            <p>
+     *            The offset to start listing alerts from.
+     *            </p>
      * @return A List of notifications.
      *
      */
-    //TODO -- The status filter is not working properly
+    // TODO -- The status filter is not working properly
     @Processor
     public NotificationResults listNotifications(String domain, @Default("25") Integer maxResults, @Optional Integer offset, Notification.NotificationStatus.Status status) {
 
@@ -269,36 +281,33 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
      * </p>
      * <p/>
      * <p>
-     * If the notification is sent after an exception, it attaches the
-     * exception.message and exception.stacktrace as as custom properties of the
-     * notification.
+     * If the notification is sent after an exception, it attaches the exception.message and exception.stacktrace as as custom properties of the notification.
      * <p/>
-     * Those custom properties can be accessed from Cloudhub console with the
-     * names 'exception.message' and 'exception.stacktrace'
+     * Those custom properties can be accessed from Cloudhub console with the names 'exception.message' and 'exception.stacktrace'
      * </p>
      * <p/>
      * <p>
-     * In the case of multitenant applications the connector will create a
-     * notification for a particular tenant. (the one that is executing the
-     * flow)
+     * In the case of multitenant applications the connector will create a notification for a particular tenant. (the one that is executing the flow)
      * </p>
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:create-notification}
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:create-notification}
      *
-     * @param message          <p>
-     *                         The contents of the notification.
-     *                         </p>
-     * @param priority         <p>
-     *                         The notification priority.
-     *                         </p>
-     * @param customProperties <p>
-     *                         a map to represent custom placeholders on the notification
-     *                         template
-     *                         </p>
-     * @param muleEvent        <p>
-     *                         Processed mule event
-     *                         </p>
+     * @param message
+     *            <p>
+     *            The contents of the notification.
+     *            </p>
+     * @param priority
+     *            <p>
+     *            The notification priority.
+     *            </p>
+     * @param customProperties
+     *            <p>
+     *            a map to represent custom placeholders on the notification template
+     *            </p>
+     * @param muleEvent
+     *            <p>
+     *            Processed mule event
+     *            </p>
      *
      * @since 1.4
      */
@@ -318,8 +327,10 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
     /**
      * Change the notification status (READ or UNREAD)
      *
-     * @param notificationId ID of the notification
-     * @param status New desired status
+     * @param notificationId
+     *            ID of the notification
+     * @param status
+     *            New desired status
      */
     @Processor
     public void changeNotificationStatus(@FriendlyName("Notification ID") String notificationId, Notification.NotificationStatus.Status status) {
@@ -330,7 +341,8 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
     /**
      * Retrieves a notification by their ID
      *
-     * @param notificationId ID of the notification
+     * @param notificationId
+     *            ID of the notification
      * @return A notification
      */
     @Processor
@@ -341,16 +353,16 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
     /**
      * List all available tenants for the current domain
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:list-tenants}
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:list-tenants}
      *
-     * @param domain the domain owning the tenants
-     * @param limit  The maximum number of results to return by default. Maximum of
-     *               100.
-     * @param offset The offset to start searching at
-     * @param query  The company name, contact name, and email of the tenant to
-     *               search form. Performs a case insensitive match to any part of
-     *               the tenant name.
+     * @param domain
+     *            the domain owning the tenants
+     * @param limit
+     *            The maximum number of results to return by default. Maximum of 100.
+     * @param offset
+     *            The offset to start searching at
+     * @param query
+     *            The company name, contact name, and email of the tenant to search form. Performs a case insensitive match to any part of the tenant name.
      * @return an instance of {@link com.mulesoft.ch.rest.model.TenantResults}
      */
     @Processor
@@ -363,14 +375,13 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
      * Creates a tenant
      * </p>
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:create-tenant}
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:create-tenant}
      *
-     * @param tenant an instance of {@link com.mulesoft.ch.rest.model.Tenant}
-     *               representing the tenant
-     * @param domain the domain that will own the tenant
-     * @return an instance of {@link com.mulesoft.ch.rest.model.Tenant}
-     * carrying the state of the newly created tenant
+     * @param tenant
+     *            an instance of {@link com.mulesoft.ch.rest.model.Tenant} representing the tenant
+     * @param domain
+     *            the domain that will own the tenant
+     * @return an instance of {@link com.mulesoft.ch.rest.model.Tenant} carrying the state of the newly created tenant
      */
     @Processor
     public Tenant createTenant(@RefOnly @Default("#[payload]") Tenant tenant, String domain) {
@@ -382,11 +393,12 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
      * Returns an specific tenant
      * </p>
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:get-tenant}
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:get-tenant}
      *
-     * @param domain   the domain owning the tenants
-     * @param tenantId the id of the tenant you want
+     * @param domain
+     *            the domain owning the tenants
+     * @param tenantId
+     *            the id of the tenant you want
      * @return an instance of {@link com.mulesoft.ch.rest.model.Tenant}
      */
     @Processor
@@ -399,14 +411,13 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
      * Updates a tenant
      * </p>
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:update-tenant}
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:update-tenant}
      *
-     * @param tenant an instance of {@link com.mulesoft.ch.rest.model.Tenant}
-     *               with the tenant's new state
-     * @param domain the domain that will own the tenant
-     * @return an instance of {@link com.mulesoft.ch.rest.model.Tenant}
-     * carrying the tenant's updated state
+     * @param tenant
+     *            an instance of {@link com.mulesoft.ch.rest.model.Tenant} with the tenant's new state
+     * @param domain
+     *            the domain that will own the tenant
+     * @return an instance of {@link com.mulesoft.ch.rest.model.Tenant} carrying the tenant's updated state
      */
     @Processor
     public Tenant updateTenant(@RefOnly @Default("#[payload]") Tenant tenant, String domain) {
@@ -418,11 +429,12 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
      * Deletes a given tenant
      * </p>
      * <p/>
-     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample
-     * cloudhub:delete-tenant}
+     * {@sample.xml ../../../doc/CloudHub-connector.xml.sample cloudhub:delete-tenant}
      *
-     * @param tenantId the id of the tenant to be deleted
-     * @param domain   the domain that owns the tenant to be deleted
+     * @param tenantId
+     *            the id of the tenant to be deleted
+     * @param domain
+     *            the domain that owns the tenant to be deleted
      */
     @Processor
     public void deleteTenant(String domain, String tenantId) {

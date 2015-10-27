@@ -13,7 +13,8 @@ import static org.junit.Assert.assertEquals;
 
 public class ModuleClassLoaderTest {
 
-    @Test public void testDependencies() throws IOException, XPathExpressionException, SAXException {
+    @Test
+    public void testDependencies() throws IOException, XPathExpressionException, SAXException {
 
         final Path path = TestData.noCompliantTestPath();
         final ModuleClassLoader classLoader = new ModuleClassLoader(path);

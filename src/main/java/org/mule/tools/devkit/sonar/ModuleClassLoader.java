@@ -47,8 +47,8 @@ public class ModuleClassLoader extends URLClassLoader {
         // Add maven module target dir ...
         final Path targetPath = basePath.resolve("target/classes/");
         if (!Files.exists(targetPath)) {
-            throw new IllegalStateException(
-                    "Maven target directory could not be found. Module must be compiled before executing analysis." + targetPath.toAbsolutePath().toString());
+            throw new IllegalStateException("Maven target directory could not be found. Module must be compiled before executing analysis."
+                    + targetPath.toAbsolutePath().toString());
         }
         result.add(targetPath.toUri().toURL());
 
@@ -58,7 +58,6 @@ public class ModuleClassLoader extends URLClassLoader {
         final Path devkitJar = dependencyToPath("org.mule.tools.devkit", "mule-devkit-annotations", devkitVersion);
         result.add(devkitJar.toUri().toURL());
 
-
         // Add Mule Comments ...
         final Path muleCommonJar = dependencyToPath("org.mule.common", "mule-common", devkitVersion);
         result.add(muleCommonJar.toUri().toURL());
@@ -66,7 +65,6 @@ public class ModuleClassLoader extends URLClassLoader {
         // Add Mule Comments ...
         final Path muleCore = dependencyToPath("org.mule", "mule-core", devkitVersion);
         result.add(muleCore.toUri().toURL());
-
 
         return result.toArray(new URL[result.size()]);
     }
@@ -112,14 +110,16 @@ public class ModuleClassLoader extends URLClassLoader {
 
     }
 
-    @NonNull private static Path dependencyToPath(String groupId, String artifactId, String version) {
+    @NonNull
+    private static Path dependencyToPath(String groupId, String artifactId, String version) {
         // Create maven default layout path ...
         final Path mvnLocalRepo = findMvnLocalRepo();
         final Path jarFolder = mvnLocalRepo.resolve(groupId.replace(".", File.separator)).resolve(artifactId).resolve(version);
         return jarFolder.resolve(artifactId + "-" + version + ".jar");
     }
 
-    @NonNull private static Path findMvnLocalRepo() {
+    @NonNull
+    private static Path findMvnLocalRepo() {
         final String userHome = System.getProperty("user.home");
         return Paths.get(userHome).resolve(".m2/repository");
     }

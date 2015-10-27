@@ -22,8 +22,8 @@ public class RefOnlyParameterVerifier extends ConnectorClassVerifier {
         final Stream<? extends VariableTree> nonSimpleTypes = params.stream().filter(param -> !ClassParserUtils.isSimpleType(param, getImports()));
 
         // Filter the types with without @RefOnly ...
-        final Stream<? extends VariableTree> complexParams = nonSimpleTypes
-                .filter(param -> !ClassParserUtils.isMarkedAsRefOnly(param) && !ClassParserUtils.isMarkedAsPayloadDefault(param));
+        final Stream<? extends VariableTree> complexParams = nonSimpleTypes.filter(param -> !ClassParserUtils.isMarkedAsRefOnly(param)
+                && !ClassParserUtils.isMarkedAsPayloadDefault(param));
 
         if (complexParams.findAny().isPresent()) {
             this.addError(method.getName().toString(), "Processor '%s' contains complex types without @RefOnly.", method.getName());

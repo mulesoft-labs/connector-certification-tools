@@ -43,7 +43,8 @@ public class JavaSourceRule extends AbstractRule {
         }
     }
 
-    @Override public boolean accepts(@NonNull Path basePath, @NonNull Path childPath) {
+    @Override
+    public boolean accepts(@NonNull Path basePath, @NonNull Path childPath) {
 
         // Does the class annotation ....
         boolean result = super.accepts(basePath, childPath);
@@ -75,7 +76,8 @@ public class JavaSourceRule extends AbstractRule {
 
     }
 
-    @Override public @NonNull Set<ValidationError> verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException {
+    @Override
+    public @NonNull Set<ValidationError> verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException {
 
         final JavacTask task = getJavacTask(basePath, childPath);
 
@@ -109,7 +111,8 @@ public class JavaSourceRule extends AbstractRule {
         return result;
     }
 
-    @NonNull private JavacTask getJavacTask(@NonNull Path basePath, @NonNull Path childPath) {
+    @NonNull
+    private JavacTask getJavacTask(@NonNull Path basePath, @NonNull Path childPath) {
         final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         final StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
 
@@ -120,7 +123,8 @@ public class JavaSourceRule extends AbstractRule {
         return (JavacTask) compiler.getTask(null, fileManager, null, null, null, compilationUnit);
     }
 
-    @NonNull private static String extractRegPattern(@NonNull String accept) {
+    @NonNull
+    private static String extractRegPattern(@NonNull String accept) {
         String result = accept;
         if (accept.contains(EXPRESSION_SEPARATOR)) {
             result = accept.split(EXPRESSION_SEPARATOR)[0];
@@ -146,13 +150,15 @@ public class JavaSourceRule extends AbstractRule {
             this.annotationExpression = annotationExpression;
         }
 
-        @Override public Object visitImport(ImportTree node, Trees trees) {
+        @Override
+        public Object visitImport(ImportTree node, Trees trees) {
 
             this.imports.add(node);
             return super.visitImport(node, trees);
         }
 
-        @Override public Object visitClass(final @NonNull ClassTree classTree, @NonNull final Trees trees) {
+        @Override
+        public Object visitClass(final @NonNull ClassTree classTree, @NonNull final Trees trees) {
 
             final Optional<Class<?>> annotation = ClassParserUtils.classForName(annotationExpression, imports);
             if (!annotation.isPresent()) {
@@ -167,7 +173,8 @@ public class JavaSourceRule extends AbstractRule {
             return result;
         }
 
-        @NonNull public boolean getHasMarched() {
+        @NonNull
+        public boolean getHasMarched() {
             return this.hasMarched;
         }
 

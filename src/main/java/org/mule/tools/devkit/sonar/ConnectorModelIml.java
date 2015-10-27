@@ -53,19 +53,24 @@ public class ConnectorModelIml implements Context.ConnectorModel {
         }
     }
 
-    @Override public Set<String> getProcessors() {
+    @Override
+    public Set<String> getProcessors() {
         return processors;
     }
 
-    @Override public Set<String> getSources() {
+    @Override
+    public Set<String> getSources() {
         throw new UnsupportedOperationException();
     }
 
-    @Override public List<String> getProperty(@NonNull final ClassProperty property) {
+    @Override
+    public List<String> getProperty(@NonNull final ClassProperty property) {
         return new ArrayList<>(property.values(this));
     }
 
-    @Override @NonNull public String getPackage() {
+    @Override
+    @NonNull
+    public String getPackage() {
         return packageName;
     }
 
@@ -73,12 +78,14 @@ public class ConnectorModelIml implements Context.ConnectorModel {
 
         boolean mainClassParsed;
 
-        @Override public Object visitCompilationUnit(CompilationUnitTree node, Trees trees) {
+        @Override
+        public Object visitCompilationUnit(CompilationUnitTree node, Trees trees) {
             ConnectorModelIml.this.packageName = node.getPackageName().toString();
             return super.visitCompilationUnit(node, trees);
         }
 
-        @Override public Object visitMethod(MethodTree method, Trees trees) {
+        @Override
+        public Object visitMethod(MethodTree method, Trees trees) {
 
             final List<? extends AnnotationTree> annotations = method.getModifiers().getAnnotations();
             if (annotations.stream().anyMatch(ClassParserUtils::isProcessorAnnotation)) {
@@ -88,7 +95,8 @@ public class ConnectorModelIml implements Context.ConnectorModel {
             return super.visitMethod(method, trees);
         }
 
-        @Override public Object visitClass(ClassTree node, Trees trees) {
+        @Override
+        public Object visitClass(ClassTree node, Trees trees) {
             Object result;
             if (!mainClassParsed) {
                 final List<? extends AnnotationTree> annotations = node.getModifiers().getAnnotations();
@@ -109,5 +117,3 @@ public class ConnectorModelIml implements Context.ConnectorModel {
         this.processors.add(methodName);
     }
 }
-
-

@@ -27,7 +27,8 @@ abstract public @Immutable class AbstractRule implements Rule {
         this.accept = accept;
     }
 
-    @Override public boolean accepts(@NonNull Path basePath, @NonNull Path childPath) {
+    @Override
+    public boolean accepts(@NonNull Path basePath, @NonNull Path childPath) {
         final String pathStr = childPath.toFile().toString();
         final boolean result = acceptPattern.matcher(pathStr).matches();
         logger.debug("File {} accepted -> {}", pathStr, result);
@@ -35,19 +36,23 @@ abstract public @Immutable class AbstractRule implements Rule {
         return result;
     }
 
-    @NonNull public Documentation getDocumentation() {
+    @NonNull
+    public Documentation getDocumentation() {
         return documentation;
     }
 
-    @NonNull Set<ValidationError> buildError(@NonNull List<String> msgs) {
+    @NonNull
+    Set<ValidationError> buildError(@NonNull List<String> msgs) {
         return msgs.stream().map(msg -> ValidationError.create(this.getDocumentation(), msg)).collect(Collectors.toSet());
     }
 
-    @NonNull Set<ValidationError> buildError(@NonNull String... msgs) {
+    @NonNull
+    Set<ValidationError> buildError(@NonNull String... msgs) {
         return buildError(Arrays.asList(msgs));
     }
 
-    @NonNull protected String getAccept() {
+    @NonNull
+    protected String getAccept() {
         return accept;
     }
 

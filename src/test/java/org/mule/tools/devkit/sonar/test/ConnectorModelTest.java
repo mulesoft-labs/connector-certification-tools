@@ -10,7 +10,8 @@ import static org.junit.Assert.assertEquals;
 
 public class ConnectorModelTest {
 
-    @Test public void testParsing() {
+    @Test
+    public void testParsing() {
         final Path basePath = TestData.noCompliantTestPath();
         final Path pomPath = basePath.resolve("src/main/java/org/sample/MyConnector.java");
 

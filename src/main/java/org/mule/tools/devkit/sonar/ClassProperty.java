@@ -9,8 +9,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public enum ClassProperty {
-    CONNECTOR_PACKAGE(model -> Collections.singleton(model.getPackage().replace(".", "/"))),
-    CONNECTOR_PROCESSOR(model -> model.getProcessors().stream().map(WordUtils::capitalize).collect(Collectors.toSet()));
+    CONNECTOR_PACKAGE(model -> Collections.singleton(model.getPackage().replace(".", "/"))), CONNECTOR_PROCESSOR(model -> model.getProcessors().stream().map(WordUtils::capitalize)
+            .collect(Collectors.toSet()));
 
     private final @NonNull Function<Context.ConnectorModel, Set<String>> function;
 
@@ -18,7 +18,8 @@ public enum ClassProperty {
         this.function = function;
     }
 
-    @NonNull public String toKey() {
+    @NonNull
+    public String toKey() {
         return this.name().toLowerCase();
     }
 
@@ -27,7 +28,8 @@ public enum ClassProperty {
         return ClassProperty.valueOf(id);
     }
 
-    @NonNull Set<String> values(final Context.ConnectorModel model) {
+    @NonNull
+    Set<String> values(final Context.ConnectorModel model) {
         return function.apply(model);
     }
 }

@@ -20,7 +20,9 @@ abstract class ConnectorClassVerifier extends SourceTreeVerifier {
         super(doc);
     }
 
-    @Override @NonNull final public Object visitClass(@NonNull ClassTree classTree, @NonNull Trees trees) {
+    @Override
+    @NonNull
+    final public Object visitClass(@NonNull ClassTree classTree, @NonNull Trees trees) {
         Object result = null;
 
         // Process if it's a connector class ...
@@ -31,7 +33,9 @@ abstract class ConnectorClassVerifier extends SourceTreeVerifier {
         return result;
     }
 
-    @Override @NonNull final public Object visitMethod(@NonNull final MethodTree methodTree, Trees trees) {
+    @Override
+    @NonNull
+    final public Object visitMethod(@NonNull final MethodTree methodTree, Trees trees) {
         final List<? extends AnnotationTree> annotations = methodTree.getModifiers().getAnnotations();
 
         if (ClassParserUtils.contains(annotations, Processor.class)) {

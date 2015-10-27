@@ -47,7 +47,8 @@ public class ConnectorModuleValidator {
         this.rules = RulesFactory.load();
     }
 
-    @NonNull public Set<ValidationError> execute(@NonNull final Path basePath) throws IOException {
+    @NonNull
+    public Set<ValidationError> execute(@NonNull final Path basePath) throws IOException {
 
         // Init Context ...
         Context.getInstance(basePath);
@@ -60,11 +61,11 @@ public class ConnectorModuleValidator {
             logger.debug("Processing file -> '{}' '{}'", basePath, relativePath);
 
             // Filter rules ...
-            final Stream<Rule> filteredRules = rules.stream().filter(rule -> rule.accepts(basePath, relativePath));
+                final Stream<Rule> filteredRules = rules.stream().filter(rule -> rule.accepts(basePath, relativePath));
 
-            // Apply rules ..
-            return filteredRules.map(rule -> rule.verify(basePath, relativePath)).collect(Collectors.toSet());
-        }).filter(set -> !set.isEmpty()).flatMap(Collection::stream).collect(Collectors.toSet());
+                // Apply rules ..
+                return filteredRules.map(rule -> rule.verify(basePath, relativePath)).collect(Collectors.toSet());
+            }).filter(set -> !set.isEmpty()).flatMap(Collection::stream).collect(Collectors.toSet());
 
         final Stream<ValidationError> errors = result.stream().flatMap(Collection::stream);
 
@@ -72,7 +73,8 @@ public class ConnectorModuleValidator {
         return errors.filter(e -> ignore.get(e.getUUID()) == null).collect(Collectors.toSet());
     }
 
-    @NonNull public Set<Rule.Documentation> rulesDoc() throws IOException {
+    @NonNull
+    public Set<Rule.Documentation> rulesDoc() throws IOException {
         return rules.stream().map(Rule::getDocumentation).collect(Collectors.toSet());
     }
 

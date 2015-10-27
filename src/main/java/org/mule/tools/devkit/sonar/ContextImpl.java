@@ -54,23 +54,30 @@ public class ContextImpl implements Context {
         }
     }
 
-    @Override public @NonNull String getDevKitVersion() {
+    @Override
+    public @NonNull String getDevKitVersion() {
         return this.devkitVersion;
     }
 
-    @NonNull @Override public ClassLoader getModuleClassLoader() {
+    @NonNull
+    @Override
+    public ClassLoader getModuleClassLoader() {
         return classLoader;
     }
 
-    @Override public @NonNull ConnectorModel getConnectorModel() {
+    @Override
+    public @NonNull ConnectorModel getConnectorModel() {
         return model;
     }
 
-    @Override @NonNull public String getCategory() {
+    @Override
+    @NonNull
+    public String getCategory() {
         return category.toUpperCase();
     }
 
-    @NonNull public static Context getInstance(@NonNull Path basePath) {
+    @NonNull
+    public static Context getInstance(@NonNull Path basePath) {
         Context context = instancesByPath.get(basePath);
         if (context == null) {
             context = new ContextImpl(basePath);
@@ -83,9 +90,9 @@ public class ContextImpl implements Context {
         threadLocal.set(this);
     }
 
-    @NonNull public static Context getInstance() {
+    @NonNull
+    public static Context getInstance() {
         return threadLocal.get();
     }
 
 }
-

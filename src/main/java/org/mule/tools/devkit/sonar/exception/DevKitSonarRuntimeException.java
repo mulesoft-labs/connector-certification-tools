@@ -1,6 +1,6 @@
 package org.mule.tools.devkit.sonar.exception;
 
-public class DevKitSonarRuntimeException extends  RuntimeException{
+public class DevKitSonarRuntimeException extends RuntimeException {
 
     public DevKitSonarRuntimeException(String message) {
         super(message);
