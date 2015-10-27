@@ -8,7 +8,15 @@ import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
-@JsonPropertyOrder({ "id", "type", "accept", "assert", "brief", "description", "section", "severity" })
+@JsonPropertyOrder({
+        "id",
+        "type",
+        "accept",
+        "assert",
+        "brief",
+        "description",
+        "section",
+        "severity" })
 public class JsonRule {
 
     @JsonProperty("id")

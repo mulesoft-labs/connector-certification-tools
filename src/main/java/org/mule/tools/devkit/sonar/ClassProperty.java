@@ -9,8 +9,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public enum ClassProperty {
-    CONNECTOR_PACKAGE(model -> Collections.singleton(model.getPackage().replace(".", "/"))), CONNECTOR_PROCESSOR(model -> model.getProcessors().stream().map(WordUtils::capitalize)
-            .collect(Collectors.toSet()));
+    CONNECTOR_PACKAGE(model -> Collections.singleton(model.getPackage().replace(".", "/"))),
+    CONNECTOR_PROCESSOR(model -> model.getProcessors().stream().map(WordUtils::capitalize).collect(Collectors.toSet()));
 
     private final @NonNull Function<Context.ConnectorModel, Set<String>> function;
 

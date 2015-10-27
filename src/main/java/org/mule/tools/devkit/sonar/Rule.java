@@ -36,7 +36,10 @@ public interface Rule {
         Severity getSeverity();
 
         enum Severity {
-            CRITICAL, MAJOR, MINOR, INFO
+            CRITICAL,
+            MAJOR,
+            MINOR,
+            INFO
         }
     }
 
