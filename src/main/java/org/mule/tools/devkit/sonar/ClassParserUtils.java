@@ -64,6 +64,13 @@ public class ClassParserUtils {
         primitiveToBoxedType.put("short", java.lang.Short.class);
     }
 
+    final private static Set<Class<?>> allowedComplexTypes = new HashSet<>();
+
+    static {
+        allowedComplexTypes.add(java.lang.String.class);
+        allowedComplexTypes.add(java.math.BigDecimal.class);
+    }
+
     private ClassParserUtils() {
 
     }
@@ -75,7 +82,7 @@ public class ClassParserUtils {
 
     public static boolean isSimpleType(@NonNull final Tree type, @NonNull Set<ImportTree> imports) {
         Optional<Class<?>> clazz = classForName(type, imports);
-        boolean result = isPrimitive(type, imports) || isEnum(type, imports) || (clazz.isPresent() && clazz.get().getName().endsWith("java.lang.String"));
+        boolean result = isPrimitive(type, imports) || isEnum(type, imports) || (clazz.isPresent() && allowedComplexTypes.contains(clazz.get()));
         logger.debug("Type '{}' is a simple type -> '{}'", type.toString(), result);
         return result;
     }
