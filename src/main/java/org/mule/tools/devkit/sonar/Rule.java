@@ -9,23 +9,31 @@ import java.util.Set;
 
 public interface Rule {
 
-    @NonNull boolean accepts(@NonNull Path basePath, @NonNull Path childPath);
+    @NonNull
+    boolean accepts(@NonNull Path basePath, @NonNull Path childPath);
 
-    @NonNull Set<ValidationError> verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException;
+    @NonNull
+    Set<ValidationError> verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException;
 
-    @NonNull Documentation getDocumentation();
+    @NonNull
+    Documentation getDocumentation();
 
     interface Documentation {
 
-        @Nullable String getId();
+        @Nullable
+        String getId();
 
-        @Nullable String getSection();
+        @Nullable
+        String getSection();
 
-        @NonNull String getBrief();
+        @NonNull
+        String getBrief();
 
-        @NonNull String getDescription();
+        @NonNull
+        String getDescription();
 
-        @NonNull Severity getSeverity();
+        @NonNull
+        Severity getSeverity();
 
         enum Severity {
             CRITICAL,

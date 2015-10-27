@@ -13,15 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MetadataCategoriesVerifier extends SourceTreeVerifier {
+public class MetadataCategoryVerifier extends SourceTreeVerifier {
 
     final List<String> metadataClassesName = new ArrayList<>();
 
-    public  MetadataCategoriesVerifier(Rule.@NonNull Documentation doc) {
+    public MetadataCategoryVerifier(Rule.@NonNull Documentation doc) {
         super(doc);
     }
 
-    @Override @NonNull final public Object visitClass(@NonNull ClassTree classTree, @NonNull Trees trees) {
+    @Override
+    @NonNull
+    final public Object visitClass(@NonNull ClassTree classTree, @NonNull Trees trees) {
         final Object result = super.visitClass(classTree, trees);
 
         final Optional<? extends AnnotationTree> metadataCategory = ClassParserUtils.find(classTree.getModifiers().getAnnotations(), MetaDataCategory.class);
@@ -33,7 +35,9 @@ public class MetadataCategoriesVerifier extends SourceTreeVerifier {
         return result;
     }
 
-    @Override @NonNull final public Object visitMethod(@NonNull final MethodTree methodTree, Trees trees) {
+    @Override
+    @NonNull
+    final public Object visitMethod(@NonNull final MethodTree methodTree, Trees trees) {
         final Optional<? extends AnnotationTree> metadataCategory = ClassParserUtils.find(methodTree.getModifiers().getAnnotations(), MetaDataCategory.class);
         if (metadataCategory.isPresent()) {
             metadataClassesName.add(metadataCategory.get().toString());

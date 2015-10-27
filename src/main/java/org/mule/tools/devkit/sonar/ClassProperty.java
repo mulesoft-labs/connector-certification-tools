@@ -18,7 +18,8 @@ public enum ClassProperty {
         this.function = function;
     }
 
-    @NonNull public String toKey() {
+    @NonNull
+    public String toKey() {
         return this.name().toLowerCase();
     }
 
@@ -27,7 +28,8 @@ public enum ClassProperty {
         return ClassProperty.valueOf(id);
     }
 
-    @NonNull Set<String> values(final Context.ConnectorModel model) {
+    @NonNull
+    Set<String> values(final Context.ConnectorModel model) {
         return function.apply(model);
     }
 }

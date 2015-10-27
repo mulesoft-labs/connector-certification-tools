@@ -94,7 +94,17 @@
       "description": "It's strongly recommended that all mandatory parameters be defined as part of the payload. Consider creating a complex object as grouping all the parameters",
       "section": "Best Practices",
       "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
-      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.ProcessorParametersVerifier"
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.ProcessorParameterVerifier"
+    },
+    {
+      "type": "source.java",
+      "id": "processor_params_quantity",
+      "severity": "major",
+      "brief": "Many parameters in processor",
+      "description": "It's strongly recommended that all optional parameters are grouped inside a separate POJO class.",
+      "section": "Best Practices",
+      "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.ProcessorParameterQuantityVerifier"
     },
     {
       "type": "source.java",
@@ -104,7 +114,17 @@
       "description": "Complex types should be marked with @RefOnly",
       "section": "Best Practices",
       "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
-      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.RefOnlyParametersVerifier"
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.RefOnlyParameterVerifier"
+    },
+    {
+      "type": "source.java",
+      "id": "processor_exception",
+      "severity": "major",
+      "brief": "Redundant exception names",
+      "description": "Don't use the word 'Connector' to define the name of custom exceptions, e.g: <MyAwesomeConnectoException> should be <MyAwesomeException> ",
+      "section": "Best Practices",
+      "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.ProcessorExceptionVerifier"
     },
     {
       "type": "source.java",
@@ -144,7 +164,7 @@
       "description": "???",
       "section": "???",
       "accept": ".+/.+.\\.java$;org.mule.api.annotations.components.MetaDataCategory",
-      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.MetadataCategoriesVerifier"
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.MetadataCategoryVerifier"
     },
     {
       "type": "source.xml",

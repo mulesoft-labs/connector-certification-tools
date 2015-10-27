@@ -23,7 +23,8 @@ public class DirectoryStructureRuleTest {
 
     private Context context;
 
-    @Before public void setup() {
+    @Before
+    public void setup() {
 
         final Context.ConnectorModel connectorModel = Mockito.mock(Context.ConnectorModel.class);
         Mockito.when(connectorModel.getProperty(null)).then(var -> Arrays.asList("Processor", "Processor2"));
@@ -32,7 +33,8 @@ public class DirectoryStructureRuleTest {
         Mockito.when(context.getConnectorModel()).thenReturn(connectorModel);
     }
 
-    @Test public void validateSinglePath() throws IOException {
+    @Test
+    public void validateSinglePath() throws IOException {
 
         final Rule rule = TestData.findRule("readme");
         final Path rootPath = TestData.noCompliantTestPath();
@@ -44,7 +46,8 @@ public class DirectoryStructureRuleTest {
         assertEquals(1, verify.size());
     }
 
-    @Test public void validateSinglePathOk() throws IOException {
+    @Test
+    public void validateSinglePathOk() throws IOException {
 
         final Rule rule = TestData.findRule("readme");
         final Path rootPath = TestData.compliantTestPath();
@@ -56,7 +59,8 @@ public class DirectoryStructureRuleTest {
         assertEquals(0, verify.size());
     }
 
-    @Test public void permutation() throws IOException {
+    @Test
+    public void permutation() throws IOException {
         // Single line ...
         final List<List<String>> sample1 = Collections.singletonList(Arrays.asList("a1", "a2"));
         final List<List<String>> sample1p = DirectoryStructureRule.permute(sample1, 0);

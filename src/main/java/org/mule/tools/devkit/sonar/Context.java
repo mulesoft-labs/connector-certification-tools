@@ -8,31 +8,40 @@ import java.util.Set;
 
 public interface Context {
 
-    @NonNull String getDevKitVersion();
+    @NonNull
+    String getDevKitVersion();
 
-    @NonNull String getCategory();
+    @NonNull
+    String getCategory();
 
-    @NonNull ClassLoader getModuleClassLoader();
+    @NonNull
+    ClassLoader getModuleClassLoader();
 
-    @NonNull ConnectorModel getConnectorModel();
+    @NonNull
+    ConnectorModel getConnectorModel();
 
     interface ConnectorModel {
 
-        @NonNull Set<String> getProcessors();
+        @NonNull
+        Set<String> getProcessors();
 
-        @NonNull Set<String> getSources();
+        @NonNull
+        Set<String> getSources();
 
-        @NonNull String getPackage();
+        @NonNull
+        String getPackage();
 
-        @NonNull List<String> getProperty(ClassProperty property);
+        @NonNull
+        List<String> getProperty(ClassProperty property);
     }
 
-    @NonNull static Context getInstance(@NonNull final Path basePath) {
+    @NonNull
+    static Context getInstance(@NonNull final Path basePath) {
         return ContextImpl.getInstance(basePath);
     }
 
-    @NonNull static Context getInstance() {
+    @NonNull
+    static Context getInstance() {
         return ContextImpl.getInstance();
     }
 }
-

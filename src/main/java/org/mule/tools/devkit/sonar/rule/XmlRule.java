@@ -66,7 +66,9 @@ public class XmlRule extends AbstractRule {
         return Optional.empty();
     }
 
-    @Override @NonNull public Set<ValidationError> verify(@NonNull Path basePath, @NonNull final Path childPath) throws DevKitSonarRuntimeException {
+    @Override
+    @NonNull
+    public Set<ValidationError> verify(@NonNull Path basePath, @NonNull final Path childPath) throws DevKitSonarRuntimeException {
 
         boolean success;
         try {
@@ -79,11 +81,11 @@ public class XmlRule extends AbstractRule {
         }
         logger.debug("Rule {} applied to {} -> {}", this.getDocumentation().getId(), childPath.toString(), success);
 
-        return !success ? buildError("Assertion failed '" + assertExp + "'.") : Collections.<ValidationError>emptySet();
+        return !success ? buildError("Assertion failed '" + assertExp + "'.") : Collections.<ValidationError> emptySet();
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "XPathRule{} " + super.toString();
     }
 }
-

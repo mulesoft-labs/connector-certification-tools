@@ -20,7 +20,8 @@ public class LicenseByCategoryVerifier extends ConnectorClassVerifier {
         super(doc);
     }
 
-    @Override protected void verifyConnector(@NonNull ClassTree classTree, @NonNull Trees trees) {
+    @Override
+    protected void verifyConnector(@NonNull ClassTree classTree, @NonNull Trees trees) {
 
         final List<? extends AnnotationTree> annotations = classTree.getModifiers().getAnnotations();
         boolean hasEnterpriseAnnotation = annotations.stream().anyMatch(a -> ClassParserUtils.is(a, RequiresEnterpriseLicense.class));

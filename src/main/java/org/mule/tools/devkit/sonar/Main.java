@@ -47,7 +47,6 @@ public class Main {
                 // Execute validator ...
                 final Set<ValidationError> errors = validator.execute(modulePath);
 
-
                 // Print report ....
                 final Report report = new ConsoleReport();
                 report.process(modulePath, errors);

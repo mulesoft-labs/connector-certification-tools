@@ -23,7 +23,8 @@ public class JsonRulesLoader {
         builders.put("structure", DirectoryStructureRule::new);
     }
 
-    @NonNull public static Set<Rule> build() throws IOException {
+    @NonNull
+    public static Set<Rule> build() throws IOException {
         final ObjectMapper mapper = new ObjectMapper();
         final InputStream jsonStream = JsonRulesLoader.class.getClassLoader().getResourceAsStream("rules.json");
         final JsonRules rulesDef = mapper.readValue(jsonStream, JsonRules.class);
@@ -31,7 +32,8 @@ public class JsonRulesLoader {
         return rulesDef.getRules().stream().map(JsonRulesLoader::defToRule).collect(Collectors.toSet());
     }
 
-    @NonNull private static Rule defToRule(@NonNull final JsonRule ruleDef) {
+    @NonNull
+    private static Rule defToRule(@NonNull final JsonRule ruleDef) {
         final String type = ruleDef.getType();
 
         final RuleBuilder ruleBuilder = builders.get(type);
@@ -45,9 +47,11 @@ public class JsonRulesLoader {
 
     }
 
-    @FunctionalInterface interface RuleBuilder {
+    @FunctionalInterface
+    interface RuleBuilder {
 
-        @NonNull Rule create(Rule.Documentation documentation, @NonNull final String verifyExpression, @NonNull String assertExp);
+        @NonNull
+        Rule create(Rule.Documentation documentation, @NonNull final String verifyExpression, @NonNull String assertExp);
     }
 
 }

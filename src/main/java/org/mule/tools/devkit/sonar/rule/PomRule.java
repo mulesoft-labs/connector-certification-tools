@@ -24,7 +24,8 @@ public class PomRule extends AbstractRule {
         this.assertExp = assertExp;
     }
 
-    @Override public boolean accepts(@NonNull final Path basePath, @NonNull final Path childPath) {
+    @Override
+    public boolean accepts(@NonNull final Path basePath, @NonNull final Path childPath) {
         boolean result = super.accepts(basePath, childPath);
         if (!StringUtils.isBlank(acceptXPath) && result) {
             result = (boolean) XmlUtils.evalXPathOnPom(basePath, acceptXPath, XPathConstants.BOOLEAN);
@@ -32,9 +33,9 @@ public class PomRule extends AbstractRule {
         return result;
     }
 
-    @Override public @NonNull Set<ValidationError> verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException {
+    @Override
+    public @NonNull Set<ValidationError> verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException {
         final boolean result = (boolean) XmlUtils.evalXPathOnPom(basePath, assertExp, XPathConstants.BOOLEAN);
         return result ? Collections.emptySet() : Collections.singleton(ValidationError.create(this.getDocumentation(), "Expressions could not be satisfied '" + assertExp + "'."));
     }
 }
-

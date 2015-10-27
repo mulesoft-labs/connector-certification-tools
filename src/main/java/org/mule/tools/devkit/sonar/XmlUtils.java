@@ -35,7 +35,8 @@ public class XmlUtils {
         }
     }
 
-    @NonNull public static Object evalXPathOnPom(@NonNull final Path basePath, @NonNull @Regex final String xpathExp, @NonNull QName constant) {
+    @NonNull
+    public static Object evalXPathOnPom(@NonNull final Path basePath, @NonNull @Regex final String xpathExp, @NonNull QName constant) {
         final Path pomXml = basePath.resolve("pom.xml");
         if (!Files.exists(pomXml)) {
             throw new IllegalStateException("Project pom.xml could not be found." + basePath.toAbsolutePath().toString());

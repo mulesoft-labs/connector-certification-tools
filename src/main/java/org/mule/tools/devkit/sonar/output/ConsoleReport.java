@@ -68,7 +68,8 @@ enum AnsiEscapeCodesEnum {
         this.code = code;
     }
 
-    @NonNull public String getCode() {
+    @NonNull
+    public String getCode() {
         return code;
     }
 }

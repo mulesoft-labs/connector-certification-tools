@@ -6,11 +6,16 @@ import org.mule.tools.devkit.sonar.Rule;
 
 public class DocumentationImpl implements Rule.Documentation {
 
-    @NonNull private final String id;
-    @NonNull private final String brief;
-    @NonNull private final String description;
-    @NonNull private final String section;
-    @NonNull private final Severity severity;
+    @NonNull
+    private final String id;
+    @NonNull
+    private final String brief;
+    @NonNull
+    private final String description;
+    @NonNull
+    private final String section;
+    @NonNull
+    private final Severity severity;
 
     public DocumentationImpl(@NonNull String id, @NonNull String brief, @NonNull String description, @Nullable String section, @NonNull Severity severity) {
         this.id = id;
@@ -25,27 +30,36 @@ public class DocumentationImpl implements Rule.Documentation {
         return new DocumentationImpl(id, brief, description, section, severity);
     }
 
-    @Override @NonNull public String getBrief() {
+    @Override
+    @NonNull
+    public String getBrief() {
         return brief;
     }
 
-    @Override @NonNull public String getDescription() {
+    @Override
+    @NonNull
+    public String getDescription() {
         return description;
     }
 
-    @Override public @NonNull Severity getSeverity() {
+    @Override
+    public @NonNull Severity getSeverity() {
         return severity;
     }
 
-    @Override @Nullable public String getSection() {
+    @Override
+    @Nullable
+    public String getSection() {
         return section;
     }
 
-    @NonNull public String getId() {
+    @NonNull
+    public String getId() {
         return id;
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o)
             return true;
         if (!(o instanceof DocumentationImpl))
@@ -57,7 +71,8 @@ public class DocumentationImpl implements Rule.Documentation {
 
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return getId() != null ? getId().hashCode() : 0;
     }
 }

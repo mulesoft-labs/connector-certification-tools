@@ -4,7 +4,8 @@ import org.checkerframework.checker.igj.qual.Immutable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-@Immutable public class ValidationErrorImpl implements ValidationError {
+@Immutable
+public class ValidationErrorImpl implements ValidationError {
 
     private final Rule.@NonNull Documentation doc;
     private final @NonNull String message;
@@ -20,15 +21,18 @@ import org.checkerframework.checker.nullness.qual.Nullable;
         this.message = message;
     }
 
-    @Override public Rule.@NonNull Documentation getDocumentation() {
+    @Override
+    public Rule.@NonNull Documentation getDocumentation() {
         return doc;
     }
 
-    @Override public @NonNull String getMessage() {
+    @Override
+    public @NonNull String getMessage() {
         return message;
     }
 
-    @Override public @NonNull String getUUID() {
+    @Override
+    public @NonNull String getUUID() {
         return doc.getId() + (uuid != null ? ":" + uuid : "");
     }
 }

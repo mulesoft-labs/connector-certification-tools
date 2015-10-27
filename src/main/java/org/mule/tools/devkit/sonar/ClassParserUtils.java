@@ -117,8 +117,8 @@ public class ClassParserUtils {
     }
 
     public static boolean isDefaultPayloadAnnotation(@NonNull final AnnotationTree annotation) {
-        return annotation.toString().startsWith("@" + DEFAULT_PAYLOAD_EXPRESSION) || annotation.toString()
-                .startsWith("@org.mule.api.annotations.param." + DEFAULT_PAYLOAD_EXPRESSION);
+        return annotation.toString().startsWith("@" + DEFAULT_PAYLOAD_EXPRESSION)
+                || annotation.toString().startsWith("@org.mule.api.annotations.param." + DEFAULT_PAYLOAD_EXPRESSION);
     }
 
     public static boolean isProcessorAnnotation(@NonNull final AnnotationTree annotation) {
@@ -154,7 +154,7 @@ public class ClassParserUtils {
             result = findClass(className);
         }
 
-        // Object is a primitive class type  ?
+        // Object is a primitive class type ?
         if (!result.isPresent()) {
             if (primitives.contains(className)) {
                 result = Optional.of(primitiveToBoxedType.get(className));

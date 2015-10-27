@@ -26,7 +26,8 @@ import java.util.stream.Collectors;
 
 public class DirectoryStructureRule extends AbstractRule {
 
-    @Regex public static final String VELOCITY_VARIABLE = "\\$\\{([^${}]+)}";
+    @Regex
+    public static final String VELOCITY_VARIABLE = "\\$\\{([^${}]+)}";
     final private static Logger logger = LoggerFactory.getLogger(DirectoryStructureRule.class);
 
     private Template template;
@@ -69,7 +70,8 @@ public class DirectoryStructureRule extends AbstractRule {
 
     }
 
-    @Override public Set<ValidationError> verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException {
+    @Override
+    public Set<ValidationError> verify(@NonNull Path basePath, @NonNull Path childPath) throws DevKitSonarRuntimeException {
 
         final Set<VelocityContext> contexts = this.buildContexts(basePath);
         final List<String> msgs = new ArrayList<>();
@@ -86,7 +88,8 @@ public class DirectoryStructureRule extends AbstractRule {
         return buildError(msgs);
     }
 
-    @NonNull public Set<VelocityContext> buildContexts(@NonNull final Path basePath) {
+    @NonNull
+    public Set<VelocityContext> buildContexts(@NonNull final Path basePath) {
 
         // Find defined variables ...
         final Context context = Context.getInstance(basePath);
@@ -118,7 +121,8 @@ public class DirectoryStructureRule extends AbstractRule {
         return result;
     }
 
-    @NonNull static public List<List<String>> permute(@NonNull final List<List<String>> lists, int level) {
+    @NonNull
+    static public List<List<String>> permute(@NonNull final List<List<String>> lists, int level) {
 
         List<List<String>> result = new ArrayList<>();
         if (level == lists.size() - 1) {

@@ -9,9 +9,9 @@ import org.mule.tools.devkit.sonar.Rule;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class RefOnlyParametersVerifier extends ConnectorClassVerifier {
+public class RefOnlyParameterVerifier extends ConnectorClassVerifier {
 
-    public RefOnlyParametersVerifier(Rule.@NonNull Documentation doc) {
+    public RefOnlyParameterVerifier(Rule.@NonNull Documentation doc) {
         super(doc);
     }
 
@@ -22,8 +22,8 @@ public class RefOnlyParametersVerifier extends ConnectorClassVerifier {
         final Stream<? extends VariableTree> nonSimpleTypes = params.stream().filter(param -> !ClassParserUtils.isSimpleType(param, getImports()));
 
         // Filter the types with without @RefOnly ...
-        final Stream<? extends VariableTree> complexParams = nonSimpleTypes
-                .filter(param -> !ClassParserUtils.isMarkedAsRefOnly(param) && !ClassParserUtils.isMarkedAsPayloadDefault(param));
+        final Stream<? extends VariableTree> complexParams = nonSimpleTypes.filter(param -> !ClassParserUtils.isMarkedAsRefOnly(param)
+                && !ClassParserUtils.isMarkedAsPayloadDefault(param));
 
         if (complexParams.findAny().isPresent()) {
             this.addError(method.getName().toString(), "Processor '%s' contains complex types without @RefOnly.", method.getName());
