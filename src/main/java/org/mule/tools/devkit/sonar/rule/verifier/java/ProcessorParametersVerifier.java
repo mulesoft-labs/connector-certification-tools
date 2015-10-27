@@ -1,7 +1,9 @@
 package org.mule.tools.devkit.sonar.rule.verifier.java;
 
+import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.MethodTree;
 import com.sun.source.tree.VariableTree;
+import com.sun.tools.javac.tree.JCTree;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.tools.devkit.sonar.ClassParserUtils;
 import org.mule.tools.devkit.sonar.Rule;
@@ -19,10 +21,6 @@ public class ProcessorParametersVerifier extends ConnectorClassVerifier {
 
     @Override
     protected void verifyProcessor(@NonNull MethodTree method, @NonNull final List<? extends VariableTree> parameters) {
-
-        if(parameters.size() >= 5){
-            addError(null, "Processor '%s' contains %s parameters. Consider wrapping them in a separate POJO class", method.getName().toString(), parameters.size());
-        }
 
         // Filter not optional params ...
         final Stream<? extends VariableTree> nonOptionalParam = parameters.stream().filter(p -> !ClassParserUtils.isMarkedAsOptional(p));

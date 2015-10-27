@@ -98,6 +98,16 @@
     },
     {
       "type": "source.java",
+      "id": "processor_params_quantity",
+      "severity": "major",
+      "brief": "Too many parameters in processor",
+      "description": "It's strongly recommended that all optional parameters are grouped inside a separate POJO class.",
+      "section": "Best Practices",
+      "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.ProcessorParametersQuantityVerifier"
+    },
+    {
+      "type": "source.java",
       "id": "processor_params_refonly",
       "severity": "major",
       "brief": "Complex types should be marked with @RefOnly",
@@ -105,6 +115,16 @@
       "section": "Best Practices",
       "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
       "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.RefOnlyParametersVerifier"
+    },
+    {
+      "type": "source.java",
+      "id": "processor_exceptions",
+      "severity": "major",
+      "brief": "Redundant exception names",
+      "description": "Don't use the word 'Connector' to define the name of custom exceptions, e.g: <MyAwesomeConnectoException> should be <MyAwesomeException> ",
+      "section": "Best Practices",
+      "accept": ".+/.+Connector.java$;org.mule.api.annotations.Connector",
+      "assert": "org.mule.tools.devkit.sonar.rule.verifier.java.ProcessorExceptionVerifier"
     },
     {
       "type": "source.java",
