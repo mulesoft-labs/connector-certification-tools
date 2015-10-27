@@ -12,6 +12,9 @@ hs_err_pid*
 .idea/
 target/
 .DS_Store
+.project
+.classpath
+.settings
 
 !src/test/resources/perfect_connector/target
 !src/test/resources/wrong_connector/target
