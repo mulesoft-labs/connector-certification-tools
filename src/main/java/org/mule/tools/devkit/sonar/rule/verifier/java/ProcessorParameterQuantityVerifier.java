@@ -7,17 +7,18 @@ import org.mule.tools.devkit.sonar.Rule;
 
 import java.util.List;
 
-public class ProcessorParametersQuantityVerifier extends ConnectorClassVerifier {
+public class ProcessorParameterQuantityVerifier extends ConnectorClassVerifier {
 
-    public ProcessorParametersQuantityVerifier(Rule.@NonNull Documentation doc) {
+    public ProcessorParameterQuantityVerifier(Rule.@NonNull Documentation doc) {
         super(doc);
     }
 
     @Override
     protected void verifyProcessor(@NonNull MethodTree method, @NonNull final List<? extends VariableTree> parameters) {
 
-        if(parameters.size() >= 5){
-            addError(null, "Processor '%s' contains %s parameters. Consider wrapping them in a separate POJO class", method.getName().toString(), parameters.size());
+        // Total number of params
+        if(parameters.size() >= 7){
+            addError(null, "Processor '%s' contains %s parameters. You MAY HAVE to use a separate POJO class to wrap them all", method.getName().toString(), parameters.size());
         }
 
     }

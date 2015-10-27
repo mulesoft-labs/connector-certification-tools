@@ -9,9 +9,9 @@ import org.mule.tools.devkit.sonar.Rule;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class RefOnlyParametersVerifier extends ConnectorClassVerifier {
+public class RefOnlyParameterVerifier extends ConnectorClassVerifier {
 
-    public RefOnlyParametersVerifier(Rule.@NonNull Documentation doc) {
+    public RefOnlyParameterVerifier(Rule.@NonNull Documentation doc) {
         super(doc);
     }
 

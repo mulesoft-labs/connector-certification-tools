@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MetadataCategoriesVerifier extends SourceTreeVerifier {
+public class MetadataCategoryVerifier extends SourceTreeVerifier {
 
     final List<String> metadataClassesName = new ArrayList<>();
 
-    public  MetadataCategoriesVerifier(Rule.@NonNull Documentation doc) {
+    public MetadataCategoryVerifier(Rule.@NonNull Documentation doc) {
         super(doc);
     }
 

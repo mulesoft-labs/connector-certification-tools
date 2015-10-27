@@ -13,9 +13,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ProcessorParametersVerifier extends ConnectorClassVerifier {
+public class ProcessorParameterVerifier extends ConnectorClassVerifier {
 
-    public ProcessorParametersVerifier(Rule.@NonNull Documentation doc) {
+    public ProcessorParameterVerifier(Rule.@NonNull Documentation doc) {
         super(doc);
     }
 

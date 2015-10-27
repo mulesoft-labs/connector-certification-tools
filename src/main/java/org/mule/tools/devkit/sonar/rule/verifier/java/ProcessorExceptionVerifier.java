@@ -29,7 +29,8 @@ public class ProcessorExceptionVerifier extends ConnectorClassVerifier {
             for(ExpressionTree exp : exceptions){
                 String name =  ((JCTree.JCIdent)exp).getName().toString();
                 if(name.contains("Connector")){
-                    addError(null, "Exception '%s' in processor '%s' should be renamed without the 'Connector' part", name, method.getName().toString());
+                    String newName = name.replace("Connector", "");
+                    addError(null, "Exception '%s' in processor '%s' should be renamed to %s", name, method.getName().toString(), newName);
                 }
             }
         }
