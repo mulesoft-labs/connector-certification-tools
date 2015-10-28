@@ -249,7 +249,7 @@
       "assert": "doc/user-manual.adoc"
     },
     {
-      "type": "structgit add src/main/resources/rules.jsonure",
+      "type": "structure",
       "id": "doc release-notes.adoc",
       "severity": "critical",
       "brief": "There must be a doc folder that contains the file: release-notes.adoc.",
