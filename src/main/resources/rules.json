@@ -195,9 +195,7 @@
       "section": "Directory Structure",            
       "accept": "src/test/java/${connector_package}/automation/system/$",
       "assert": "src/test/java/${connector_package}/automation/system"   
-    },
-    
-    
+    },       
     
     {
       "type": "source.pom",
@@ -207,7 +205,7 @@
       "description": "Mule dependencies should be <scope>provided</scope>",
       "section": "Develop Best Practices",
       "accept": "/pom:project/pom:dependencies/pom:dependency/pom:groupId[text()='org.mule.modules']",
-      "assert": "/pom:project/pom:dependencies/pom:dependency/pom:scope[text()='provided']"
+      "assert": "not(/pom:project/pom:dependencies/pom:dependency/pom:scope[text()!='provided'])"
     },    
     {
       "type": "structure",
@@ -251,7 +249,7 @@
       "assert": "doc/user-manual.adoc"
     },
     {
-      "type": "structure",
+      "type": "structgit add src/main/resources/rules.jsonure",
       "id": "doc release-notes.adoc",
       "severity": "critical",
       "brief": "There must be a doc folder that contains the file: release-notes.adoc.",
@@ -266,9 +264,9 @@
       "severity": "critical",
       "brief": "/doc should contain /images for documentation images",
       "description": "/doc should contain /images for documentation images",
-      "section": "Directory Structure",     
-      "accept": "doc/images/$",
-      "assert": "doc/images"
+      "section": "Directory Structure",           
+      "assert": "doc/images",
+      "accept": "doc/images/$"
     },
     {
       "type": "structure",
