@@ -31,10 +31,10 @@
       "type": "source.pom",
       "id": "devkit_version",
       "severity": "critical",
-      "brief": "DevKit 3.7.1 should be used",
-      "description": "DevKit 3.7.1 is the supported version for the certification",
+      "brief": "DevKit 3.7.2 should be used",
+      "description": "DevKit 3.7.2 is the supported version for the certification",
       "section": "Best Practices",
-      "assert": "/pom:project/pom:parent/pom:version[text()='3.7.1']"
+      "assert": "/pom:project/pom:parent/pom:version[text()='3.7.2']"
     },
     {
       "type": "source.pom",
@@ -198,7 +198,7 @@
     },
     {
       "type": "structure",
-      "id": "Test Suites Location",
+      "id": "test_suites_location",
       "severity": "critical",
       "brief": "For Test Suites there must be a folder named runner",
       "description": "For Test Suites there must be a folder named runner",
@@ -280,13 +280,13 @@
     },    
     {
       "type": "structure",
-      "id": "doc/images",
+      "id": "doc_images",
       "severity": "critical",
-      "brief": "/doc should contain /images for documentation images",
-      "description": "/doc should contain /images for documentation images",
+      "brief": "/doc should contain /_images for documentation images",
+      "description": "/doc should contain a folder /_images for documentation images",
       "section": "Directory Structure",           
-      "assert": "doc/images",
-      "accept": "doc/images/$"
+      "assert": "doc/_images",
+      "accept": "doc/_images/$"
     },
     {
       "type": "structure",
