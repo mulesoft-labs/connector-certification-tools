@@ -55,7 +55,7 @@ public class JavaSourceRuleTest {
 
     @Test
     public void testRefOnlyParametersVerifier() throws IOException {
-        final Rule rule = TestData.findRule("processor_params_readonly");
+        final Rule rule = TestData.findRule("processor_params_refonly");
         final Path rootPath = TestData.noCompliantTestPath();
         final Path childPath = Paths.get("src/main/java/org/sample/MyConnector.java");
 
