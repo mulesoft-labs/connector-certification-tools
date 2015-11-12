@@ -69,6 +69,7 @@ public class ClassParserUtils {
     static {
         allowedComplexTypes.add(java.lang.String.class);
         allowedComplexTypes.add(java.math.BigDecimal.class);
+        allowedComplexTypes.add(java.util.Date.class);
     }
 
     private ClassParserUtils() {
