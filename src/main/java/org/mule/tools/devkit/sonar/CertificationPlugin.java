@@ -3,7 +3,6 @@ package org.mule.tools.devkit.sonar;
 import java.util.Arrays;
 import java.util.List;
 
-import org.mule.tools.devkit.sonar.batch.*;
 import org.mule.tools.devkit.sonar.checks.ProjectContextInitializer;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
