@@ -148,7 +148,7 @@
     },
     {
       "type": "source.java",
-      "id": "restcall_reprecated",
+      "id": "restcall_deprecated",
       "severity": "critical",
       "brief": "@RestCall support is deprecated",
       "description": "@RestCall support has been deprecated in favor of RAML. Consider migrate your connector to Rest Connect",
