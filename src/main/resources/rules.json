@@ -186,14 +186,14 @@
       "accept": "src/test/java$",
       "assert": "src/test/java/${connector_package}/automation/functional/TestDataBuilder.java"
     },
-     {
+    {
       "type": "structure",
       "id": "Test Resources",
       "severity": "critical",
       "brief": "There must be a Test Resources folder, src/test/resources",
       "description": "There must be a Test Resources folder, src/test/resources",
       "section": "Directory Structure",
-      "accept": "src/test/resources/$",      
+      "accept": "src/test/resources/$",
       "assert": "src/test/resources"
     },
     {
@@ -205,66 +205,54 @@
       "section": "Directory Structure",
       "accept": "src/test/java/${connector_package}/automation/runner/$",
       "assert": "src/test/java/${connector_package}/automation/runner"
-    },            
+    },
     {
       "type": "structure",
       "id": "System Test Cases Location",
       "severity": "critical",
       "brief": "For System Test Cases there must be a folder named system",
       "description": "For System Test Cases there must be a folder named system",
-      "section": "Directory Structure",            
+      "section": "Directory Structure",
       "accept": "src/test/java/${connector_package}/automation/system/$",
-      "assert": "src/test/java/${connector_package}/automation/system"   
-    },       
-    
-    {
-      "type": "source.pom",
-      "id": "mule_dependencies_provided",
-      "severity": "critical",
-      "brief": "Mule dependencies should be <scope>provided</scope>",
-      "description": "Mule dependencies should be <scope>provided</scope>",
-      "section": "Develop Best Practices",
-      "accept": "/pom:project/pom:dependencies/pom:dependency/pom:groupId[text()='org.mule.modules']",
-      "assert": "not(/pom:project/pom:dependencies/pom:dependency/pom:scope[text()!='provided'])"
-    },    
+      "assert": "src/test/java/${connector_package}/automation/system"
+    },
     {
       "type": "structure",
       "id": "icons",
-      "severity": "critical",     
+      "severity": "critical",
       "brief": "There must be a folder that contains icons for the connector.",
-      "description": "There must be a folder that contains icons for the connector.",      
-      "section": "Directory Structure",           
+      "description": "There must be a folder that contains icons for the connector.",
+      "section": "Directory Structure",
       "accept": "icons/$",
-      "assert": "icons"   
-    },			
-   {
+      "assert": "icons"
+    },
+    {
       "type": "structure",
       "id": "demo",
       "severity": "critical",
       "brief": "There must be a demo folder that contains one or more demos.",
       "description": "There must be a demo folder that contains one or more demos.",
-      "section": "Directory Structure",        
+      "section": "Directory Structure",
       "accept": "demo/$",
-      "assert": "demo"     
+      "assert": "demo"
     },
-    
     {
       "type": "structure",
       "id": "doc",
       "severity": "critical",
       "brief": "There must be a doc folder.",
       "description": "There must be a doc folder.",
-      "section": "Directory Structure",        
+      "section": "Directory Structure",
       "accept": "doc/$",
-      "assert": "doc"     
-    },    
+      "assert": "doc"
+    },
     {
       "type": "structure",
       "id": "doc user-manual.adoc",
       "severity": "critical",
       "brief": "There must be a doc folder that contains the files: user-manual.adoc",
       "description": "There must be a doc folder that contains the files: user-manual.adoc.",
-      "section": "Directory Structure",     
+      "section": "Directory Structure",
       "accept": "doc/$",
       "assert": "doc/user-manual.adoc"
     },
@@ -274,17 +262,17 @@
       "severity": "critical",
       "brief": "There must be a doc folder that contains the file: release-notes.adoc.",
       "description": "There must be a doc folder that contains the file: release-notes.adoc.",
-      "section": "Directory Structure",     
+      "section": "Directory Structure",
       "accept": "doc/$",
       "assert": "doc/release-notes.adoc"
-    },    
+    },
     {
       "type": "structure",
       "id": "doc_images",
       "severity": "critical",
       "brief": "/doc should contain /_images for documentation images",
       "description": "/doc should contain a folder /_images for documentation images",
-      "section": "Directory Structure",           
+      "section": "Directory Structure",
       "assert": "doc/_images",
       "accept": "doc/_images/$"
     },
@@ -294,7 +282,7 @@
       "severity": "critical",
       "brief": "LICENSE_HEADER.txt must be part of the connector project.",
       "description": "LICENSE_HEADER.txt is based on whether the connector is closed or open-source. Licenses may vary for external (SI) connectors.",
-      "section": "Directory Structure",      
+      "section": "Directory Structure",
       "assert": "LICENSE_HEADER.txt"
     },
     {
@@ -303,7 +291,7 @@
       "severity": "critical",
       "brief": "LICENSE.md must be part of the connector project.",
       "description": "LICENSE.md is based on whether the connector is closed or open-source. Licenses may vary for external (SI) connectors.",
-      "section": "Directory Structure",    
+      "section": "Directory Structure",
       "assert": "LICENSE.md"
     }
   ]
