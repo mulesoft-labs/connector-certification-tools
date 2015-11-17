@@ -29,6 +29,7 @@ public class JavaFileCheckRegistrar implements CheckRegistrar {
         final ImmutableList.Builder<Class<? extends JavaCheck>> builder = ImmutableList.builder();
         builder.add(NumberOfArgumentsInProcessorCheck.class);
         builder.add(LicenseByCategoryCheck.class);
+        builder.add(RefOnlyInComplexTypesCheck.class);
         return builder.build();
     }
 
