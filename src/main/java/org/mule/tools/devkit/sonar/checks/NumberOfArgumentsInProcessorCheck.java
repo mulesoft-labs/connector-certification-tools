@@ -1,6 +1,5 @@
 package org.mule.tools.devkit.sonar.checks;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.jetbrains.annotations.NotNull;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
@@ -10,10 +9,8 @@ import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
-import org.sonar.plugins.java.api.tree.VariableTree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-import javax.annotation.Nullable;
 
 @Rule(key = "NumberOfArgumentsInProcessor",
         name = "Number of complex-type arguments in a processor method",

@@ -35,16 +35,17 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
     protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
 
         Iterable<? extends VariableTree> complexTypes = Iterables.filter(tree.parameters(), ClassParserUtils.COMPLEX_TYPE_PREDICATE);
+        for (VariableTree variable: complexTypes) {
 
-        List<? extends AnnotationTree> annotations = ((VariableTree)complexTypes.iterator()).modifiers().annotations();
+            List<? extends AnnotationTree> annotations = variable.modifiers().annotations();
 
-        final long count = Iterables.size(Iterables.filter(annotations, HAS_REFONLY_ANNOTATION));
-        if (count == 0) {
-            final String message = String.format("Processor '%s' contains complex types without @RefOnly.", tree.simpleName(), count);
-            logger.info(message);
-            context.addIssue(processorAnnotation, this, message);
+            final long count = Iterables.size(Iterables.filter(annotations, HAS_REFONLY_ANNOTATION));
+            if (count == 0) {
+                final String message = String.format("Processor '%s' contains complex types without @RefOnly.", tree.simpleName(), count);
+                logger.info(message);
+                context.addIssue(processorAnnotation, this, message);
+            }
         }
-
     }
 
 }

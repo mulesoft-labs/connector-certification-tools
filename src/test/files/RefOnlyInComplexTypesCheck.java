@@ -10,11 +10,7 @@ import org.mule.api.annotations.param.RefOnly;
 @Connector
 class RefOnlyInComplexTypesCheck {
 
-    @Processor
-    public void aMethod(@RefOnly SomeComplexType s1) {
-    }
-
-    @Processor // Noncompliant {{Processor failingMethod has 1 complex-type parameter wihtout @RefOnly)}}
+    @Processor // Noncompliant {{Processor 'failingMethod' contains complex types without @RefOnly.}}
     public void failingMethod(SomeComplexType s1) {
     }
 
