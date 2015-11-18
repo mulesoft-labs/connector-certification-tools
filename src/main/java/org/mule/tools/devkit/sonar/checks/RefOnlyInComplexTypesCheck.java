@@ -23,11 +23,11 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
     private static final Logger logger = LoggerFactory.getLogger(NumberOfArgumentsInProcessorCheck.class);
 
-    public static final Predicate<AnnotationTree> HAS_REFONLY_ANNOTATION = new Predicate<AnnotationTree>() {
+    public static final Predicate<AnnotationTree> HAS_REF_ONLY_ANNOTATION = new Predicate<AnnotationTree>() {
 
         @Override
         public boolean apply(@Nullable AnnotationTree input) {
-            return ClassParserUtils.is(input, RefOnly.class);
+            return input != null && ClassParserUtils.is(input, RefOnly.class);
         }
     };
 
@@ -39,9 +39,9 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
             List<? extends AnnotationTree> annotations = variable.modifiers().annotations();
 
-            final long count = Iterables.size(Iterables.filter(annotations, HAS_REFONLY_ANNOTATION));
+            final long count = Iterables.size(Iterables.filter(annotations, HAS_REF_ONLY_ANNOTATION));
             if (count == 0) {
-                final String message = String.format("Processor '%s' contains complex types without @RefOnly.", tree.simpleName(), count);
+                final String message = String.format("Processor '%s' contains %d complex types without @RefOnly.", tree.simpleName(), count);
                 logger.info(message);
                 context.addIssue(processorAnnotation, this, message);
             }

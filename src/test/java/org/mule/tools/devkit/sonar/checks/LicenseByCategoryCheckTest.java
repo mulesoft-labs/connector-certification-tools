@@ -7,12 +7,10 @@ import org.sonar.java.checks.verifier.JavaCheckVerifier;
 
 public class LicenseByCategoryCheckTest {
 
-    @NotNull
     private void runForCategory(String category) {
         runForCategory(category, category);
     }
 
-    @NotNull
     private void runForCategory(String category, String testClass) {
         Settings settings = new Settings();
         settings.setProperty("category", category);

@@ -1,6 +1,7 @@
 package org.mule.tools.devkit.sonar;
 
 import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.NotNull;
 import org.sonar.plugins.java.api.CheckRegistrar;
 import org.sonar.plugins.java.api.JavaCheck;
 import org.mule.tools.devkit.sonar.checks.*;
@@ -17,7 +18,7 @@ public class JavaFileCheckRegistrar implements CheckRegistrar {
      * Register the classes that will be used to instantiate checks during analysis.
      */
     @Override
-    public void register(RegistrarContext registrarContext) {
+    public void register(@NotNull RegistrarContext registrarContext) {
         // Call to registerClassesForRepository to associate the classes with the correct repository key
         registrarContext.registerClassesForRepository(JavaRulesDefinition.REPOSITORY_KEY, checkClasses(), testCheckClasses());
     }

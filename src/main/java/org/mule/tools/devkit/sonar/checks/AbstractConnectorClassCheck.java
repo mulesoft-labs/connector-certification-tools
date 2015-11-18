@@ -15,8 +15,6 @@ import java.util.List;
 
 abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements JavaFileScanner {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractConnectorClassCheck.class);
-
     private static final String CONNECTOR_ANNOTATION = "Connector";
     private static final String PROCESSOR_ANNOTATION = "Processor";
     private static final String SOURCE_ANNOTATION = "Source";
@@ -25,14 +23,14 @@ abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements Ja
 
         @Override
         public boolean apply(@Nullable AnnotationTree input) {
-            return input.annotationType().is(Tree.Kind.IDENTIFIER);
+            return input != null && input.annotationType().is(Tree.Kind.IDENTIFIER);
         }
     };
 
     JavaFileScannerContext context;
 
     @Override
-    public void scanFile(JavaFileScannerContext context) {
+    public void scanFile(@NotNull JavaFileScannerContext context) {
         this.context = context;
         scan(context.getTree());
     }
@@ -60,7 +58,7 @@ abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements Ja
             } else if (idf.name().equals(SOURCE_ANNOTATION)) {
                 verifySource(tree, idf);
             }
-        };
+        }
 
         // The call to the super implementation allows to continue the visit of the AST.
         // Be careful to always call this method to visit every node of the tree.

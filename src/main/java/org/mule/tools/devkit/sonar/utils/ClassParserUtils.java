@@ -42,8 +42,8 @@ public class ClassParserUtils {
     public static final Predicate<VariableTree> COMPLEX_TYPE_PREDICATE = new Predicate<VariableTree>() {
 
         @Override
-        public boolean apply(@Nullable VariableTree variableTree) {
-            return !isSimpleType(variableTree.type());
+        public boolean apply(@Nullable VariableTree input) {
+            return input != null && !isSimpleType(input.type());
         }
     };
 

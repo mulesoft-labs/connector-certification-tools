@@ -30,7 +30,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
         @Override
         public boolean apply(@Nullable AnnotationTree input) {
-            return ClassParserUtils.is(input, RequiresEnterpriseLicense.class);
+            return input != null && ClassParserUtils.is(input, RequiresEnterpriseLicense.class);
         }
     };
 
@@ -38,7 +38,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
         @Override
         public boolean apply(@Nullable AnnotationTree input) {
-            return ClassParserUtils.is(input, RequiresEntitlement.class);
+            return input != null && ClassParserUtils.is(input, RequiresEntitlement.class);
         }
     };
 
@@ -68,7 +68,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
                         @Override
                         public boolean apply(@Nullable ExpressionTree input) {
-                            return input.is(Tree.Kind.ASSIGNMENT) && ((AssignmentExpressionTree) input).variable().toString().equals("name");
+                            return input != null && input.is(Tree.Kind.ASSIGNMENT) && ((AssignmentExpressionTree) input).variable().toString().equals("name");
                         }
                     }, null);
                     if (find == null) {
@@ -77,6 +77,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
                 }
                 break;
             }
+            case "STANDARD":
             case "SELECT":
             case "CERTIFIED": {
                 if (!hasEnterpriseAnnotation || hasEntitlementAnnotation) {

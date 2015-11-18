@@ -1,9 +1,9 @@
 package org.mule.tools.devkit.sonar;
 
 import com.google.common.collect.Iterables;
+import org.jetbrains.annotations.NotNull;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinitionAnnotationLoader;
-import org.sonar.plugins.java.api.JavaCheck;
 
 /**
  * Declare rule metadata in server repository of rules. That allows to list the rules
@@ -14,7 +14,7 @@ public class JavaRulesDefinition implements RulesDefinition {
     public static final String REPOSITORY_KEY = "connector-certification";
 
     @Override
-    public void define(Context context) {
+    public void define(@NotNull Context context) {
         NewRepository repo = context.createRepository(REPOSITORY_KEY, "java");
         repo.setName("Connector Certification");
 
