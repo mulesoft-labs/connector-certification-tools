@@ -15,9 +15,9 @@ import java.math.BigDecimal;
 
 public class ClassParserUtils {
 
-    final private static Logger logger = LoggerFactory.getLogger(ClassParserUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClassParserUtils.class);
 
-    final private static ImmutableSet<String> allowedComplexTypes;
+    private static final ImmutableSet<String> allowedComplexTypes;
 
     static {
         final ImmutableSet.Builder<String> builder = ImmutableSet.builder();

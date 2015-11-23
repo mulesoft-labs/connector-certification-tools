@@ -20,8 +20,7 @@ import java.util.List;
 @Rule(key = LicenseByCategoryCheck.KEY,
         name = "Check licensing annotations match the category declared in pom.xml",
         description = "This rule checks the correct usage of @RequiresEnterpriseLicense and @RequiresEntitlement according to category defined in pom.xml",
-        tags = { "connector-certification" })
-public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
+        tags = { "connector-certification" }) public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "LicenseByCategoryCheck";
     private static final RuleKey RULE_KEY = RuleKey.of(JavaRuleRepository.REPOSITORY_KEY, KEY);
@@ -65,7 +64,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
         logger.debug("Parsed Category version -> {}", category);
 
         switch (category.toUpperCase()) {
-            case "PREMIUM": {
+            case "PREMIUM":
                 if (!hasEnterpriseAnnotation || !hasEntitlementAnnotation) {
                     logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense and @RequiresEntitlement need to be defined for Premium category.");
                 }
@@ -85,21 +84,21 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
                     }
                 }
                 break;
-            }
+
             case "STANDARD":
             case "SELECT":
-            case "CERTIFIED": {
+            case "CERTIFIED":
                 if (!hasEnterpriseAnnotation || hasEntitlementAnnotation) {
                     logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.");
                 }
                 break;
-            }
-            case "COMMUNITY": {
+
+            case "COMMUNITY":
                 if (hasEnterpriseAnnotation || hasEntitlementAnnotation) {
                     logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense and @RequiresEntitlement must not be present for Community category.");
                 }
                 break;
-            }
+
             default:
                 logAndRaiseIssue(classTree, "Invalid category specified in pom.xml");
                 break;
