@@ -1,20 +1,28 @@
 package org.mule.tools.devkit.sonar.checks;
 
+import org.junit.Rule;
 import org.junit.Test;
-import org.sonar.java.checks.verifier.JavaCheckVerifier;
+import org.sonar.java.JavaAstScanner;
+import org.sonar.java.model.VisitorsBridge;
+import org.sonar.squidbridge.api.SourceFile;
+import org.sonar.squidbridge.checks.CheckMessagesVerifierRule;
+
+import java.io.File;
 
 public class NumberOfArgumentsInProcessorCheckTest {
 
+    @Rule
+    public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
+
     @Test
     public void detected() {
-
-        // Use an instance of the check under test to raise the issue.
         NumberOfArgumentsInProcessorCheck check = new NumberOfArgumentsInProcessorCheck();
         check.maxArgumentsAllowed = 4;
 
-        // Verifies that the check will raise the adequate issues with the expected message.
-        // In the test file, lines which should raise an issue have been commented out
-        // by using the following syntax: "// Noncompliant {{EXPECTED_MESSAGE}}"
-        JavaCheckVerifier.verify("src/test/files/NumberOfArgumentsInProcessorCheck.java", check);
+        SourceFile file = JavaAstScanner
+                .scanSingleFile(new File("src/test/files/NumberOfArgumentsInProcessorCheck.java"), new VisitorsBridge(check));
+
+        checkMessagesVerifier.verify(file.getCheckMessages())
+                .next().atLine(19).withMessage("Processor failingMethod has 5 complex-type parameters (more than 4 which is max allowed)");
     }
 }

@@ -4,12 +4,11 @@
  **/
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
-import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
 import org.mule.api.annotations.licensing.RequiresEntitlement;
 
 @Connector
 @RequiresEntitlement(name = "some-connector")
-class LicenseByCategoryPremiumNoRequiresLicenseCheck { // Noncompliant {{@RequiresEnterpriseLicense and @RequiresEntitlement need to be defined for Premium category.}}
+class LicenseByCategoryPremiumNoRequiresLicenseCheck {
 
     @Processor
     public void aMethod() {

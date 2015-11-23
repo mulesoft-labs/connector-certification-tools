@@ -4,24 +4,26 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.jetbrains.annotations.NotNull;
 import org.mule.api.annotations.param.RefOnly;
+import org.mule.tools.devkit.sonar.JavaRuleRepository;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.sonar.api.rule.RuleKey;
 import org.sonar.check.Rule;
-import org.sonar.plugins.java.api.tree.*;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
+import org.sonar.plugins.java.api.tree.AnnotationTree;
+import org.sonar.plugins.java.api.tree.IdentifierTree;
+import org.sonar.plugins.java.api.tree.MethodTree;
+import org.sonar.plugins.java.api.tree.VariableTree;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-@Rule(key = "RefOnlyInComplexTypes",
+@Rule(key = RefOnlyInComplexTypesCheck.KEY,
         name = "Check complex-types arguments are marked with @RefOnly",
         description = "This rule checks that all complex-type arguments for a method are annotated with @RefOnly",
         tags = { "connector-certification" })
-@ActivatedByDefault
 public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
-    private static final Logger logger = LoggerFactory.getLogger(NumberOfArgumentsInProcessorCheck.class);
+    public static final String KEY = "RefOnlyInComplexTypes";
+    private static final RuleKey RULE_KEY = RuleKey.of(JavaRuleRepository.REPOSITORY_KEY, KEY);
 
     public static final Predicate<AnnotationTree> HAS_REF_ONLY_ANNOTATION = new Predicate<AnnotationTree>() {
 
@@ -30,6 +32,11 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
             return input != null && ClassParserUtils.is(input, RefOnly.class);
         }
     };
+
+    @Override
+    protected RuleKey getRuleKey() {
+        return RULE_KEY;
+    }
 
     @Override
     protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
@@ -41,9 +48,8 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
             final long count = Iterables.size(Iterables.filter(annotations, HAS_REF_ONLY_ANNOTATION));
             if (count == 0) {
-                final String message = String.format("Processor '%s' contains %d complex types without @RefOnly.", tree.simpleName(), count);
-                logger.info(message);
-                context.addIssue(processorAnnotation, this, message);
+                final String message = String.format("Processor '%s' contains variable '%s' of type '%s' (complex type) not annotated with @RefOnly.", tree.simpleName(), variable.simpleName(), variable.type().toString());
+                logAndRaiseIssue(variable, message);
             }
         }
     }

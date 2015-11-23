@@ -4,10 +4,9 @@
  **/
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
-import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
 
 @Connector
-class LicenseByCategorySelectCheck { // Noncompliant {{@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.}}
+class LicenseByCategorySelectCheck {
 
     @Processor
     public void aMethod() {

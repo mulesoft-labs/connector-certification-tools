@@ -1,29 +1,30 @@
 package org.mule.tools.devkit.sonar.checks;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import org.apache.maven.project.MavenProject;
 import org.jetbrains.annotations.NotNull;
 import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
 import org.mule.api.annotations.licensing.RequiresEntitlement;
+import org.mule.tools.devkit.sonar.JavaRuleRepository;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.config.Settings;
+import org.sonar.api.rule.RuleKey;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.*;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import java.util.List;
 
-@Rule(key = "LicenseByCategoryCheck",
+@Rule(key = LicenseByCategoryCheck.KEY,
         name = "Check licensing annotations match the category declared in pom.xml",
         description = "This rule checks the correct usage of @RequiresEnterpriseLicense and @RequiresEntitlement according to category defined in pom.xml",
         tags = { "connector-certification" })
-@ActivatedByDefault
 public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
+
+    public static final String KEY = "LicenseByCategoryCheck";
+    private static final RuleKey RULE_KEY = RuleKey.of(JavaRuleRepository.REPOSITORY_KEY, KEY);
 
     private static final Logger logger = LoggerFactory.getLogger(LicenseByCategoryCheck.class);
     public static final Predicate<AnnotationTree> HAS_REQUIRES_ENTERPRISE_LICENSE_ANNOTATION = new Predicate<AnnotationTree>() {
@@ -42,8 +43,16 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
         }
     };
 
-    @Inject
-    protected Settings settings;
+    private final MavenProject mavenProject;
+
+    public LicenseByCategoryCheck(MavenProject mavenProject) {
+        this.mavenProject = mavenProject;
+    }
+
+    @Override
+    protected RuleKey getRuleKey() {
+        return RULE_KEY;
+    }
 
     @Override
     protected void verifyConnector(@NotNull ClassTree classTree, @NotNull IdentifierTree connectorAnnotation) {
@@ -52,7 +61,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
         boolean hasEnterpriseAnnotation = Iterables.any(annotations, HAS_REQUIRES_ENTERPRISE_LICENSE_ANNOTATION);
         boolean hasEntitlementAnnotation = Iterables.any(annotations, HAS_REQUIRES_ENTITLEMENT_ANNOTATION);
 
-        String category = settings.getString("category");
+        String category = mavenProject.getProperties().getProperty("category");
         logger.debug("Parsed Category version -> {}", category);
 
         switch (category.toUpperCase()) {
@@ -68,7 +77,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
                         @Override
                         public boolean apply(@Nullable ExpressionTree input) {
-                            return input != null && input.is(Tree.Kind.ASSIGNMENT) && ((AssignmentExpressionTree) input).variable().toString().equals("name");
+                            return input != null && input.is(Tree.Kind.ASSIGNMENT) && "name".equals(((AssignmentExpressionTree) input).variable().toString());
                         }
                     }, null);
                     if (find == null) {
@@ -97,8 +106,4 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
         }
     }
 
-    private void logAndRaiseIssue(@NotNull ClassTree classTree, String message) {
-        logger.info(message);
-        context.addIssue(classTree, this, message);
-    }
 }

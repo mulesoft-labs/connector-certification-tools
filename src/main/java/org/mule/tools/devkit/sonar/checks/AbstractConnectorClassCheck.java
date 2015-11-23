@@ -3,17 +3,19 @@ package org.mule.tools.devkit.sonar.checks;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.jetbrains.annotations.NotNull;
-import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.BatchExtension;
+import org.sonar.api.rule.RuleKey;
 import org.sonar.plugins.java.api.JavaFileScanner;
 import org.sonar.plugins.java.api.JavaFileScannerContext;
 import org.sonar.plugins.java.api.tree.*;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
-abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements JavaFileScanner {
+abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements JavaFileScanner, BatchExtension {
+
+    private static final Logger logger = LoggerFactory.getLogger(LicenseByCategoryCheck.class);
 
     private static final String CONNECTOR_ANNOTATION = "Connector";
     private static final String PROCESSOR_ANNOTATION = "Processor";
@@ -29,14 +31,16 @@ abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements Ja
 
     JavaFileScannerContext context;
 
+    protected abstract RuleKey getRuleKey();
+
     @Override
-    public void scanFile(@NotNull JavaFileScannerContext context) {
+    public final void scanFile(@NotNull JavaFileScannerContext context) {
         this.context = context;
         scan(context.getTree());
     }
 
     @Override
-    public void visitClass(ClassTree tree) {
+    public final void visitClass(ClassTree tree) {
         for (AnnotationTree annotationTree : Iterables.filter(tree.modifiers().annotations(), ANNOTATION_TREE_PREDICATE)) {
             final IdentifierTree idf = (IdentifierTree) annotationTree.annotationType();
             if (idf.name().equals(CONNECTOR_ANNOTATION)) {
@@ -72,6 +76,11 @@ abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements Ja
     }
 
     protected void verifyConnector(@NotNull ClassTree classTree, @NotNull final IdentifierTree connectorAnnotation) {
+    }
+
+    protected void logAndRaiseIssue(@NotNull Tree classTree, String message) {
+        logger.info(message);
+        context.addIssue(classTree, getRuleKey(), message);
     }
 
 }

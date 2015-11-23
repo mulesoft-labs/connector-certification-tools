@@ -5,12 +5,11 @@
 
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
-import org.mule.api.annotations.param.RefOnly;
 
 @Connector
 class RefOnlyInComplexTypesCheck {
 
-    @Processor // Noncompliant {{Processor 'failingMethod' contains complex types without @RefOnly.}}
+    @Processor
     public void failingMethod(SomeComplexType s1) {
     }
 
