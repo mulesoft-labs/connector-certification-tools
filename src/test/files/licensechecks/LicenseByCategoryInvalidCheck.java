@@ -4,11 +4,9 @@
  **/
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
-import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
-import org.mule.api.annotations.licensing.RequiresEntitlement;
 
 @Connector
-class LicenseByCategoryInvalidCheck { // Noncompliant {{Invalid category specified in pom.xml}}
+class LicenseByCategoryInvalidCheck {
 
     @Processor
     public void aMethod() {

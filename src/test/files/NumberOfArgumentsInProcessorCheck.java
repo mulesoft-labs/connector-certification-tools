@@ -1,7 +1,6 @@
-/**
- * This file is the sample code against we run our unit test.
- * It is placed src/test/files in order to not be part of the maven compilation.
- **/
+import org.mule.api.annotations.Connector;
+import org.mule.api.annotations.Processor;
+
 @Connector
 class NumberOfArgumentsInProcessorCheck {
 
@@ -17,7 +16,7 @@ class NumberOfArgumentsInProcessorCheck {
     public void aMethod(String s1, Boolean s2, String s3, SomeComplexType s4, String s5, String s6, String s7) {
     }
 
-    @Processor // Noncompliant {{Processor failingMethod has 5 complex-type parameters (more than 4 which is max allowed)}}
+    @Processor
     public void failingMethod(SomeComplexType s1, SomeComplexType s2, SomeComplexType s3, SomeComplexType s4, SomeComplexType s5) {
     }
 

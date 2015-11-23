@@ -1,12 +1,11 @@
 package org.mule.tools.devkit.sonar;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.mule.tools.devkit.sonar.checks.ProjectContextInitializer;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * This class is the entry point for all extensions
@@ -24,13 +23,12 @@ public final class CertificationPlugin extends SonarPlugin {
     @Override
     public List getExtensions() {
         return Arrays.asList(
-                ProjectContextInitializer.class,
+
+                ConnectorCertificationProfile.class,
 
                 // server extensions -> objects are instantiated during server startup
-                JavaRulesDefinition.class,
+                JavaRuleRepository.class
 
-                // batch extensions -> objects are instantiated during code analysis
-                JavaFileCheckRegistrar.class
         );
     }
 }

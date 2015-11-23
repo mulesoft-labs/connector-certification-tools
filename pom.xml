@@ -13,8 +13,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.buildVersion>4.5.2</sonar.buildVersion>
-        <jdk.min.version>1.7</jdk.min.version>
+        <sonar.buildVersion>4.2</sonar.buildVersion>
+        <jdk.version>1.7</jdk.version>
         <java.plugin.version>3.6</java.plugin.version>
     </properties>
 
@@ -26,10 +26,22 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.sonarsource.java</groupId>
+            <groupId>org.codehaus.sonar-plugins.java</groupId>
             <artifactId>sonar-java-plugin</artifactId>
             <type>sonar-plugin</type>
-            <version>${java.plugin.version}</version>
+            <version>2.5.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-deprecated</artifactId>
+            <version>${sonar.buildVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.sonar.sslr-squid-bridge</groupId>
+            <artifactId>sslr-squid-bridge</artifactId>
+            <version>2.5.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -42,22 +54,21 @@
             <groupId>org.mule.tools.devkit</groupId>
             <artifactId>mule-devkit-annotations</artifactId>
             <version>3.7.2</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- unit tests -->
-        <dependency>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-testing-harness</artifactId>
-            <version>${sonar.buildVersion}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.sonarsource.java</groupId>
-            <artifactId>java-checks-testkit</artifactId>
-            <version>${java.plugin.version}</version>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.codehaus.sonar</groupId>-->
+            <!--<artifactId>sonar-testing-harness</artifactId>-->
+            <!--<version>${sonar.buildVersion}</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.sonarsource.java</groupId>-->
+            <!--<artifactId>java-checks-testkit</artifactId>-->
+            <!--<version>${java.plugin.version}</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -88,8 +99,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>${jdk.min.version}</source>
-                    <target>${jdk.min.version}</target>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -107,5 +118,19 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Repository</name>
+            <url>http://repository-master.mulesoft.org/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>mulesoft-snapshots</id>
+            <name>MuleSoft Snapshot Repository</name>
+            <url>http://repository-master.mulesoft.org/snapshots/</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>

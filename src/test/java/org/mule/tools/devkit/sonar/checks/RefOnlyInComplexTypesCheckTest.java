@@ -9,20 +9,23 @@ import org.sonar.squidbridge.checks.CheckMessagesVerifierRule;
 
 import java.io.File;
 
-public class NumberOfArgumentsInProcessorCheckTest {
+public class RefOnlyInComplexTypesCheckTest {
 
     @Rule
     public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
     @Test
     public void detected() {
-        NumberOfArgumentsInProcessorCheck check = new NumberOfArgumentsInProcessorCheck();
-        check.maxArgumentsAllowed = 4;
+
+        // Use an instance of the check under test to raise the issue.
+        RefOnlyInComplexTypesCheck check = new RefOnlyInComplexTypesCheck();
 
         SourceFile file = JavaAstScanner
-                .scanSingleFile(new File("src/test/files/NumberOfArgumentsInProcessorCheck.java"), new VisitorsBridge(check));
+                .scanSingleFile(new File("src/test/files/RefOnlyInComplexTypesCheck.java"), new VisitorsBridge(check));
 
         checkMessagesVerifier.verify(file.getCheckMessages())
-                .next().atLine(19).withMessage("Processor failingMethod has 5 complex-type parameters (more than 4 which is max allowed)");
+                .next().atLine(13).withMessage("Processor 'failingMethod' contains variable 's1' of type 'SomeComplexType' (complex type) not annotated with @RefOnly.");
+
     }
+
 }
