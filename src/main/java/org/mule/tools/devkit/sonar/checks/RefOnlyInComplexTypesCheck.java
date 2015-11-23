@@ -22,7 +22,7 @@ import java.util.List;
         tags = { "connector-certification" })
 public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
-    public static final String KEY = "RefOnlyInComplexTypes";
+    public static final String KEY = "refonly-annotation-in-complex-types";
     private static final RuleKey RULE_KEY = RuleKey.of(JavaRuleRepository.REPOSITORY_KEY, KEY);
 
     public static final Predicate<AnnotationTree> HAS_REF_ONLY_ANNOTATION = new Predicate<AnnotationTree>() {

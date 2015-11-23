@@ -19,7 +19,7 @@ import org.sonar.plugins.java.api.tree.MethodTree;
 public class NumberOfArgumentsInProcessorCheck extends AbstractConnectorClassCheck {
 
     private static final Logger logger = LoggerFactory.getLogger(NumberOfArgumentsInProcessorCheck.class);
-    public static final String KEY = "NumberOfArgumentsInProcessor";
+    public static final String KEY = "number-of-arguments-in-processor";
     private static final RuleKey RULE_KEY = RuleKey.of(JavaRuleRepository.REPOSITORY_KEY, KEY);
 
     @Override

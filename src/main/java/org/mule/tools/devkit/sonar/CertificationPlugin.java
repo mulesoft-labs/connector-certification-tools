@@ -1,6 +1,5 @@
 package org.mule.tools.devkit.sonar;
 
-import org.mule.tools.devkit.sonar.checks.ProjectContextInitializer;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
@@ -24,10 +23,6 @@ public final class CertificationPlugin extends SonarPlugin {
     @Override
     public List getExtensions() {
         return Arrays.asList(
-                ProjectContextInitializer.class,
-
-
-//                RefOnlyInComplexTypesCheck.class, NumberOfArgumentsInProcessorCheck.class, LicenseByCategoryCheck.class,
 
                 ConnectorCertificationProfile.class,
 

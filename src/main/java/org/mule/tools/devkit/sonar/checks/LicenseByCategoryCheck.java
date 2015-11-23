@@ -22,7 +22,7 @@ import java.util.List;
         description = "This rule checks the correct usage of @RequiresEnterpriseLicense and @RequiresEntitlement according to category defined in pom.xml",
         tags = { "connector-certification" }) public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
-    public static final String KEY = "LicenseByCategoryCheck";
+    public static final String KEY = "license-by-category";
     private static final RuleKey RULE_KEY = RuleKey.of(JavaRuleRepository.REPOSITORY_KEY, KEY);
 
     private static final Logger logger = LoggerFactory.getLogger(LicenseByCategoryCheck.class);

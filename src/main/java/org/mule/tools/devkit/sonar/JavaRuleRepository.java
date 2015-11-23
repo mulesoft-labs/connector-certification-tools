@@ -45,17 +45,4 @@ public class JavaRuleRepository extends RuleRepository {
         return annotationRuleParser.parse(CheckList.REPOSITORY_KEY, JavaChecks.getChecks());
     }
 
-//    @Override
-//    public Iterable<JavaFileScanner> createJavaFileScanners() {
-//        final NumberOfArgumentsInProcessorCheck numberOfArgumentsInProcessorCheck = new NumberOfArgumentsInProcessorCheck();
-////        numberOfArgumentsInProcessorCheck.
-//
-//        final RefOnlyInComplexTypesCheck refOnlyInComplexTypesCheck = new RefOnlyInComplexTypesCheck();
-//        MavenProject mavenProject = new MavenProject();
-//        mavenProject.getProperties().setProperty("category", "Community");
-//
-//        final LicenseByCategoryCheck licenseByCategoryCheck = new LicenseByCategoryCheck(mavenProject);
-//        return Arrays.<JavaFileScanner>asList(numberOfArgumentsInProcessorCheck, refOnlyInComplexTypesCheck, licenseByCategoryCheck);
-//    }
-
 }
