@@ -9,6 +9,9 @@ import java.util.List;
 
 public class JavaChecks {
 
+    private JavaChecks() {
+    }
+
     public static List<Class> getChecks() {
         return ImmutableList.<Class>of(NumberOfArgumentsInProcessorCheck.class, RefOnlyInComplexTypesCheck.class, LicenseByCategoryCheck.class);
     }
