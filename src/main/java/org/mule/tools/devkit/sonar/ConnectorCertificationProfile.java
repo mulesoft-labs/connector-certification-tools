@@ -23,19 +23,25 @@ import org.sonar.api.profiles.AnnotationProfileParser;
 import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Java;
+import org.sonar.api.rules.ActiveRule;
+import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.ValidationMessages;
+import org.sonar.squidbridge.annotations.AnnotationBasedProfileBuilder;
 
 public class ConnectorCertificationProfile extends ProfileDefinition {
 
-    private final AnnotationProfileParser annotationProfileParser;
+    public static final String CONNECTOR_CERTIFICATION_PROFILE = "Connector Certification";
 
-    public ConnectorCertificationProfile(AnnotationProfileParser annotationProfileParser) {
-        this.annotationProfileParser = annotationProfileParser;
+    private final RuleFinder ruleFinder;
+
+    public ConnectorCertificationProfile(RuleFinder ruleFinder) {
+        this.ruleFinder = ruleFinder;
     }
 
     @Override
     public RulesProfile createProfile(ValidationMessages messages) {
-        return annotationProfileParser.parse(JavaRuleRepository.REPOSITORY_KEY, JavaRuleRepository.REPOSITORY_NAME, Java.KEY, JavaChecks.getChecks(), messages);
+        AnnotationBasedProfileBuilder annotationBasedProfileBuilder = new AnnotationBasedProfileBuilder(ruleFinder);
+        return annotationBasedProfileBuilder.build(Java.KEY, CONNECTOR_CERTIFICATION_PROFILE, Java.KEY, JavaChecks.getChecks(), messages);
     }
 
 }

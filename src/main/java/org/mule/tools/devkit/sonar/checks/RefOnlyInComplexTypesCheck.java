@@ -12,6 +12,7 @@ import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
+import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
         name = "Check complex-types arguments are marked with @RefOnly",
         description = "This rule checks that all complex-type arguments for a method are annotated with @RefOnly",
         tags = { "connector-certification" })
+@ActivatedByDefault
 public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "refonly-annotation-in-complex-types";

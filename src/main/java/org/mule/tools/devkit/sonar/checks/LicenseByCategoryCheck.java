@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.*;
+import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -20,7 +21,9 @@ import java.util.List;
 @Rule(key = LicenseByCategoryCheck.KEY,
         name = "Check licensing annotations match the category declared in pom.xml",
         description = "This rule checks the correct usage of @RequiresEnterpriseLicense and @RequiresEntitlement according to category defined in pom.xml",
-        tags = { "connector-certification" }) public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
+        tags = { "connector-certification" })
+@ActivatedByDefault
+public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "license-by-category";
     private static final RuleKey RULE_KEY = RuleKey.of(JavaRuleRepository.REPOSITORY_KEY, KEY);

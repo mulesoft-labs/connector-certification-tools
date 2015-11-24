@@ -11,11 +11,13 @@ import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
+import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 @Rule(key = NumberOfArgumentsInProcessorCheck.KEY,
         name = "Number of complex-type arguments in a processor method",
         description = "This rule checks that the number of complex-type arguments for a method annotated with @Processor is less than max allowed",
         tags = { "connector-certification" })
+@ActivatedByDefault
 public class NumberOfArgumentsInProcessorCheck extends AbstractConnectorClassCheck {
 
     private static final Logger logger = LoggerFactory.getLogger(NumberOfArgumentsInProcessorCheck.class);
