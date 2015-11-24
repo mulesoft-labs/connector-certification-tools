@@ -2,7 +2,8 @@ package org.mule.tools.devkit.sonar.checks;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
@@ -11,7 +12,6 @@ import org.sonar.plugins.java.api.JavaFileScanner;
 import org.sonar.plugins.java.api.JavaFileScannerContext;
 import org.sonar.plugins.java.api.tree.*;
 
-import javax.annotation.Nullable;
 
 abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements JavaFileScanner, BatchExtension {
 
@@ -34,7 +34,7 @@ abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements Ja
     protected abstract RuleKey getRuleKey();
 
     @Override
-    public final void scanFile(@NotNull JavaFileScannerContext context) {
+    public final void scanFile(@NonNull JavaFileScannerContext context) {
         this.context = context;
         scan(context.getTree());
     }
@@ -69,16 +69,16 @@ abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements Ja
         super.visitMethod(tree);
     }
 
-    protected void verifySource(@NotNull MethodTree methodTree, @NotNull final IdentifierTree sourceAnnotation) {
+    protected void verifySource(@NonNull MethodTree methodTree, @NonNull final IdentifierTree sourceAnnotation) {
     }
 
-    protected void verifyProcessor(@NotNull final MethodTree methodTree, @NotNull final IdentifierTree processorAnnotation) {
+    protected void verifyProcessor(@NonNull final MethodTree methodTree, @NonNull final IdentifierTree processorAnnotation) {
     }
 
-    protected void verifyConnector(@NotNull ClassTree classTree, @NotNull final IdentifierTree connectorAnnotation) {
+    protected void verifyConnector(@NonNull ClassTree classTree, @NonNull final IdentifierTree connectorAnnotation) {
     }
 
-    protected void logAndRaiseIssue(@NotNull Tree classTree, String message) {
+    protected void logAndRaiseIssue(@NonNull Tree classTree, String message) {
         logger.info(message);
         context.addIssue(classTree, getRuleKey(), message);
     }

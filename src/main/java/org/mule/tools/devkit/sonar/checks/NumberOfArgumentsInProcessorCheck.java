@@ -1,7 +1,7 @@
 package org.mule.tools.devkit.sonar.checks;
 
 import com.google.common.collect.Iterables;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.tools.devkit.sonar.JavaRuleRepository;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.slf4j.Logger;
@@ -41,13 +41,12 @@ public class NumberOfArgumentsInProcessorCheck extends AbstractConnectorClassChe
     protected int maxArgumentsAllowed;
 
     @Override
-    protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
+    protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
         final long count = Iterables.size(Iterables.filter(tree.parameters(), ClassParserUtils.COMPLEX_TYPE_PREDICATE));
         if (count > maxArgumentsAllowed) {
             final String message = String.format("Processor %s has %d complex-type parameters (more than %d which is max allowed)", tree.simpleName(), count, maxArgumentsAllowed);
             logger.info(message);
             logAndRaiseIssue(processorAnnotation, message);
-
         }
     }
 }

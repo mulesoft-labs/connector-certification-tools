@@ -15,7 +15,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.buildVersion>4.2</sonar.buildVersion>
         <jdk.version>1.7</jdk.version>
-        <java.plugin.version>3.6</java.plugin.version>
     </properties>
 
     <dependencies>
@@ -41,18 +40,43 @@
         <dependency>
             <groupId>org.codehaus.sonar.sslr-squid-bridge</groupId>
             <artifactId>sslr-squid-bridge</artifactId>
-            <version>2.5.1</version>
+            <version>2.6</version>
         </dependency>
         <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>annotations</artifactId>
-            <version>12.0</version>
-            <scope>provided</scope>
+            <groupId>org.checkerframework</groupId>
+            <artifactId>checker-qual</artifactId>
+            <version>1.9.3</version>
         </dependency>
         <dependency>
             <groupId>org.mule.tools.devkit</groupId>
             <artifactId>mule-devkit-annotations</artifactId>
             <version>3.7.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mule.tools.devkit</groupId>
+                    <artifactId>mule-devkit-shade</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mule.modules</groupId>
+                    <artifactId>mule-module-devkit-support</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mule</groupId>
+                    <artifactId>mule-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mule.modules</groupId>
+                    <artifactId>mule-module-annotations</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mule.modules</groupId>
+                    <artifactId>mule-module-http</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.inject</groupId>
+                    <artifactId>javax.inject</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- unit tests -->

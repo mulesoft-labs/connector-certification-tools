@@ -2,7 +2,7 @@ package org.mule.tools.devkit.sonar.checks;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.api.annotations.param.RefOnly;
 import org.mule.tools.devkit.sonar.JavaRuleRepository;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
@@ -41,7 +41,7 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
     }
 
     @Override
-    protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
+    protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
 
         Iterable<? extends VariableTree> complexTypes = Iterables.filter(tree.parameters(), ClassParserUtils.COMPLEX_TYPE_PREDICATE);
         for (VariableTree variable: complexTypes) {

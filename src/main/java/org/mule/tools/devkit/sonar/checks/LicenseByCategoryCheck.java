@@ -1,9 +1,10 @@
 package org.mule.tools.devkit.sonar.checks;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.apache.maven.project.MavenProject;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
 import org.mule.api.annotations.licensing.RequiresEntitlement;
 import org.mule.tools.devkit.sonar.JavaRuleRepository;
@@ -13,16 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.*;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 @Rule(key = LicenseByCategoryCheck.KEY,
         name = "Check licensing annotations match the category declared in pom.xml",
         description = "This rule checks the correct usage of @RequiresEnterpriseLicense and @RequiresEntitlement according to category defined in pom.xml",
         tags = { "connector-certification" })
-@ActivatedByDefault
 public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "license-by-category";
@@ -57,7 +55,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
     }
 
     @Override
-    protected void verifyConnector(@NotNull ClassTree classTree, @NotNull IdentifierTree connectorAnnotation) {
+    protected void verifyConnector(@NonNull ClassTree classTree, @NonNull IdentifierTree connectorAnnotation) {
         final List<? extends AnnotationTree> annotations = classTree.modifiers().annotations();
 
         boolean hasEnterpriseAnnotation = Iterables.any(annotations, HAS_REQUIRES_ENTERPRISE_LICENSE_ANNOTATION);
