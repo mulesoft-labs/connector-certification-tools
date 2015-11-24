@@ -12,11 +12,11 @@ import java.util.List;
  */
 @Properties({
         @Property(
-                key = CertificationPlugin.MY_PROPERTY,
+                key = ConnectorCertificationPlugin.MY_PROPERTY,
                 name = "Connector Certification Plugin",
                 description = "A property for the plugin",
                 defaultValue = "Rules for automating the certification of a Connector") })
-public final class CertificationPlugin extends SonarPlugin {
+public final class ConnectorCertificationPlugin extends SonarPlugin {
 
     public static final String MY_PROPERTY = "org.mule.tools.devkit.sonar";
 
@@ -27,7 +27,7 @@ public final class CertificationPlugin extends SonarPlugin {
                 ConnectorCertificationProfile.class,
 
                 // server extensions -> objects are instantiated during server startup
-                JavaRuleRepository.class
+                ConnectorCertificationRulesDefinition.class
 
         );
     }

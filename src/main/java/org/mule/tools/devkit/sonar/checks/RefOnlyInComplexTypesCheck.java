@@ -4,7 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.api.annotations.param.RefOnly;
-import org.mule.tools.devkit.sonar.JavaRuleRepository;
+import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.check.Rule;
@@ -25,7 +25,7 @@ import java.util.List;
 public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "refonly-annotation-in-complex-types";
-    private static final RuleKey RULE_KEY = RuleKey.of(JavaRuleRepository.REPOSITORY_KEY, KEY);
+    private static final RuleKey RULE_KEY = RuleKey.of(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, KEY);
 
     public static final Predicate<AnnotationTree> HAS_REF_ONLY_ANNOTATION = new Predicate<AnnotationTree>() {
 

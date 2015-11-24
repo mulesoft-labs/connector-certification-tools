@@ -2,7 +2,7 @@ package org.mule.tools.devkit.sonar.checks;
 
 import com.google.common.collect.Iterables;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.mule.tools.devkit.sonar.JavaRuleRepository;
+import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class NumberOfArgumentsInProcessorCheck extends AbstractConnectorClassChe
 
     private static final Logger logger = LoggerFactory.getLogger(NumberOfArgumentsInProcessorCheck.class);
     public static final String KEY = "number-of-arguments-in-processor";
-    private static final RuleKey RULE_KEY = RuleKey.of(JavaRuleRepository.REPOSITORY_KEY, KEY);
+    private static final RuleKey RULE_KEY = RuleKey.of(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, KEY);
 
     @Override
     protected RuleKey getRuleKey() {

@@ -22,26 +22,21 @@ package org.mule.tools.devkit.sonar;
 import org.sonar.api.profiles.AnnotationProfileParser;
 import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.resources.Java;
-import org.sonar.api.rules.ActiveRule;
-import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.ValidationMessages;
-import org.sonar.squidbridge.annotations.AnnotationBasedProfileBuilder;
 
 public class ConnectorCertificationProfile extends ProfileDefinition {
 
     public static final String CONNECTOR_CERTIFICATION_PROFILE = "Connector Certification";
 
-    private final RuleFinder ruleFinder;
+    private final AnnotationProfileParser annotationProfileParser;
 
-    public ConnectorCertificationProfile(RuleFinder ruleFinder) {
-        this.ruleFinder = ruleFinder;
+    public ConnectorCertificationProfile(AnnotationProfileParser annotationProfileParser) {
+        this.annotationProfileParser = annotationProfileParser;
     }
 
     @Override
-    public RulesProfile createProfile(ValidationMessages messages) {
-        AnnotationBasedProfileBuilder annotationBasedProfileBuilder = new AnnotationBasedProfileBuilder(ruleFinder);
-        return annotationBasedProfileBuilder.build(Java.KEY, CONNECTOR_CERTIFICATION_PROFILE, Java.KEY, JavaChecks.getChecks(), messages);
+    public RulesProfile createProfile(ValidationMessages validation) {
+        return annotationProfileParser.parse(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, CONNECTOR_CERTIFICATION_PROFILE, "java", JavaChecks.getChecks(), validation);
     }
 
 }

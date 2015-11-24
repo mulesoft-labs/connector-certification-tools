@@ -7,7 +7,7 @@ import org.apache.maven.project.MavenProject;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
 import org.mule.api.annotations.licensing.RequiresEntitlement;
-import org.mule.tools.devkit.sonar.JavaRuleRepository;
+import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ import java.util.List;
 public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "license-by-category";
-    private static final RuleKey RULE_KEY = RuleKey.of(JavaRuleRepository.REPOSITORY_KEY, KEY);
+    private static final RuleKey RULE_KEY = RuleKey.of(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, KEY);
 
     private static final Logger logger = LoggerFactory.getLogger(LicenseByCategoryCheck.class);
     public static final Predicate<AnnotationTree> HAS_REQUIRES_ENTERPRISE_LICENSE_ANNOTATION = new Predicate<AnnotationTree>() {

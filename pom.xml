@@ -13,7 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.buildVersion>4.2</sonar.buildVersion>
+        <sonar.buildVersion>4.3</sonar.buildVersion>
         <jdk.version>1.7</jdk.version>
     </properties>
 
@@ -29,12 +29,6 @@
             <artifactId>sonar-java-plugin</artifactId>
             <type>sonar-plugin</type>
             <version>2.5.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-deprecated</artifactId>
-            <version>${sonar.buildVersion}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -80,18 +74,6 @@
         </dependency>
 
         <!-- unit tests -->
-        <!--<dependency>-->
-            <!--<groupId>org.codehaus.sonar</groupId>-->
-            <!--<artifactId>sonar-testing-harness</artifactId>-->
-            <!--<version>${sonar.buildVersion}</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.sonarsource.java</groupId>-->
-            <!--<artifactId>java-checks-testkit</artifactId>-->
-            <!--<version>${java.plugin.version}</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -114,7 +96,7 @@
                 <version>1.12.1</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <pluginClass>org.mule.tools.devkit.sonar.CertificationPlugin</pluginClass>
+                    <pluginClass>org.mule.tools.devkit.sonar.ConnectorCertificationPlugin</pluginClass>
                 </configuration>
             </plugin>
             <plugin>
