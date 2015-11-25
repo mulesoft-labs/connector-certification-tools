@@ -5,15 +5,15 @@ import org.mule.tools.devkit.sonar.checks.LicenseByCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.NumberOfArgumentsInProcessorCheck;
 import org.mule.tools.devkit.sonar.checks.RefOnlyInComplexTypesCheck;
 
-import java.util.List;
+import java.util.Collection;
 
 public class JavaChecks {
 
     private JavaChecks() {
     }
 
-    public static List<Class> getChecks() {
-        return ImmutableList.<Class>of(NumberOfArgumentsInProcessorCheck.class, RefOnlyInComplexTypesCheck.class, LicenseByCategoryCheck.class);
+    public static Collection<Class> getChecks() {
+        return ImmutableList.<Class>builder().add(NumberOfArgumentsInProcessorCheck.class).add(RefOnlyInComplexTypesCheck.class).add(LicenseByCategoryCheck.class).build();
     }
 
 }

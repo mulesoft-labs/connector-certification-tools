@@ -2,9 +2,9 @@ package org.mule.tools.devkit.sonar.checks;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.api.annotations.param.RefOnly;
-import org.mule.tools.devkit.sonar.JavaRuleRepository;
+import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.check.Rule;
@@ -12,6 +12,7 @@ import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
+import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -20,10 +21,11 @@ import java.util.List;
         name = "Check complex-types arguments are marked with @RefOnly",
         description = "This rule checks that all complex-type arguments for a method are annotated with @RefOnly",
         tags = { "connector-certification" })
+@ActivatedByDefault
 public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "refonly-annotation-in-complex-types";
-    private static final RuleKey RULE_KEY = RuleKey.of(JavaRuleRepository.REPOSITORY_KEY, KEY);
+    private static final RuleKey RULE_KEY = RuleKey.of(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, KEY);
 
     public static final Predicate<AnnotationTree> HAS_REF_ONLY_ANNOTATION = new Predicate<AnnotationTree>() {
 
@@ -39,7 +41,7 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
     }
 
     @Override
-    protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
+    protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
 
         Iterable<? extends VariableTree> complexTypes = Iterables.filter(tree.parameters(), ClassParserUtils.COMPLEX_TYPE_PREDICATE);
         for (VariableTree variable: complexTypes) {

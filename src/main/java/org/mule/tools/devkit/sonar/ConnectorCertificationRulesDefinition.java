@@ -19,30 +19,22 @@
  */
 package org.mule.tools.devkit.sonar;
 
-import org.sonar.api.resources.Java;
-import org.sonar.api.rules.AnnotationRuleParser;
-import org.sonar.api.rules.Rule;
-import org.sonar.api.rules.RuleRepository;
-import org.sonar.java.checks.CheckList;
+import com.google.common.collect.Iterables;
+import org.sonar.api.server.rule.RulesDefinition;
+import org.sonar.api.server.rule.RulesDefinitionAnnotationLoader;
 
-import java.util.List;
-
-public class JavaRuleRepository extends RuleRepository {
+public class ConnectorCertificationRulesDefinition implements RulesDefinition {
 
     public static final String REPOSITORY_NAME = "Connector Certification";
     public static final String REPOSITORY_KEY = "connector-certification";
 
-    private final AnnotationRuleParser annotationRuleParser;
-
-    public JavaRuleRepository(AnnotationRuleParser annotationRuleParser) {
-        super(REPOSITORY_KEY, Java.KEY);
-        setName(REPOSITORY_NAME);
-        this.annotationRuleParser = annotationRuleParser;
-    }
-
     @Override
-    public List<Rule> createRules() {
-        return annotationRuleParser.parse(CheckList.REPOSITORY_KEY, JavaChecks.getChecks());
-    }
+    public void define(Context context) {
+        NewRepository repo = context.createRepository(REPOSITORY_KEY, "java");
+        repo.setName(REPOSITORY_NAME);
 
+        RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
+        annotationLoader.load(repo, Iterables.toArray(JavaChecks.getChecks(), Class.class));
+        repo.done();
+    }
 }

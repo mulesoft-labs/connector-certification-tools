@@ -2,7 +2,7 @@ package org.mule.tools.devkit.sonar.utils;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
@@ -46,7 +46,7 @@ public class ClassParserUtils {
         }
     };
 
-    public static boolean isSimpleType(@NotNull final IdentifierTree type) {
+    public static boolean isSimpleType(@NonNull final IdentifierTree type) {
 
         // TODO We should find a better way to implement this. It's a bit naive of an implementation. Could get idea's from Paulo's code
 //        boolean result = symbolType.isPrimitive() || symbolType.symbol().isEnum() || (symbolType.isClass() && allowedComplexTypes.contains(symbolType.fullyQualifiedName()));
@@ -55,7 +55,7 @@ public class ClassParserUtils {
         return result;
     }
 
-    public static boolean is(@NotNull AnnotationTree annotation, @NotNull final Class<?> annotationClass) {
+    public static boolean is(@NonNull AnnotationTree annotation, @NonNull final Class<?> annotationClass) {
         final String annotationSimpleName = annotation.annotationType().toString();
         return annotationSimpleName.equals(annotationClass.getSimpleName()) || annotationSimpleName.equals(annotationClass.getCanonicalName());
     }
