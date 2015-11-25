@@ -66,43 +66,55 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
         switch (category.toUpperCase()) {
             case "PREMIUM":
-                if (!hasEnterpriseAnnotation || !hasEntitlementAnnotation) {
-                    logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense and @RequiresEntitlement need to be defined for Premium category.");
-                }
-
-                if (hasEntitlementAnnotation) {
-                    final AnnotationTree annotation = Iterables.find(annotations, HAS_REQUIRES_ENTITLEMENT_ANNOTATION);
-                    final List<? extends ExpressionTree> arguments = annotation.arguments();
-                    final ExpressionTree find = Iterables.find(arguments, new Predicate<ExpressionTree>() {
-
-                        @Override
-                        public boolean apply(@Nullable ExpressionTree input) {
-                            return input != null && input.is(Tree.Kind.ASSIGNMENT) && "name".equals(((AssignmentExpressionTree) input).variable().toString());
-                        }
-                    }, null);
-                    if (find == null) {
-                        logAndRaiseIssue(classTree, "'name' attribute must be defined for @RequiresEntitlement using connector name.");
-                    }
-                }
+                checkPremium(classTree, annotations, hasEnterpriseAnnotation, hasEntitlementAnnotation);
                 break;
 
             case "STANDARD":
             case "SELECT":
             case "CERTIFIED":
-                if (!hasEnterpriseAnnotation || hasEntitlementAnnotation) {
-                    logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.");
-                }
+                checkSelectOrCertified(classTree, hasEnterpriseAnnotation, hasEntitlementAnnotation);
                 break;
 
             case "COMMUNITY":
-                if (hasEnterpriseAnnotation || hasEntitlementAnnotation) {
-                    logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense and @RequiresEntitlement must not be present for Community category.");
-                }
+                checkCommunity(classTree, hasEnterpriseAnnotation, hasEntitlementAnnotation);
                 break;
 
             default:
                 logAndRaiseIssue(classTree, "Invalid category specified in pom.xml");
                 break;
+        }
+    }
+
+    private void checkCommunity(@NonNull ClassTree classTree, boolean hasEnterpriseAnnotation, boolean hasEntitlementAnnotation) {
+        if (hasEnterpriseAnnotation || hasEntitlementAnnotation) {
+            logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense and @RequiresEntitlement must not be present for Community category.");
+        }
+    }
+
+    private void checkSelectOrCertified(@NonNull ClassTree classTree, boolean hasEnterpriseAnnotation, boolean hasEntitlementAnnotation) {
+        if (!hasEnterpriseAnnotation || hasEntitlementAnnotation) {
+            logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.");
+        }
+    }
+
+    private void checkPremium(@NonNull ClassTree classTree, List<? extends AnnotationTree> annotations, boolean hasEnterpriseAnnotation, boolean hasEntitlementAnnotation) {
+        if (!hasEnterpriseAnnotation || !hasEntitlementAnnotation) {
+            logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense and @RequiresEntitlement need to be defined for Premium category.");
+        }
+
+        if (hasEntitlementAnnotation) {
+            final AnnotationTree annotation = Iterables.find(annotations, HAS_REQUIRES_ENTITLEMENT_ANNOTATION);
+            final List<? extends ExpressionTree> arguments = annotation.arguments();
+            final ExpressionTree find = Iterables.find(arguments, new Predicate<ExpressionTree>() {
+
+                @Override
+                public boolean apply(@Nullable ExpressionTree input) {
+                    return input != null && input.is(Tree.Kind.ASSIGNMENT) && "name".equals(((AssignmentExpressionTree) input).variable().toString());
+                }
+            }, null);
+            if (find == null) {
+                logAndRaiseIssue(classTree, "'name' attribute must be defined for @RequiresEntitlement using connector name.");
+            }
         }
     }
 

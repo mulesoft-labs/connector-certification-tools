@@ -29,16 +29,16 @@ public class NumberOfArgumentsInProcessorCheck extends AbstractConnectorClassChe
         return RULE_KEY;
     }
 
-    private static final String DEFAULT_MAX_ALLOWED = "6";
+    private static final int DEFAULT_MAX_ALLOWED = 6;
 
     /**
      * The maximum number of complex-type arguments allowed in a processor.
      */
     @RuleProperty(
             key = "maxArgumentsAllowed",
-            defaultValue = DEFAULT_MAX_ALLOWED,
+            defaultValue = "" + DEFAULT_MAX_ALLOWED,
             description = "The maximum number of complex-type arguments allowed in a method annotated with @Processor")
-    protected int maxArgumentsAllowed;
+    protected int maxArgumentsAllowed = DEFAULT_MAX_ALLOWED;
 
     @Override
     protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {

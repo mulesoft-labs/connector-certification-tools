@@ -26,8 +26,12 @@ public final class ConnectorCertificationPlugin extends SonarPlugin {
 
                 ConnectorCertificationProfile.class,
 
+                // Batch extension -> objects instantiated during Maven sonar:sonar run
+                ConnectorCertificationCheckRegistrar.class,
+
                 // server extensions -> objects are instantiated during server startup
                 ConnectorCertificationRulesDefinition.class
+
 
         );
     }

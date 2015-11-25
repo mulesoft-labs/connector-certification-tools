@@ -6,14 +6,12 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.BatchExtension;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.plugins.java.api.JavaFileScanner;
 import org.sonar.plugins.java.api.JavaFileScannerContext;
 import org.sonar.plugins.java.api.tree.*;
 
-
-abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements JavaFileScanner, BatchExtension {
+abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements JavaFileScanner {
 
     private static final Logger logger = LoggerFactory.getLogger(LicenseByCategoryCheck.class);
 
