@@ -17,10 +17,7 @@ import org.sonar.plugins.java.api.tree.*;
 
 import java.util.List;
 
-@Rule(key = LicenseByCategoryCheck.KEY,
-        name = "Check licensing annotations match the category declared in pom.xml",
-        description = "This rule checks the correct usage of @RequiresEnterpriseLicense and @RequiresEntitlement according to category defined in pom.xml",
-        tags = { "connector-certification" })
+@Rule(key = LicenseByCategoryCheck.KEY, name = "Licensing annotations must match the category declared in pom.xml", description = "Checks the correct usage of @RequiresEnterpriseLicense and @RequiresEntitlement according to category defined in pom.xml.", tags = { "connector-certification" })
 public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "license-by-category";
