@@ -17,10 +17,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import javax.annotation.Nullable;
 import java.util.List;
 
-@Rule(key = RefOnlyInComplexTypesCheck.KEY,
-        name = "Check complex-types arguments are marked with @RefOnly",
-        description = "This rule checks that all complex-type arguments for a method are annotated with @RefOnly",
-        tags = { "connector-certification" })
+@Rule(key = RefOnlyInComplexTypesCheck.KEY, name = "Complex-type arguments must be marked with @RefOnly", description = "Checks that all complex-type arguments of a processor are annotated with @RefOnly.", tags = { "connector-certification" })
 @ActivatedByDefault
 public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
@@ -44,13 +41,14 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
     protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
 
         Iterable<? extends VariableTree> complexTypes = Iterables.filter(tree.parameters(), ClassParserUtils.getComplexTypePredicate(imports));
-        for (VariableTree variable: complexTypes) {
+        for (VariableTree variable : complexTypes) {
 
             List<? extends AnnotationTree> annotations = variable.modifiers().annotations();
 
             final long count = Iterables.size(Iterables.filter(annotations, HAS_REF_ONLY_ANNOTATION));
             if (count == 0) {
-                final String message = String.format("Processor '%s' contains variable '%s' of type '%s' (complex type) not annotated with @RefOnly.", tree.simpleName(), variable.simpleName(), variable.type().toString());
+                final String message = String.format("Processor '%s' contains variable '%s' of type '%s' (complex type) not annotated with @RefOnly.", tree.simpleName(),
+                        variable.simpleName(), variable.type().toString());
                 logAndRaiseIssue(variable, message);
             }
         }

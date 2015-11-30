@@ -13,10 +13,7 @@ import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-@Rule(key = NumberOfArgumentsInProcessorCheck.KEY,
-        name = "Number of complex-type arguments in a processor method",
-        description = "This rule checks that the number of complex-type arguments for a method annotated with @Processor is less than max allowed",
-        tags = { "connector-certification" })
+@Rule(key = NumberOfArgumentsInProcessorCheck.KEY, name = "Too many complex-type arguments in a processor", description = "Checks that the number of complex-type arguments for a method annotated with @Processor is less than max allowed.", tags = { "connector-certification" })
 @ActivatedByDefault
 public class NumberOfArgumentsInProcessorCheck extends AbstractConnectorClassCheck {
 
@@ -34,10 +31,7 @@ public class NumberOfArgumentsInProcessorCheck extends AbstractConnectorClassChe
     /**
      * The maximum number of complex-type arguments allowed in a processor.
      */
-    @RuleProperty(
-            key = "maxArgumentsAllowed",
-            defaultValue = "" + DEFAULT_MAX_ALLOWED,
-            description = "The maximum number of complex-type arguments allowed in a method annotated with @Processor")
+    @RuleProperty(key = "maxArgumentsAllowed", defaultValue = "" + DEFAULT_MAX_ALLOWED, description = "The maximum number of complex-type arguments allowed in a method annotated with @Processor")
     protected int maxArgumentsAllowed = DEFAULT_MAX_ALLOWED;
 
     @Override
