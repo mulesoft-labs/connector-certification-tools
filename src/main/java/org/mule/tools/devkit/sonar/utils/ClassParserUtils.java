@@ -8,12 +8,13 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.ProjectClasspath;
 import org.sonar.plugins.java.api.tree.*;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -118,6 +119,7 @@ public class ClassParserUtils {
         return annotationSimpleName.equals(annotationClass.getSimpleName()) || annotationSimpleName.equals(annotationClass.getCanonicalName());
     }
 
+    @Nonnull
     public static Optional<Class<?>> classForName(@NonNull final String classNameDef, @NonNull final Set<ImportTree> imports) {
 
         // Is a generic declaration ?. Remove generic type ..
@@ -145,7 +147,7 @@ public class ClassParserUtils {
 
                 @Override
                 public boolean apply(@Nullable ImportTree input) {
-                    return !input.isStatic() && extractImport(input.qualifiedIdentifier()).endsWith("." + className);
+                    return input != null && !input.isStatic() && extractImport(input.qualifiedIdentifier()).endsWith("." + className);
                 }
             };
             if (Iterables.any(imports, predicate)) {
@@ -161,18 +163,22 @@ public class ClassParserUtils {
 
                         @Override
                         public boolean apply(@Nullable ImportTree input) {
-                            return !input.isStatic() && extractImport(input.qualifiedIdentifier()).endsWith(".*");
+                            return input != null && !input.isStatic() && extractImport(input.qualifiedIdentifier()).endsWith(".*");
                         }
                     }), new Function<ImportTree, String>() {
 
                         @Override
                         public String apply(@Nullable ImportTree input) {
+                            if (input == null) {
+                                return null;
+                            }
                             final String statementStr = input.qualifiedIdentifier().toString();
                             return statementStr.substring(0, statementStr.length() - 1) + className;
                         }
                     }), new Function<String, Optional<Class<?>>>() {
 
                         @Override
+                        @NonNull
                         public Optional<Class<?>> apply(@Nullable String input) {
                             return findClass(input);
                         }
@@ -210,11 +216,13 @@ public class ClassParserUtils {
         return result;
     }
 
+    @Nonnull
     public static Optional<Class<?>> classForName(@NonNull final Tree type, @NonNull final Set<ImportTree> imports) {
         String classNameDef = extractType(type);
         return classForName(classNameDef, imports);
     }
 
+    @Nonnull
     private static String extractType(@NonNull Tree type) {
         String classNameDef = type.toString();
         if (type.is(Tree.Kind.VARIABLE)) {
@@ -224,6 +232,7 @@ public class ClassParserUtils {
         return classNameDef;
     }
 
+    @Nonnull
     private static String extractImport(Tree tree) {
         List<String> list = Lists.newArrayList();
         while (tree.is(Tree.Kind.MEMBER_SELECT)) {
