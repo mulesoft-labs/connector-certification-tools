@@ -37,7 +37,7 @@ public class ClassParserUtils {
         primitives.add("boolean");
     }
 
-    final private static Set<String> defaultImportedClasses = new HashSet<>();
+    private static final Set<String> defaultImportedClasses = new HashSet<>();
 
     static {
         defaultImportedClasses.add("Integer");
@@ -52,7 +52,7 @@ public class ClassParserUtils {
         defaultImportedClasses.add("String");
     }
 
-    final private static Map<String, Class<?>> primitiveToBoxedType = new HashMap<>();
+    private static final Map<String, Class<?>> primitiveToBoxedType = new HashMap<>();
 
     static {
         primitiveToBoxedType.put("int", java.lang.Integer.class);
@@ -87,7 +87,7 @@ public class ClassParserUtils {
     private ClassParserUtils() {
     }
 
-    public static final Predicate<VariableTree> getComplexTypePredicate(final Set<ImportTree> imports) {
+    public static Predicate<VariableTree> getComplexTypePredicate(final Set<ImportTree> imports) {
         return new Predicate<VariableTree>() {
 
             @Override
@@ -186,13 +186,16 @@ public class ClassParserUtils {
 
                         @Override
                         public boolean apply(@Nullable Optional<Class<?>> input) {
-                            return input.isPresent();
+                            return input != null && input.isPresent();
                         }
 
                     }), new Function<Optional<Class<?>>, Class<?>>() {
 
                         @Override
                         public Class<?> apply(@Nullable Optional<Class<?>> input) {
+                            if (input == null) {
+                                return null;
+                            }
                             return input.get();
                         }
                     }), null));
@@ -211,6 +214,7 @@ public class ClassParserUtils {
             ProjectClasspath projectClasspath = PROJECT_CLASSPATH_THREAD_LOCAL.get();
             result = Optional.<Class<?>>fromNullable(Class.forName(className, true, projectClasspath != null ? projectClasspath.getClassloader() : ClassParserUtils.class.getClassLoader()));
         } catch (ClassNotFoundException e) {
+            logger.debug("Couldn't find class {}", className);
             // Ignore ...
         }
         return result;
@@ -241,6 +245,6 @@ public class ClassParserUtils {
             tree = memberSelectExpressionTree.expression();
         }
         list.add(tree.toString());
-        return Joiner.on(".").join(Iterables.reverse(list));
+        return Joiner.on(".").join(Lists.reverse(list));
     }
 }
