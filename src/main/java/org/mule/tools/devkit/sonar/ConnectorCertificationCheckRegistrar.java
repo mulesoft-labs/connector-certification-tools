@@ -5,7 +5,10 @@ import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.checks.LicenseByCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.NumberOfArgumentsInProcessorCheck;
 import org.mule.tools.devkit.sonar.checks.RefOnlyInComplexTypesCheck;
+import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.api.BatchExtension;
+import org.sonar.api.batch.ProjectClasspath;
+import org.sonar.api.resources.Project;
 import org.sonar.plugins.java.api.JavaFileScanner;
 import org.sonar.plugins.java.api.JavaFileScannersFactory;
 
@@ -13,10 +16,11 @@ import java.util.List;
 
 public class ConnectorCertificationCheckRegistrar implements BatchExtension, JavaFileScannersFactory {
 
-    private final MavenProject project;
+    private final MavenProject mavenProject;
 
-    public ConnectorCertificationCheckRegistrar(MavenProject project) {
-        this.project = project;
+    public ConnectorCertificationCheckRegistrar(MavenProject mavenProject, ProjectClasspath projectClasspath, Project project) {
+        this.mavenProject = mavenProject;
+        ClassParserUtils.PROJECT_CLASSPATH_THREAD_LOCAL.set(projectClasspath);
     }
 
     @Override
@@ -24,7 +28,7 @@ public class ConnectorCertificationCheckRegistrar implements BatchExtension, Jav
         List<JavaFileScanner> scanners = Lists.newArrayList();
         scanners.add(new RefOnlyInComplexTypesCheck());
         scanners.add(new NumberOfArgumentsInProcessorCheck());
-        scanners.add(new LicenseByCategoryCheck(project));
+        scanners.add(new LicenseByCategoryCheck(mavenProject));
         return scanners;
     }
 
