@@ -42,7 +42,7 @@ public class NumberOfArgumentsInProcessorCheck extends AbstractConnectorClassChe
 
     @Override
     protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
-        final long count = Iterables.size(Iterables.filter(tree.parameters(), ClassParserUtils.COMPLEX_TYPE_PREDICATE));
+        final long count = Iterables.size(Iterables.filter(tree.parameters(), ClassParserUtils.getComplexTypePredicate(imports)));
         if (count > maxArgumentsAllowed) {
             final String message = String.format("Processor %s has %d complex-type parameters (more than %d which is max allowed)", tree.simpleName(), count, maxArgumentsAllowed);
             logger.info(message);

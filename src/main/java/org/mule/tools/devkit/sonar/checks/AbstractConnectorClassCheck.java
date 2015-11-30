@@ -2,6 +2,7 @@ package org.mule.tools.devkit.sonar.checks;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
@@ -11,9 +12,13 @@ import org.sonar.plugins.java.api.JavaFileScanner;
 import org.sonar.plugins.java.api.JavaFileScannerContext;
 import org.sonar.plugins.java.api.tree.*;
 
+import java.util.Set;
+
 abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements JavaFileScanner {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractConnectorClassCheck.class);
+
+    protected final Set<ImportTree> imports = Sets.newLinkedHashSet();
 
     private static final String CONNECTOR_ANNOTATION = "Connector";
     private static final String PROCESSOR_ANNOTATION = "Processor";
@@ -30,6 +35,12 @@ abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements Ja
     JavaFileScannerContext context;
 
     protected abstract RuleKey getRuleKey();
+
+    @Override
+    public void visitImport(ImportTree node) {
+        imports.add(node);
+        super.visitImport(node);
+    }
 
     @Override
     public final void scanFile(@NonNull JavaFileScannerContext context) {

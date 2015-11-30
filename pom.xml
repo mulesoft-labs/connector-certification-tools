@@ -39,7 +39,7 @@
         <dependency>
             <groupId>org.checkerframework</groupId>
             <artifactId>checker-qual</artifactId>
-            <version>1.9.3</version>
+            <version>1.9.7</version>
         </dependency>
         <dependency>
             <groupId>org.mule.tools.devkit</groupId>

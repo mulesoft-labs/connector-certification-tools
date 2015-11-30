@@ -33,32 +33,32 @@ public class LicenseByCategoryCheckTest {
 
     @Test
     public void checkCommunity() {
-        runForCategory("Community", 11, "@RequiresEnterpriseLicense and @RequiresEntitlement must not be present for Community category.");
+        runForCategory("Community", 7, "@RequiresEnterpriseLicense and @RequiresEntitlement must not be present for Community category.");
     }
 
     @Test
     public void checkCertified() {
-        runForCategory("Certified", 9, "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.");
+        runForCategory("Certified", 5, "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.");
     }
 
     @Test
     public void checkSelect() {
-        runForCategory("Select", 9, "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.");
+        runForCategory("Select", 5, "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.");
     }
 
     @Test
     public void checkPremiumNoRequiresLicense() {
-        runForCategory("Premium", "PremiumNoRequiresLicense", 11, "@RequiresEnterpriseLicense and @RequiresEntitlement need to be defined for Premium category.");
+        runForCategory("Premium", "PremiumNoRequiresLicense", 7, "@RequiresEnterpriseLicense and @RequiresEntitlement need to be defined for Premium category.");
     }
 
     @Test
     public void checkPremiumNoNameAttribute() {
-        runForCategory("Premium", "PremiumNoNameAttribute", 13, "'name' attribute must be defined for @RequiresEntitlement using connector name.");
+        runForCategory("Premium", "PremiumNoNameAttribute", 9, "'name' attribute must be defined for @RequiresEntitlement using connector name.");
     }
 
     @Test
     public void checkInvalid() {
-        runForCategory("Invalid", 9, "Invalid category specified in pom.xml");
+        runForCategory("Invalid", 5, "Invalid category specified in pom.xml");
     }
 
 }
