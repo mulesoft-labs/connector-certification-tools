@@ -13,7 +13,7 @@ import org.sonar.plugins.java.api.tree.*;
 
 abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements JavaFileScanner {
 
-    private static final Logger logger = LoggerFactory.getLogger(LicenseByCategoryCheck.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractConnectorClassCheck.class);
 
     private static final String CONNECTOR_ANNOTATION = "Connector";
     private static final String PROCESSOR_ANNOTATION = "Processor";
