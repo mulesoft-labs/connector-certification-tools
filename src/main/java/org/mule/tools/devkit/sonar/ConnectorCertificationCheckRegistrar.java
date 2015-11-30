@@ -2,9 +2,7 @@ package org.mule.tools.devkit.sonar;
 
 import com.google.common.collect.Lists;
 import org.apache.maven.project.MavenProject;
-import org.mule.tools.devkit.sonar.checks.LicenseByCategoryCheck;
-import org.mule.tools.devkit.sonar.checks.NumberOfArgumentsInProcessorCheck;
-import org.mule.tools.devkit.sonar.checks.RefOnlyInComplexTypesCheck;
+import org.mule.tools.devkit.sonar.checks.*;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.batch.ProjectClasspath;
@@ -29,6 +27,8 @@ public class ConnectorCertificationCheckRegistrar implements BatchExtension, Jav
         scanners.add(new RefOnlyInComplexTypesCheck());
         scanners.add(new NumberOfArgumentsInProcessorCheck());
         scanners.add(new LicenseByCategoryCheck(mavenProject));
+        scanners.add(new RestCallDeprecatedCheck());
+        scanners.add(new RedundantExceptionNameCheck());
         return scanners;
     }
 
