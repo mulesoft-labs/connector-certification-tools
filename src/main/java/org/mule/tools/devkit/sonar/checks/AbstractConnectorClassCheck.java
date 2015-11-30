@@ -16,7 +16,7 @@ import java.util.Set;
 
 abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements JavaFileScanner {
 
-    private static final Logger logger = LoggerFactory.getLogger(LicenseByCategoryCheck.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractConnectorClassCheck.class);
 
     protected final Set<ImportTree> imports = Sets.newLinkedHashSet();
 

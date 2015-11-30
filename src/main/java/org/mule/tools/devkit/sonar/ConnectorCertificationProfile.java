@@ -36,7 +36,8 @@ public class ConnectorCertificationProfile extends ProfileDefinition {
 
     @Override
     public RulesProfile createProfile(ValidationMessages validation) {
-        return annotationProfileParser.parse(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, CONNECTOR_CERTIFICATION_PROFILE, "java", JavaChecks.getChecks(), validation);
+        return annotationProfileParser.parse(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, CONNECTOR_CERTIFICATION_PROFILE, "java", ConnectorsChecks.allChecks(),
+                validation);
     }
 
 }
