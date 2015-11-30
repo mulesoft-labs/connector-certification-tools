@@ -37,7 +37,7 @@ public class ClassParserUtils {
         primitives.add("boolean");
     }
 
-    final private static Set<String> defaultImportedClasses = new HashSet<>();
+    private static final Set<String> defaultImportedClasses = new HashSet<>();
 
     static {
         defaultImportedClasses.add("Integer");
@@ -52,7 +52,7 @@ public class ClassParserUtils {
         defaultImportedClasses.add("String");
     }
 
-    final private static Map<String, Class<?>> primitiveToBoxedType = new HashMap<>();
+    private static final Map<String, Class<?>> primitiveToBoxedType = new HashMap<>();
 
     static {
         primitiveToBoxedType.put("int", java.lang.Integer.class);
@@ -87,7 +87,7 @@ public class ClassParserUtils {
     private ClassParserUtils() {
     }
 
-    public static final Predicate<VariableTree> getComplexTypePredicate(final Set<ImportTree> imports) {
+    public static Predicate<VariableTree> getComplexTypePredicate(final Set<ImportTree> imports) {
         return new Predicate<VariableTree>() {
 
             @Override

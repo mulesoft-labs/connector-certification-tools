@@ -43,7 +43,7 @@ abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements Ja
     }
 
     @Override
-    public final void scanFile(@NonNull JavaFileScannerContext context) {
+    public final void scanFile(JavaFileScannerContext context) {
         this.context = context;
         scan(context.getTree());
     }
