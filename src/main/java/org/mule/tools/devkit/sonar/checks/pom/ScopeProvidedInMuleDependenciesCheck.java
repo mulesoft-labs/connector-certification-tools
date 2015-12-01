@@ -1,11 +1,10 @@
-package org.mule.tools.devkit.sonar.checks;
+package org.mule.tools.devkit.sonar.checks.pom;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
-import org.sonar.api.batch.SensorContext;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.check.Rule;
 
@@ -21,7 +20,7 @@ public class ScopeProvidedInMuleDependenciesCheck implements PomCheck {
     private static final String COM_MULESOFT_GROUP_ID = "com.mulesoft.";
 
     @Override
-    public Iterable<PomIssue> analyse(MavenProject mavenProject, SensorContext sensorContext) {
+    public Iterable<PomIssue> analyze(MavenProject mavenProject) {
         final List<PomIssue> issues = Lists.newArrayList();
         List<Dependency> dependencies = mavenProject.getDependencies();
         for (Dependency dependency : dependencies) {

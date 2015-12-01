@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.checks;
+package org.mule.tools.devkit.sonar.checks.java;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class RestCallDeprecatedCheckTest {
         // Use an instance of the check under test to raise the issue.
         RestCallDeprecatedCheck check = new RestCallDeprecatedCheck();
 
-        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/RestCallDeprecatedCheck.java"), new VisitorsBridge(check));
+        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/java/RestCallDeprecatedCheck.java"), new VisitorsBridge(check));
 
         checkMessagesVerifier.verify(file.getCheckMessages()).next().atLine(6).withMessage("@RestCall should be removed from processor 'failingMethod' as it has been deprecated.");
 

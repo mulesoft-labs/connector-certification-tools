@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.checks;
+package org.mule.tools.devkit.sonar.checks.pom;
 
 import com.google.common.collect.Lists;
 import org.apache.maven.project.MavenProject;
@@ -41,7 +41,7 @@ public class ConnectorPomCheck implements Sensor {
     @Override
     public void analyse(Project project, SensorContext sensorContext) {
         for (PomCheck pomCheck : buildPomAllChecks()) {
-            final Iterable<PomIssue> analyse = pomCheck.analyse(mavenProject, sensorContext);
+            final Iterable<PomIssue> analyse = pomCheck.analyze(mavenProject);
             for (PomIssue issue : analyse) {
                 logAndRaiseIssue(project, issue);
             }

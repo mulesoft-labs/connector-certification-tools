@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.checks;
+package org.mule.tools.devkit.sonar.checks.java;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,7 +19,7 @@ public class NumberOfArgumentsInProcessorCheckTest {
         NumberOfArgumentsInProcessorCheck check = new NumberOfArgumentsInProcessorCheck();
         check.maxArgumentsAllowed = 4;
 
-        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/NumberOfArgumentsInProcessorCheck.java"), new VisitorsBridge(check));
+        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/java/NumberOfArgumentsInProcessorCheck.java"), new VisitorsBridge(check));
 
         checkMessagesVerifier.verify(file.getCheckMessages()).next().atLine(20)
                 .withMessage("Processor failingMethod has 5 complex-type parameters (more than 4 which is max allowed)");

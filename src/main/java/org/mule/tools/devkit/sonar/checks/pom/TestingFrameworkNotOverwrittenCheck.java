@@ -1,10 +1,9 @@
-package org.mule.tools.devkit.sonar.checks;
+package org.mule.tools.devkit.sonar.checks.pom;
 
 import com.google.common.collect.Lists;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
-import org.sonar.api.batch.SensorContext;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.check.Rule;
 
@@ -20,7 +19,7 @@ public class TestingFrameworkNotOverwrittenCheck implements PomCheck {
     private static final String CTF_ARTIFACT_ID = "connector-testing-framework";
 
     @Override
-    public Iterable<PomIssue> analyse(MavenProject mavenProject, SensorContext sensorContext) {
+    public Iterable<PomIssue> analyze(MavenProject mavenProject) {
         final List<PomIssue> issues = Lists.newArrayList();
         List<Dependency> dependencies = mavenProject.getDependencies();
         for (Dependency dependency : dependencies) {
