@@ -14,7 +14,7 @@ import org.sonar.plugins.java.api.tree.*;
 
 import java.util.Set;
 
-abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements JavaFileScanner {
+public abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements JavaFileScanner {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractConnectorClassCheck.class);
 

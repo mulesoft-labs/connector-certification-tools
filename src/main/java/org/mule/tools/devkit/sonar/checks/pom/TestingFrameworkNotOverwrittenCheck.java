@@ -21,6 +21,7 @@ public class TestingFrameworkNotOverwrittenCheck implements PomCheck {
     @Override
     public Iterable<PomIssue> analyze(MavenProject mavenProject) {
         final List<PomIssue> issues = Lists.newArrayList();
+        @SuppressWarnings("unchecked")
         List<Dependency> dependencies = mavenProject.getDependencies();
         for (Dependency dependency : dependencies) {
             if (dependency.getGroupId().equals(CTF_GROUP_ID) && dependency.getArtifactId().startsWith(CTF_ARTIFACT_ID)) {

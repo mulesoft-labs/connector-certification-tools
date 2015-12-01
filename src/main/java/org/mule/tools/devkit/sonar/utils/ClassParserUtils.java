@@ -116,7 +116,7 @@ public class ClassParserUtils {
         };
     }
 
-    public static final Predicate<AnnotationTree> hasAnnotationPredicate(final Class<?> annotationClass) {
+    public static Predicate<AnnotationTree> hasAnnotationPredicate(final Class<?> annotationClass) {
         return new Predicate<AnnotationTree>() {
 
             @Override
@@ -243,7 +243,7 @@ public class ClassParserUtils {
             ProjectClasspath projectClasspath = PROJECT_CLASSPATH_THREAD_LOCAL.get();
             result = Optional.<Class<?>> fromNullable(Class.forName(className, true,
                     projectClasspath != null ? projectClasspath.getClassloader() : ClassParserUtils.class.getClassLoader()));
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) { // NOSONAR
             logger.debug("Couldn't find class {}", className);
             // Ignore ...
         }
