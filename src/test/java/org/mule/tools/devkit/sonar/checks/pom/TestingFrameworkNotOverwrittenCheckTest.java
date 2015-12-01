@@ -14,7 +14,6 @@ public class TestingFrameworkNotOverwrittenCheckTest extends BasicPomTestBase {
 
     @Test
     public void checkTestingFrameworkNotOverwritten() throws IOException, XmlPullParserException {
-
         final MavenProject mavenProject = createMavenProjectFromPom(pomForCurrentClass());
         final TestingFrameworkNotOverwrittenCheck check = new TestingFrameworkNotOverwrittenCheck();
         final Iterable<PomIssue> pomIssues = check.analyze(mavenProject);

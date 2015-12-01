@@ -24,8 +24,7 @@ public class TestingFrameworkNotOverwrittenCheck implements PomCheck {
         List<Dependency> dependencies = mavenProject.getDependencies();
         for (Dependency dependency : dependencies) {
             if (dependency.getGroupId().equals(CTF_GROUP_ID) && dependency.getArtifactId().startsWith(CTF_ARTIFACT_ID)) {
-                final String message = String.format("'%s' must not be overwritten.", dependency.getArtifactId());
-                issues.add(new PomIssue(RULE_KEY, message));
+                issues.add(new PomIssue(RULE_KEY, String.format("'%s' must not be overwritten.", dependency.getArtifactId())));
             }
         }
         return issues;
