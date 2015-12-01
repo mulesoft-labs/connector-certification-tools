@@ -9,19 +9,19 @@ import org.sonar.squidbridge.checks.CheckMessagesVerifierRule;
 
 import java.io.File;
 
-public class NumberOfArgumentsInProcessorCheckTest {
+public class NumberOfComplexArgumentsCheckTest {
 
     @Rule
     public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
     @Test
     public void detected() {
-        NumberOfArgumentsInProcessorCheck check = new NumberOfArgumentsInProcessorCheck();
+        NumberOfComplexArgumentsCheck check = new NumberOfComplexArgumentsCheck();
         check.maxArgumentsAllowed = 4;
 
-        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/java/NumberOfArgumentsInProcessorCheck.java"), new VisitorsBridge(check));
+        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/NumberOfComplexArgumentsCheck.java"), new VisitorsBridge(check));
 
         checkMessagesVerifier.verify(file.getCheckMessages()).next().atLine(20)
-                .withMessage("Processor failingMethod has 5 complex-type parameters (more than 4 which is max allowed)");
+                .withMessage("Processor 'failingMethod' has 5 complex-type parameters (more than 4, which is the maximum allowed).");
     }
 }

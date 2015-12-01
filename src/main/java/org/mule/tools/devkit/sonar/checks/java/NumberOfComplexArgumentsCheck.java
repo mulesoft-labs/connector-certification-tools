@@ -13,12 +13,12 @@ import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-@Rule(key = NumberOfArgumentsInProcessorCheck.KEY, name = "Too many complex-type arguments in a processor", description = "Checks that the number of complex-type arguments for a method annotated with @Processor is less than max allowed.", tags = { "connector-certification" })
+@Rule(key = NumberOfComplexArgumentsCheck.KEY, name = "Too many complex-type arguments in a processor", description = "Checks, for every @Processor, that the number of complex-type arguments is less than max allowed.", tags = { "connector-certification" })
 @ActivatedByDefault
-public class NumberOfArgumentsInProcessorCheck extends AbstractConnectorClassCheck {
+public class NumberOfComplexArgumentsCheck extends AbstractConnectorClassCheck {
 
-    private static final Logger logger = LoggerFactory.getLogger(NumberOfArgumentsInProcessorCheck.class);
-    public static final String KEY = "number-of-arguments-in-processor";
+    private static final Logger logger = LoggerFactory.getLogger(NumberOfComplexArgumentsCheck.class);
+    public static final String KEY = "number-of-complex-arguments";
     private static final RuleKey RULE_KEY = RuleKey.of(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, KEY);
 
     @Override
@@ -38,7 +38,8 @@ public class NumberOfArgumentsInProcessorCheck extends AbstractConnectorClassChe
     protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
         final long count = Iterables.size(Iterables.filter(tree.parameters(), ClassParserUtils.getComplexTypePredicate(imports)));
         if (count > maxArgumentsAllowed) {
-            final String message = String.format("Processor %s has %d complex-type parameters (more than %d which is max allowed)", tree.simpleName(), count, maxArgumentsAllowed);
+            final String message = String.format("Processor '%s' has %d complex-type parameters (more than %d, which is the maximum allowed).", tree.simpleName(), count,
+                    maxArgumentsAllowed);
             logger.info(message);
             logAndRaiseIssue(processorAnnotation, message);
         }

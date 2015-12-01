@@ -3,7 +3,8 @@ package org.mule.tools.devkit.sonar;
 import com.google.common.collect.Lists;
 import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.checks.java.LicenseByCategoryCheck;
-import org.mule.tools.devkit.sonar.checks.java.NumberOfArgumentsInProcessorCheck;
+import org.mule.tools.devkit.sonar.checks.java.NumberOfComplexArgumentsCheck;
+import org.mule.tools.devkit.sonar.checks.java.NumberOfSimpleAndOptionalArgumentsCheck;
 import org.mule.tools.devkit.sonar.checks.java.RedundantExceptionNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.RefOnlyInComplexTypesCheck;
 import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecatedCheck;
@@ -29,7 +30,8 @@ public class ConnectorCertificationCheckRegistrar implements BatchExtension, Jav
     public Iterable<JavaFileScanner> createJavaFileScanners() {
         List<JavaFileScanner> scanners = Lists.newArrayList();
         scanners.add(new RefOnlyInComplexTypesCheck());
-        scanners.add(new NumberOfArgumentsInProcessorCheck());
+        scanners.add(new NumberOfComplexArgumentsCheck());
+        scanners.add(new NumberOfSimpleAndOptionalArgumentsCheck());
         scanners.add(new LicenseByCategoryCheck(mavenProject));
         scanners.add(new RestCallDeprecatedCheck());
         scanners.add(new RedundantExceptionNameCheck());

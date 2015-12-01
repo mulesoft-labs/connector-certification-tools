@@ -97,6 +97,16 @@ public class ClassParserUtils {
         };
     }
 
+    public static Predicate<VariableTree> getSimpleTypePredicate(final Set<ImportTree> imports) {
+        return new Predicate<VariableTree>() {
+
+            @Override
+            public boolean apply(@Nullable VariableTree input) {
+                return input != null && input.type().is(Tree.Kind.IDENTIFIER) && isSimpleType(input.type(), imports);
+            }
+        };
+    }
+
     public static boolean isPrimitive(@NonNull final Tree type, @NonNull Set<ImportTree> imports) {
         Optional<Class<?>> clazz = classForName(type, imports);
         return clazz.isPresent() && primitiveToBoxedType.values().contains(clazz.get());
@@ -135,7 +145,7 @@ public class ClassParserUtils {
         // Object is a primitive class type ?
         if (!result.isPresent()) {
             if (primitives.contains(className)) {
-                result = Optional.<Class<?>>fromNullable(primitiveToBoxedType.get(className));
+                result = Optional.<Class<?>> fromNullable(primitiveToBoxedType.get(className));
             } else if (defaultImportedClasses.contains(className)) {
                 result = findClass("java.lang." + className);
             }
@@ -158,8 +168,8 @@ public class ClassParserUtils {
         }
 
         if (!result.isPresent()) {
-            result = Optional.<Class<?>>fromNullable(
-                    Iterables.getFirst(Iterables.transform(Iterables.filter(Iterables.transform(Iterables.transform(Iterables.filter(imports, new Predicate<ImportTree>() {
+            result = Optional.<Class<?>> fromNullable(Iterables.getFirst(
+                    Iterables.transform(Iterables.filter(Iterables.transform(Iterables.transform(Iterables.filter(imports, new Predicate<ImportTree>() {
 
                         @Override
                         public boolean apply(@Nullable ImportTree input) {
@@ -212,7 +222,8 @@ public class ClassParserUtils {
         Optional<Class<?>> result = Optional.absent();
         try {
             ProjectClasspath projectClasspath = PROJECT_CLASSPATH_THREAD_LOCAL.get();
-            result = Optional.<Class<?>>fromNullable(Class.forName(className, true, projectClasspath != null ? projectClasspath.getClassloader() : ClassParserUtils.class.getClassLoader()));
+            result = Optional.<Class<?>> fromNullable(Class.forName(className, true,
+                    projectClasspath != null ? projectClasspath.getClassloader() : ClassParserUtils.class.getClassLoader()));
         } catch (ClassNotFoundException e) {
             logger.debug("Couldn't find class {}", className);
             // Ignore ...
