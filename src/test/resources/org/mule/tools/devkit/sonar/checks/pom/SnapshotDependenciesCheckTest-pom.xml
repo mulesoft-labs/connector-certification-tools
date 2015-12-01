@@ -6,13 +6,18 @@
     <groupId>org.mule.tools.devkit.sonar</groupId>
     <artifactId>certification-plugin</artifactId>
     <packaging>sonar-plugin</packaging>
-    <version>0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
             <groupId>org.codehaus.sonar</groupId>
             <artifactId>sonar-plugin-api</artifactId>
             <version>4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.tools.devkit</groupId>
+            <artifactId>mule-devkit-annotations</artifactId>
+            <version>3.7.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

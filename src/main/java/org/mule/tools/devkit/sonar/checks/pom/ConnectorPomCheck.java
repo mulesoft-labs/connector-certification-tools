@@ -51,6 +51,7 @@ public class ConnectorPomCheck implements Sensor {
     private Iterable<PomCheck> buildPomAllChecks() {
         List<PomCheck> scanners = Lists.newArrayList();
         scanners.add(new ScopeProvidedInMuleDependenciesCheck());
+        scanners.add(new SnapshotDependenciesCheck());
         scanners.add(new TestingFrameworkNotOverwrittenCheck());
         return scanners;
     }
