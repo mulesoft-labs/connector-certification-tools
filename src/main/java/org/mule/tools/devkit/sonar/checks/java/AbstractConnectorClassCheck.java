@@ -5,6 +5,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.mule.api.annotations.Connector;
+import org.mule.api.annotations.Processor;
+import org.mule.api.annotations.Source;
+import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.rule.RuleKey;
@@ -19,10 +23,6 @@ public abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implem
     private static final Logger logger = LoggerFactory.getLogger(AbstractConnectorClassCheck.class);
 
     protected final Set<ImportTree> imports = Sets.newLinkedHashSet();
-
-    private static final String CONNECTOR_ANNOTATION = "Connector";
-    private static final String PROCESSOR_ANNOTATION = "Processor";
-    private static final String SOURCE_ANNOTATION = "Source";
 
     public static final Predicate<AnnotationTree> ANNOTATION_TREE_PREDICATE = new Predicate<AnnotationTree>() {
 
@@ -51,14 +51,10 @@ public abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implem
     @Override
     public final void visitClass(ClassTree tree) {
         for (AnnotationTree annotationTree : Iterables.filter(tree.modifiers().annotations(), ANNOTATION_TREE_PREDICATE)) {
-            final IdentifierTree idf = (IdentifierTree) annotationTree.annotationType();
-            if (idf.name().equals(CONNECTOR_ANNOTATION)) {
-                verifyConnector(tree, idf);
+            if (ClassParserUtils.is(annotationTree, Connector.class)) {
+                verifyConnector(tree, (IdentifierTree) annotationTree.annotationType());
             }
         }
-
-        // The call to the super implementation allows to continue the visit of the AST.
-        // Be careful to always call this method to visit every node of the tree.
         super.visitClass(tree);
     }
 
@@ -66,15 +62,12 @@ public abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implem
     public final void visitMethod(MethodTree tree) {
         for (AnnotationTree annotationTree : Iterables.filter(tree.modifiers().annotations(), ANNOTATION_TREE_PREDICATE)) {
             final IdentifierTree idf = (IdentifierTree) annotationTree.annotationType();
-            if (idf.name().equals(PROCESSOR_ANNOTATION)) {
+            if (ClassParserUtils.is(annotationTree, Processor.class)) {
                 verifyProcessor(tree, idf);
-            } else if (idf.name().equals(SOURCE_ANNOTATION)) {
+            } else if (ClassParserUtils.is(annotationTree, Source.class)) {
                 verifySource(tree, idf);
             }
         }
-
-        // The call to the super implementation allows to continue the visit of the AST.
-        // Be careful to always call this method to visit every node of the tree.
         super.visitMethod(tree);
     }
 

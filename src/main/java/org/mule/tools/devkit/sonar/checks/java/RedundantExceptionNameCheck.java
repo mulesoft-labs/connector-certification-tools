@@ -28,7 +28,7 @@ public class RedundantExceptionNameCheck extends AbstractConnectorClassCheck {
 
         final List<? extends ExpressionTree> thrownClauses = tree.throwsClauses();
 
-        if (thrownClauses.size() > 0) {
+        if (!thrownClauses.isEmpty()) {
             for (ExpressionTree clause : thrownClauses) {
                 String clauseName = ((IdentifierTree) clause).name();
                 if (clauseName.contains("Connector")) {
