@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.checks;
+package org.mule.tools.devkit.sonar.checks.java;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class RedundantExceptionNameCheckTest {
         // Use an instance of the check under test to raise the issue.
         RedundantExceptionNameCheck check = new RedundantExceptionNameCheck();
 
-        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/RedundantExceptionNameCheck.java"), new VisitorsBridge(check));
+        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/java/RedundantExceptionNameCheck.java"), new VisitorsBridge(check));
 
         checkMessagesVerifier.verify(file.getCheckMessages()).next().atLine(5)
                 .withMessage("Exception 'RedundantExceptionNameCheckConnectorException' in processor 'failingMethod' should be renamed to 'RedundantExceptionNameCheckException'.");

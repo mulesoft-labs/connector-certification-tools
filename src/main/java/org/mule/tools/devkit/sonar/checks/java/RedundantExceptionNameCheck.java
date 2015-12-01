@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.checks;
+package org.mule.tools.devkit.sonar.checks.java;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;

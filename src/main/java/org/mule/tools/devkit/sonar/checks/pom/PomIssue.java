@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.checks;
+package org.mule.tools.devkit.sonar.checks.pom;
 
 import org.sonar.api.rule.RuleKey;
 
@@ -12,11 +12,11 @@ public class PomIssue {
         this.message = message;
     }
 
-    RuleKey ruleKey() {
+    public RuleKey ruleKey() {
         return ruleKey;
     }
 
-    String message() {
+    public String message() {
         return message;
     }
 }

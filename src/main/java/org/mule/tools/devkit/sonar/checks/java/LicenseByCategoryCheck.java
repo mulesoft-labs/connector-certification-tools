@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.checks;
+package org.mule.tools.devkit.sonar.checks.java;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import com.google.common.base.Predicate;

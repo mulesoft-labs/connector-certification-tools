@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.checks;
+package org.mule.tools.devkit.sonar.checks.java;
 
 import org.apache.maven.project.MavenProject;
 import org.junit.Rule;
@@ -25,7 +25,7 @@ public class LicenseByCategoryCheckTest {
         LicenseByCategoryCheck check = new LicenseByCategoryCheck(mavenProject);
 
         SourceFile file = JavaAstScanner
-                .scanSingleFile(new File(String.format("src/test/files/licensechecks/LicenseByCategory%sCheck.java", testClass)), new VisitorsBridge(check));
+                .scanSingleFile(new File(String.format("src/test/files/java/licensechecks/LicenseByCategory%sCheck.java", testClass)), new VisitorsBridge(check));
 
         checkMessagesVerifier.verify(file.getCheckMessages())
                 .next().atLine(lineNumber).withMessage(expectedMessage);

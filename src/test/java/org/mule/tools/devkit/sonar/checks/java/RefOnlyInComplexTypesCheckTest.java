@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.checks;
+package org.mule.tools.devkit.sonar.checks.java;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class RefOnlyInComplexTypesCheckTest {
         // Use an instance of the check under test to raise the issue.
         RefOnlyInComplexTypesCheck check = new RefOnlyInComplexTypesCheck();
 
-        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/RefOnlyInComplexTypesCheck.java"), new VisitorsBridge(check));
+        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/java/RefOnlyInComplexTypesCheck.java"), new VisitorsBridge(check));
 
         checkMessagesVerifier.verify(file.getCheckMessages()).next().atLine(8)
                 .withMessage("Processor 'failingMethod' contains variable 's1' of type 'SomeComplexType' (complex type) not annotated with @RefOnly.");

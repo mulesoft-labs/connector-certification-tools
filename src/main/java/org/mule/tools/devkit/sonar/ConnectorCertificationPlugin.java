@@ -1,6 +1,6 @@
 package org.mule.tools.devkit.sonar;
 
-import org.mule.tools.devkit.sonar.checks.ConnectorPomCheck;
+import org.mule.tools.devkit.sonar.checks.pom.ConnectorPomCheck;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
