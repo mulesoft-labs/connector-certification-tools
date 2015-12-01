@@ -12,11 +12,20 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.ProjectClasspath;
-import org.sonar.plugins.java.api.tree.*;
+import org.sonar.plugins.java.api.tree.AnnotationTree;
+import org.sonar.plugins.java.api.tree.ImportTree;
+import org.sonar.plugins.java.api.tree.MemberSelectExpressionTree;
+import org.sonar.plugins.java.api.tree.Tree;
+import org.sonar.plugins.java.api.tree.VariableTree;
 
 import javax.annotation.Nonnull;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ClassParserUtils {
 
@@ -87,12 +96,32 @@ public class ClassParserUtils {
     private ClassParserUtils() {
     }
 
-    public static Predicate<VariableTree> getComplexTypePredicate(final Set<ImportTree> imports) {
+    public static Predicate<VariableTree> complexTypePredicate(final Set<ImportTree> imports) {
         return new Predicate<VariableTree>() {
 
             @Override
             public boolean apply(@Nullable VariableTree input) {
                 return input != null && input.type().is(Tree.Kind.IDENTIFIER) && !isSimpleType(input.type(), imports);
+            }
+        };
+    }
+
+    public static Predicate<VariableTree> simpleTypePredicate(final Set<ImportTree> imports) {
+        return new Predicate<VariableTree>() {
+
+            @Override
+            public boolean apply(@Nullable VariableTree input) {
+                return input != null && input.type().is(Tree.Kind.IDENTIFIER) && isSimpleType(input.type(), imports);
+            }
+        };
+    }
+
+    public static final Predicate<AnnotationTree> hasAnnotationPredicate(final Class<?> annotationClass) {
+        return new Predicate<AnnotationTree>() {
+
+            @Override
+            public boolean apply(@Nullable AnnotationTree input) {
+                return input != null && is(input, annotationClass);
             }
         };
     }
@@ -135,7 +164,7 @@ public class ClassParserUtils {
         // Object is a primitive class type ?
         if (!result.isPresent()) {
             if (primitives.contains(className)) {
-                result = Optional.<Class<?>>fromNullable(primitiveToBoxedType.get(className));
+                result = Optional.<Class<?>> fromNullable(primitiveToBoxedType.get(className));
             } else if (defaultImportedClasses.contains(className)) {
                 result = findClass("java.lang." + className);
             }
@@ -158,8 +187,8 @@ public class ClassParserUtils {
         }
 
         if (!result.isPresent()) {
-            result = Optional.<Class<?>>fromNullable(
-                    Iterables.getFirst(Iterables.transform(Iterables.filter(Iterables.transform(Iterables.transform(Iterables.filter(imports, new Predicate<ImportTree>() {
+            result = Optional.<Class<?>> fromNullable(Iterables.getFirst(
+                    Iterables.transform(Iterables.filter(Iterables.transform(Iterables.transform(Iterables.filter(imports, new Predicate<ImportTree>() {
 
                         @Override
                         public boolean apply(@Nullable ImportTree input) {
@@ -212,7 +241,8 @@ public class ClassParserUtils {
         Optional<Class<?>> result = Optional.absent();
         try {
             ProjectClasspath projectClasspath = PROJECT_CLASSPATH_THREAD_LOCAL.get();
-            result = Optional.<Class<?>>fromNullable(Class.forName(className, true, projectClasspath != null ? projectClasspath.getClassloader() : ClassParserUtils.class.getClassLoader()));
+            result = Optional.<Class<?>> fromNullable(Class.forName(className, true,
+                    projectClasspath != null ? projectClasspath.getClassloader() : ClassParserUtils.class.getClassLoader()));
         } catch (ClassNotFoundException e) {
             logger.debug("Couldn't find class {}", className);
             // Ignore ...

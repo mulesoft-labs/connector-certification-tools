@@ -2,11 +2,13 @@ package org.mule.tools.devkit.sonar;
 
 import com.google.common.collect.ImmutableList;
 import org.mule.tools.devkit.sonar.checks.java.LicenseByCategoryCheck;
-import org.mule.tools.devkit.sonar.checks.java.NumberOfArgumentsInProcessorCheck;
+import org.mule.tools.devkit.sonar.checks.java.NumberOfComplexArgumentsCheck;
+import org.mule.tools.devkit.sonar.checks.java.NumberOfSimpleAndOptionalArgumentsCheck;
 import org.mule.tools.devkit.sonar.checks.java.RedundantExceptionNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.RefOnlyInComplexTypesCheck;
 import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecatedCheck;
-import org.mule.tools.devkit.sonar.checks.pom.*;
+import org.mule.tools.devkit.sonar.checks.pom.ScopeProvidedInMuleDependenciesCheck;
+import org.mule.tools.devkit.sonar.checks.pom.TestingFrameworkNotOverwrittenCheck;
 
 import java.util.Collection;
 
@@ -17,7 +19,8 @@ public class ConnectorsChecks {
 
     public static Collection<Class> javaChecks() {
         final ImmutableList.Builder<Class> builder = ImmutableList.builder();
-        builder.add(NumberOfArgumentsInProcessorCheck.class);
+        builder.add(NumberOfComplexArgumentsCheck.class);
+        builder.add(NumberOfSimpleAndOptionalArgumentsCheck.class);
         builder.add(RefOnlyInComplexTypesCheck.class);
         builder.add(LicenseByCategoryCheck.class);
         builder.add(RestCallDeprecatedCheck.class);
