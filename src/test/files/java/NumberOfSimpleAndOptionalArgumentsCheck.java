@@ -1,6 +1,7 @@
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
 import com.google.common.collect.BoundType;
+import org.mule.api.annotations.param.Optional;
 
 @Connector
 public class NumberOfSimpleAndOptionalArgumentsInProcessorCheck {
@@ -14,11 +15,15 @@ public class NumberOfSimpleAndOptionalArgumentsInProcessorCheck {
     }
 
     @Processor
+    public void aMethod(SompleComplexType s1, @Optional String s2, @Optional String s3, String s4, String s5) {
+    }
+
+    @Processor
     public void aMethod(SomeComplexType s1, SomeComplexType s2, SomeComplexType s3, SomeComplexType s4, SomeComplexType s5) {
     }
 
     @Processor
-    public void failingMethod(String s1, Boolean s2, String s3, SomeComplexType s4, String s5, String s6, String s7) {
+    public void failingMethod(@Optional String s1, @Optional Boolean s2, @Optional String s3, SomeComplexType s4, @Optional String s5, @Optional String s6, @Optional String s7) {
     }
 
 }

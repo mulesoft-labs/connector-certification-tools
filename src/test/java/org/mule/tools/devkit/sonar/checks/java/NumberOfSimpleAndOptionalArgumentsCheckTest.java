@@ -19,7 +19,7 @@ public class NumberOfSimpleAndOptionalArgumentsCheckTest {
         NumberOfSimpleAndOptionalArgumentsCheck check = new NumberOfSimpleAndOptionalArgumentsCheck();
         check.maxArgumentsAllowed = 4;
 
-        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/NumberOfSimpleAndOptionalArgumentsCheck.java"), new VisitorsBridge(check));
+        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/java/NumberOfSimpleAndOptionalArgumentsCheck.java"), new VisitorsBridge(check));
 
         checkMessagesVerifier
                 .verify(file.getCheckMessages())
