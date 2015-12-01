@@ -12,11 +12,20 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.ProjectClasspath;
-import org.sonar.plugins.java.api.tree.*;
+import org.sonar.plugins.java.api.tree.AnnotationTree;
+import org.sonar.plugins.java.api.tree.ImportTree;
+import org.sonar.plugins.java.api.tree.MemberSelectExpressionTree;
+import org.sonar.plugins.java.api.tree.Tree;
+import org.sonar.plugins.java.api.tree.VariableTree;
 
 import javax.annotation.Nonnull;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ClassParserUtils {
 
@@ -87,7 +96,7 @@ public class ClassParserUtils {
     private ClassParserUtils() {
     }
 
-    public static Predicate<VariableTree> getComplexTypePredicate(final Set<ImportTree> imports) {
+    public static Predicate<VariableTree> complexTypePredicate(final Set<ImportTree> imports) {
         return new Predicate<VariableTree>() {
 
             @Override
@@ -97,12 +106,22 @@ public class ClassParserUtils {
         };
     }
 
-    public static Predicate<VariableTree> getSimpleTypePredicate(final Set<ImportTree> imports) {
+    public static Predicate<VariableTree> simpleTypePredicate(final Set<ImportTree> imports) {
         return new Predicate<VariableTree>() {
 
             @Override
             public boolean apply(@Nullable VariableTree input) {
                 return input != null && input.type().is(Tree.Kind.IDENTIFIER) && isSimpleType(input.type(), imports);
+            }
+        };
+    }
+
+    public static final Predicate<AnnotationTree> hasAnnotationPredicate(final Class<?> annotationClass) {
+        return new Predicate<AnnotationTree>() {
+
+            @Override
+            public boolean apply(@Nullable AnnotationTree input) {
+                return input != null && is(input, annotationClass);
             }
         };
     }

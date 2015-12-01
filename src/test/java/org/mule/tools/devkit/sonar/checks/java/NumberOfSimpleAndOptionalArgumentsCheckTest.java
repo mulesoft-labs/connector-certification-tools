@@ -24,7 +24,7 @@ public class NumberOfSimpleAndOptionalArgumentsCheckTest {
         checkMessagesVerifier
                 .verify(file.getCheckMessages())
                 .next()
-                .atLine(20)
+                .atLine(25)
                 .withMessage(
                         "Processor 'failingMethod' has 6 simple-type parameters marked as @Optional (more than 4, which is the maximum allowed). It's strongly recommended that all optional parameters are grouped inside a separate POJO class.");
     }

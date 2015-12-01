@@ -19,7 +19,7 @@ public class NumberOfComplexArgumentsCheckTest {
         NumberOfComplexArgumentsCheck check = new NumberOfComplexArgumentsCheck();
         check.maxArgumentsAllowed = 4;
 
-        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/NumberOfComplexArgumentsCheck.java"), new VisitorsBridge(check));
+        SourceFile file = JavaAstScanner.scanSingleFile(new File("src/test/files/java/NumberOfComplexArgumentsCheck.java"), new VisitorsBridge(check));
 
         checkMessagesVerifier.verify(file.getCheckMessages()).next().atLine(20)
                 .withMessage("Processor 'failingMethod' has 5 complex-type parameters (more than 4, which is the maximum allowed).");

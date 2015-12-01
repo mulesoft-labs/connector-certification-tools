@@ -40,7 +40,7 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
     @Override
     protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
 
-        Iterable<? extends VariableTree> complexTypes = Iterables.filter(tree.parameters(), ClassParserUtils.getComplexTypePredicate(imports));
+        Iterable<? extends VariableTree> complexTypes = Iterables.filter(tree.parameters(), ClassParserUtils.complexTypePredicate(imports));
         for (VariableTree variable : complexTypes) {
 
             List<? extends AnnotationTree> annotations = variable.modifiers().annotations();
