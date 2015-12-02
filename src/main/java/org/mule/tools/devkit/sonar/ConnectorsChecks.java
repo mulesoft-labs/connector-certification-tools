@@ -8,6 +8,7 @@ import org.mule.tools.devkit.sonar.checks.java.RefOnlyInComplexTypesCheck;
 import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecatedCheck;
 import org.mule.tools.devkit.sonar.checks.pom.ScopeProvidedInMuleDependenciesCheck;
 import org.mule.tools.devkit.sonar.checks.pom.SnapshotDependenciesCheck;
+import org.mule.tools.devkit.sonar.checks.pom.SourceDeploymentForStandardCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.pom.TestingFrameworkNotOverwrittenCheck;
 import org.sonar.plugins.java.api.JavaCheck;
 
@@ -33,6 +34,7 @@ public class ConnectorsChecks {
         final ImmutableList.Builder<Class<?>> builder = ImmutableList.builder();
         builder.add(ScopeProvidedInMuleDependenciesCheck.class);
         builder.add(SnapshotDependenciesCheck.class);
+        builder.add(SourceDeploymentForStandardCategoryCheck.class);
         builder.add(TestingFrameworkNotOverwrittenCheck.class);
         return builder.build();
     }
