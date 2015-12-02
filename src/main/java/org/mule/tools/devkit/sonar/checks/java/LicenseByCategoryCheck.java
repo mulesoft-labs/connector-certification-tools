@@ -21,9 +21,7 @@ import java.util.List;
 public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "license-by-category";
-    private static final RuleKey RULE_KEY = RuleKey.of(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, KEY);
 
-    private static final Logger logger = LoggerFactory.getLogger(LicenseByCategoryCheck.class);
     public static final Predicate<AnnotationTree> HAS_REQUIRES_ENTERPRISE_LICENSE_ANNOTATION = new Predicate<AnnotationTree>() {
 
         @Override
@@ -47,11 +45,6 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
     }
 
     @Override
-    protected RuleKey getRuleKey() {
-        return RULE_KEY;
-    }
-
-    @Override
     protected void verifyConnector(@NonNull ClassTree classTree, @NonNull IdentifierTree connectorAnnotation) {
         final List<? extends AnnotationTree> annotations = classTree.modifiers().annotations();
 
@@ -59,7 +52,6 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
         boolean hasEntitlementAnnotation = Iterables.any(annotations, HAS_REQUIRES_ENTITLEMENT_ANNOTATION);
 
         String category = mavenProject.getProperties().getProperty("category");
-        logger.debug("Parsed Category version -> {}", category);
 
         switch (category.toUpperCase()) {
             case "PREMIUM":

@@ -19,7 +19,6 @@
  */
 package org.mule.tools.devkit.sonar;
 
-import org.sonar.api.profiles.AnnotationProfileParser;
 import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.utils.ValidationMessages;
@@ -28,16 +27,9 @@ public class ConnectorCertificationProfile extends ProfileDefinition {
 
     public static final String CONNECTOR_CERTIFICATION_PROFILE = "Connector Certification";
 
-    private final AnnotationProfileParser annotationProfileParser;
-
-    public ConnectorCertificationProfile(AnnotationProfileParser annotationProfileParser) {
-        this.annotationProfileParser = annotationProfileParser;
-    }
-
     @Override
     public RulesProfile createProfile(ValidationMessages validation) {
-        return annotationProfileParser.parse(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, CONNECTOR_CERTIFICATION_PROFILE, "java", ConnectorsChecks.allChecks(),
-                validation);
+        return RulesProfile.create(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, "java").setName(CONNECTOR_CERTIFICATION_PROFILE);
     }
 
 }

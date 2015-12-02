@@ -5,7 +5,7 @@ import org.mule.api.annotations.Processor;
 public class RefOnlyInComplexTypesCheck {
 
     @Processor
-    public void failingMethod(SomeComplexType s1) {
+    public void failingMethod(SomeComplexType s1) { // Noncompliant {{Processor 'failingMethod' contains variable 's1' of type 'SomeComplexType' (complex type) not annotated with @RefOnly.}}
     }
 
 }

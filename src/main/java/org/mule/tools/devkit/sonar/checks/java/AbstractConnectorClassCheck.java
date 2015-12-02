@@ -22,8 +22,6 @@ public abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implem
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractConnectorClassCheck.class);
 
-    protected final Set<ImportTree> imports = Sets.newLinkedHashSet();
-
     public static final Predicate<AnnotationTree> ANNOTATION_TREE_PREDICATE = new Predicate<AnnotationTree>() {
 
         @Override
@@ -33,14 +31,6 @@ public abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implem
     };
 
     JavaFileScannerContext context;
-
-    protected abstract RuleKey getRuleKey();
-
-    @Override
-    public void visitImport(ImportTree node) {
-        imports.add(node);
-        super.visitImport(node);
-    }
 
     @Override
     public final void scanFile(JavaFileScannerContext context) {
@@ -82,7 +72,7 @@ public abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implem
 
     protected void logAndRaiseIssue(@NonNull Tree classTree, String message) {
         logger.info(message);
-        context.addIssue(classTree, getRuleKey(), message);
+        context.addIssue(classTree, this, message);
     }
 
 }

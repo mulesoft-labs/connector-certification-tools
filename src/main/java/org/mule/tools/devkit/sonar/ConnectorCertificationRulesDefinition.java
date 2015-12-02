@@ -34,7 +34,8 @@ public class ConnectorCertificationRulesDefinition implements RulesDefinition {
         repo.setName(REPOSITORY_NAME);
 
         RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
-        annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.allChecks(), Class.class));
+        annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.javaChecks(), Class.class));
+//        annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.pomChecks(), Class.class));
         repo.done();
     }
 }

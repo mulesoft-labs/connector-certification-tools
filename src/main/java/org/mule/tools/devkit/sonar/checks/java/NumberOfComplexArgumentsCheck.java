@@ -17,15 +17,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 @ActivatedByDefault
 public class NumberOfComplexArgumentsCheck extends AbstractConnectorClassCheck {
 
-    private static final Logger logger = LoggerFactory.getLogger(NumberOfComplexArgumentsCheck.class);
     public static final String KEY = "number-of-complex-arguments";
-    private static final RuleKey RULE_KEY = RuleKey.of(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, KEY);
-
-    @Override
-    protected RuleKey getRuleKey() {
-        return RULE_KEY;
-    }
-
     private static final int DEFAULT_MAX_ALLOWED = 6;
 
     /**
@@ -36,11 +28,10 @@ public class NumberOfComplexArgumentsCheck extends AbstractConnectorClassCheck {
 
     @Override
     protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
-        final long count = Iterables.size(Iterables.filter(tree.parameters(), ClassParserUtils.complexTypePredicate(imports)));
+        final long count = Iterables.size(Iterables.filter(tree.parameters(), ClassParserUtils.complexTypePredicate()));
         if (count > maxArgumentsAllowed) {
             final String message = String.format("Processor '%s' has %d complex-type parameters (more than %d, which is the maximum allowed).", tree.simpleName(), count,
                     maxArgumentsAllowed);
-            logger.info(message);
             logAndRaiseIssue(processorAnnotation, message);
         }
     }

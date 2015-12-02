@@ -4,7 +4,7 @@ import org.mule.api.annotations.licensing.RequiresEntitlement;
 
 @Connector
 @RequiresEntitlement
-public class LicenseByCategoryCommunityCheck {
+public class LicenseByCategoryCommunityCheck { // Noncompliant {{@RequiresEnterpriseLicense and @RequiresEntitlement must not be present for Community category.}}
 
     @Processor
     public void aMethod() {

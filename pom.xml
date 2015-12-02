@@ -13,7 +13,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.version>4.3</sonar.version>
+        <sonar.version>4.5.2</sonar.version>
+        <java.plugin.version>3.6</java.plugin.version>
         <jdk.version>1.7</jdk.version>
     </properties>
 
@@ -25,10 +26,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.sonar-plugins.java</groupId>
+            <groupId>org.sonarsource.java</groupId>
             <artifactId>sonar-java-plugin</artifactId>
             <type>sonar-plugin</type>
-            <version>2.5.1</version>
+            <version>${java.plugin.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -84,6 +85,18 @@
             <groupId>org.easytesting</groupId>
             <artifactId>fest-assert</artifactId>
             <version>1.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.5</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.sonarsource.java</groupId>
+            <artifactId>java-checks-testkit</artifactId>
+            <version>${java.plugin.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

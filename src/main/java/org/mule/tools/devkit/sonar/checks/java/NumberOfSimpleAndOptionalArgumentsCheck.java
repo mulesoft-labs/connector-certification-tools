@@ -23,13 +23,6 @@ import javax.annotation.Nullable;
 public class NumberOfSimpleAndOptionalArgumentsCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "number-of-simple-and-optional-arguments";
-    private static final RuleKey RULE_KEY = RuleKey.of(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, KEY);
-
-    @Override
-    protected RuleKey getRuleKey() {
-        return RULE_KEY;
-    }
-
     private static final int DEFAULT_MAX_ALLOWED = 6;
 
     /**
@@ -40,7 +33,7 @@ public class NumberOfSimpleAndOptionalArgumentsCheck extends AbstractConnectorCl
 
     @Override
     protected void verifyProcessor(@NonNull MethodTree tree, final @NonNull IdentifierTree processorAnnotation) {
-        long count = Iterables.size(Iterables.filter(tree.parameters(), Predicates.and(ClassParserUtils.simpleTypePredicate(imports),
+        long count = Iterables.size(Iterables.filter(tree.parameters(), Predicates.and(ClassParserUtils.simpleTypePredicate(),
 
         new Predicate<VariableTree>() {
 

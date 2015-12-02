@@ -21,7 +21,6 @@ import java.util.List;
 public class RestCallDeprecatedCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "restcall-annotation-deprecated";
-    private static final RuleKey RULE_KEY = RuleKey.of(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, KEY);
 
     public static final Predicate<AnnotationTree> HAS_REST_CALL_ANNOTATION = new Predicate<AnnotationTree>() {
 
@@ -30,11 +29,6 @@ public class RestCallDeprecatedCheck extends AbstractConnectorClassCheck {
             return input != null && ClassParserUtils.is(input, RestCall.class);
         }
     };
-
-    @Override
-    protected RuleKey getRuleKey() {
-        return RULE_KEY;
-    }
 
     @Override
     protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {

@@ -1,19 +1,10 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
 import org.apache.maven.project.MavenProject;
-import org.junit.Rule;
 import org.junit.Test;
-import org.sonar.java.JavaAstScanner;
-import org.sonar.java.model.VisitorsBridge;
-import org.sonar.squidbridge.api.SourceFile;
-import org.sonar.squidbridge.checks.CheckMessagesVerifierRule;
-
-import java.io.File;
+import org.sonar.java.checks.verifier.JavaCheckVerifier;
 
 public class LicenseByCategoryCheckTest {
-
-    @Rule
-    public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
     private void runForCategory(String category, int lineNumber, String expectedMessage) {
         runForCategory(category, category, lineNumber, expectedMessage);
@@ -24,11 +15,7 @@ public class LicenseByCategoryCheckTest {
         mavenProject.getProperties().setProperty("category", category);
         LicenseByCategoryCheck check = new LicenseByCategoryCheck(mavenProject);
 
-        SourceFile file = JavaAstScanner
-                .scanSingleFile(new File(String.format("src/test/files/java/licensechecks/LicenseByCategory%sCheck.java", testClass)), new VisitorsBridge(check));
-
-        checkMessagesVerifier.verify(file.getCheckMessages())
-                .next().atLine(lineNumber).withMessage(expectedMessage);
+        JavaCheckVerifier.verify(String.format("src/test/files/java/licensechecks/LicenseByCategory%sCheck.java", testClass), check);
     }
 
     @Test

@@ -22,7 +22,6 @@ import java.util.List;
 public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "refonly-annotation-in-complex-types";
-    private static final RuleKey RULE_KEY = RuleKey.of(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, KEY);
 
     public static final Predicate<AnnotationTree> HAS_REF_ONLY_ANNOTATION = new Predicate<AnnotationTree>() {
 
@@ -33,14 +32,9 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
     };
 
     @Override
-    protected RuleKey getRuleKey() {
-        return RULE_KEY;
-    }
-
-    @Override
     protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
 
-        Iterable<? extends VariableTree> complexTypes = Iterables.filter(tree.parameters(), ClassParserUtils.complexTypePredicate(imports));
+        Iterable<? extends VariableTree> complexTypes = Iterables.filter(tree.parameters(), ClassParserUtils.complexTypePredicate());
         for (VariableTree variable : complexTypes) {
 
             List<? extends AnnotationTree> annotations = variable.modifiers().annotations();

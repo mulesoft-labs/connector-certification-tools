@@ -1,6 +1,5 @@
 package org.mule.tools.devkit.sonar;
 
-import org.mule.tools.devkit.sonar.checks.pom.ConnectorPomCheck;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
@@ -22,13 +21,13 @@ public final class ConnectorCertificationPlugin extends SonarPlugin {
 
         ConnectorCertificationProfile.class,
 
-        // Batch extension -> objects instantiated during Maven sonar:sonar run
+                // Batch extension -> objects instantiated during code analysis
                 ConnectorCertificationCheckRegistrar.class,
 
                 // server extensions -> objects are instantiated during server startup
-                ConnectorCertificationRulesDefinition.class,
+                ConnectorCertificationRulesDefinition.class
 
-                ConnectorPomCheck.class
+//                ConnectorPomCheck.class
 
         );
     }
