@@ -36,4 +36,16 @@ public class SourceDeploymentForStandardCategoryCheckTest extends BasicPomTestBa
         assertThat(pomIssue.message(), is("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources."));
     }
 
+    @Test
+    public void checkSourceDeploymentWrongPhase() throws IOException, XmlPullParserException {
+        final MavenProject mavenProject = createMavenProjectFromPom("SourceDeploymentForStandardCategoryCheckTest-WrongPhase-pom.xml");
+        final SourceDeploymentForStandardCategoryCheck check = new SourceDeploymentForStandardCategoryCheck();
+        final Iterable<PomIssue> pomIssues = check.analyze(mavenProject);
+
+        assertThat(Iterables.size(pomIssues), is(1));
+        PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
+        assertThat(pomIssue.ruleKey().rule(), is("source-deployment-for-standard-category"));
+        assertThat(pomIssue.message(), is("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources."));
+    }
+
 }
