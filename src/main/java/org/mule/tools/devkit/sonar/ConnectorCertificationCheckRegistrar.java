@@ -11,7 +11,6 @@ import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecatedCheck;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.batch.ProjectClasspath;
-import org.sonar.api.resources.Project;
 import org.sonar.plugins.java.api.JavaFileScanner;
 import org.sonar.plugins.java.api.JavaFileScannersFactory;
 
@@ -21,7 +20,7 @@ public class ConnectorCertificationCheckRegistrar implements BatchExtension, Jav
 
     private final MavenProject mavenProject;
 
-    public ConnectorCertificationCheckRegistrar(MavenProject mavenProject, ProjectClasspath projectClasspath, Project project) {
+    public ConnectorCertificationCheckRegistrar(MavenProject mavenProject, ProjectClasspath projectClasspath) {
         this.mavenProject = mavenProject;
         ClassParserUtils.PROJECT_CLASSPATH_THREAD_LOCAL.set(projectClasspath);
     }
