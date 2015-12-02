@@ -3,7 +3,7 @@ package org.mule.tools.devkit.sonar.checks.pom;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
@@ -40,10 +40,10 @@ public class SourceDeploymentForStandardCategoryCheck implements PomCheck {
     private static final String SOURCE_PLUGIN_ARTIFACT_ID = "maven-source-plugin";
     private static final Logger logger = LoggerFactory.getLogger(SourceDeploymentForStandardCategoryCheck.class);
 
-    public static final Predicate<Dependency> HAS_SOURCE_PLUGIN = new Predicate<Dependency>() {
+    public static final Predicate<Plugin> HAS_SOURCE_PLUGIN = new Predicate<Plugin>() {
 
         @Override
-        public boolean apply(@Nullable Dependency input) {
+        public boolean apply(@Nullable Plugin input) {
             return input != null && input.getGroupId().equals(SOURCE_PLUGIN_GROUP_ID) && input.getArtifactId().equals(SOURCE_PLUGIN_ARTIFACT_ID);
         }
     };
@@ -55,7 +55,7 @@ public class SourceDeploymentForStandardCategoryCheck implements PomCheck {
         String category = mavenProject.getProperties().getProperty("category");
         logger.debug("Parsed Category version -> {}", category);
 
-        final boolean hasSourcePlugin = Iterables.any(mavenProject.getDependencies(), HAS_SOURCE_PLUGIN);
+        final boolean hasSourcePlugin = Iterables.any(mavenProject.getBuild() != null ? mavenProject.getBuildPlugins() : null, HAS_SOURCE_PLUGIN);
 
         if (category.toUpperCase().equals("STANDARD") && !hasSourcePlugin) {
             issues.add(new PomIssue(RULE_KEY, String.format("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources.")));
