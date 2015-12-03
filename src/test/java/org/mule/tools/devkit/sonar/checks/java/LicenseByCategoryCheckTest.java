@@ -6,11 +6,11 @@ import org.sonar.java.checks.verifier.JavaCheckVerifier;
 
 public class LicenseByCategoryCheckTest {
 
-    private void runForCategory(String category, int lineNumber, String expectedMessage) {
-        runForCategory(category, category, lineNumber, expectedMessage);
+    private void runForCategory(String category) {
+        runForCategory(category, category);
     }
 
-    private void runForCategory(String category, String testClass, int lineNumber, String expectedMessage) {
+    private void runForCategory(String category, String testClass) {
         MavenProject mavenProject = new MavenProject();
         mavenProject.getProperties().setProperty("category", category);
         LicenseByCategoryCheck check = new LicenseByCategoryCheck(mavenProject);
@@ -20,32 +20,32 @@ public class LicenseByCategoryCheckTest {
 
     @Test
     public void checkCommunity() {
-        runForCategory("Community", 7, "@RequiresEnterpriseLicense and @RequiresEntitlement must not be present for Community category.");
+        runForCategory("Community");
     }
 
     @Test
     public void checkCertified() {
-        runForCategory("Certified", 5, "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.");
+        runForCategory("Certified");
     }
 
     @Test
     public void checkSelect() {
-        runForCategory("Select", 5, "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.");
+        runForCategory("Select");
     }
 
     @Test
     public void checkPremiumNoRequiresLicense() {
-        runForCategory("Premium", "PremiumNoRequiresLicense", 7, "@RequiresEnterpriseLicense and @RequiresEntitlement need to be defined for Premium category.");
+        runForCategory("Premium", "PremiumNoRequiresLicense");
     }
 
     @Test
     public void checkPremiumNoNameAttribute() {
-        runForCategory("Premium", "PremiumNoNameAttribute", 9, "'name' attribute must be defined for @RequiresEntitlement using connector name.");
+        runForCategory("Premium", "PremiumNoNameAttribute");
     }
 
     @Test
     public void checkInvalid() {
-        runForCategory("Invalid", 5, "Invalid category specified in pom.xml");
+        runForCategory("Invalid");
     }
 
 }

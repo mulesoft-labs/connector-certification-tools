@@ -73,9 +73,8 @@ public class SourceDeploymentForStandardCategoryCheck implements PomCheck {
         String category = mavenProject.getProperties().getProperty("category");
         logger.debug("Parsed Category version -> {}", category);
 
-        final boolean hasSourcePlugin = Iterables.any(mavenProject.getBuild() != null ? mavenProject.getBuildPlugins() : null, HAS_SOURCE_PLUGIN);
-
-        if (category.toUpperCase().equals("STANDARD") && !hasSourcePlugin) {
+        final boolean hasSourcePlugin = mavenProject.getBuild() != null && Iterables.any(mavenProject.getBuildPlugins(), HAS_SOURCE_PLUGIN);
+        if (category.equalsIgnoreCase("STANDARD") && !hasSourcePlugin) {
             issues.add(new PomIssue(RULE_KEY, String.format("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources.")));
         }
 
