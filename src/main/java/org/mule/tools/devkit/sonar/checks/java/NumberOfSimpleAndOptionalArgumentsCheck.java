@@ -29,7 +29,7 @@ public class NumberOfSimpleAndOptionalArgumentsCheck extends AbstractConnectorCl
     protected int maxArgumentsAllowed = DEFAULT_MAX_ALLOWED;
 
     @Override
-    protected void verifyProcessor(@NonNull MethodTree tree, final @NonNull IdentifierTree processorAnnotation) {
+    protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
         long count = Iterables.size(Iterables.filter(tree.parameters(), Predicates.and(ClassParserUtils.simpleTypePredicate(),
 
         new Predicate<VariableTree>() {

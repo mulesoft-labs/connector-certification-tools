@@ -1,19 +1,22 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.apache.maven.project.MavenProject;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
 import org.mule.api.annotations.licensing.RequiresEntitlement;
-import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.sonar.api.rule.RuleKey;
+import org.mule.tools.devkit.sonar.utils.PomUtils;
 import org.sonar.check.Rule;
-import org.sonar.plugins.java.api.tree.*;
+import org.sonar.plugins.java.api.tree.AnnotationTree;
+import org.sonar.plugins.java.api.tree.AssignmentExpressionTree;
+import org.sonar.plugins.java.api.tree.ClassTree;
+import org.sonar.plugins.java.api.tree.ExpressionTree;
+import org.sonar.plugins.java.api.tree.IdentifierTree;
+import org.sonar.plugins.java.api.tree.Tree;
 
 import java.util.List;
 
@@ -40,7 +43,13 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
     private final MavenProject mavenProject;
 
-    public LicenseByCategoryCheck(MavenProject mavenProject) {
+    public LicenseByCategoryCheck() {
+        this.mavenProject = PomUtils.createMavenProjectFromPom();
+    }
+
+    /** This constructor exists for testing only */
+    @VisibleForTesting
+    protected LicenseByCategoryCheck(MavenProject mavenProject) {
         this.mavenProject = mavenProject;
     }
 

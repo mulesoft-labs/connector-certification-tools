@@ -2,11 +2,7 @@ package org.mule.tools.devkit.sonar.checks.java;
 
 import com.google.common.collect.Iterables;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.sonar.api.rule.RuleKey;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
