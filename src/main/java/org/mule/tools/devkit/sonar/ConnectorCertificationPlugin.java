@@ -20,16 +20,13 @@ public final class ConnectorCertificationPlugin extends SonarPlugin {
     public List getExtensions() {
         return Arrays.asList(
 
-                ConnectorCertificationProfile.class,
+        // server extensions -> objects are instantiated during server startup
+                ConnectorCertificationRulesDefinition.class, MvnLanguage.class,
 
-                // Batch extension -> objects instantiated during code analysis
-                ConnectorCertificationCheckRegistrar.class,
+                // Java checks
+                ConnectorCertificationProfile.class, ConnectorCertificationCheckRegistrar.class,
 
-                // server extensions -> objects are instantiated during server startup
-                ConnectorCertificationRulesDefinition.class,
-
-                ConnectorPomCheck.class
-
-        );
+                // Maven checks
+                ConnectorCertificationMvnProfile.class, ConnectorPomCheck.class);
     }
 }

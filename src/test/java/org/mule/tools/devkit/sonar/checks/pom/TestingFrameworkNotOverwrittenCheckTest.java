@@ -20,7 +20,7 @@ public class TestingFrameworkNotOverwrittenCheckTest extends BasicPomTestBase {
 
         assertThat(Iterables.size(pomIssues), is(1));
         PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey().rule(), is("testing-framework-not-overwritten"));
+        assertThat(pomIssue.ruleKey(), is("testing-framework-not-overwritten"));
         assertThat(pomIssue.message(), is("'connector-testing-framework' must not be overwritten."));
     }
 }

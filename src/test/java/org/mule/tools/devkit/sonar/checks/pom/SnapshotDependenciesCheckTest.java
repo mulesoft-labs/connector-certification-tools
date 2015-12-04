@@ -20,7 +20,7 @@ public class SnapshotDependenciesCheckTest extends BasicPomTestBase {
 
         assertThat(Iterables.size(pomIssues), is(1));
         PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey().rule(), is("snapshot-dependencies-not-allowed"));
+        assertThat(pomIssue.ruleKey(), is("snapshot-dependencies-not-allowed"));
         assertThat(pomIssue.message(), is("Remove SNAPSHOT version from artifact 'mule-devkit-annotations'."));
     }
 
@@ -32,7 +32,7 @@ public class SnapshotDependenciesCheckTest extends BasicPomTestBase {
 
         assertThat(Iterables.size(pomIssues), is(1));
         PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey().rule(), is("snapshot-dependencies-not-allowed"));
+        assertThat(pomIssue.ruleKey(), is("snapshot-dependencies-not-allowed"));
         assertThat(pomIssue.message(), is("Remove SNAPSHOT version from artifact 'mule-devkit-parent'."));
     }
 
@@ -44,7 +44,7 @@ public class SnapshotDependenciesCheckTest extends BasicPomTestBase {
 
         assertThat(Iterables.size(pomIssues), is(1));
         PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey().rule(), is("snapshot-dependencies-not-allowed"));
+        assertThat(pomIssue.ruleKey(), is("snapshot-dependencies-not-allowed"));
         assertThat(pomIssue.message(), is("Remove SNAPSHOT version from artifact 'certification-plugin'."));
     }
 

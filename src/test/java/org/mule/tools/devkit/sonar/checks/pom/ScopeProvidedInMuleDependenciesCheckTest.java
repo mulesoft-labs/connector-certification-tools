@@ -20,7 +20,7 @@ public class ScopeProvidedInMuleDependenciesCheckTest extends BasicPomTestBase {
 
         assertThat(Iterables.size(pomIssues), is(1));
         PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey().rule(), is("mule-scope-provided"));
+        assertThat(pomIssue.ruleKey(), is("mule-scope-provided"));
         assertThat(pomIssue.message(), is("Artifact 'mule-devkit-annotations' is a Mule dependency and should be declared with <scope>provided</scope>."));
     }
 
@@ -32,7 +32,7 @@ public class ScopeProvidedInMuleDependenciesCheckTest extends BasicPomTestBase {
 
         assertThat(Iterables.size(pomIssues), is(1));
         PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey().rule(), is("mule-scope-provided"));
+        assertThat(pomIssue.ruleKey(), is("mule-scope-provided"));
         assertThat(pomIssue.message(), is("Artifact 'mule-devkit-annotations' is a Mule dependency and should be declared with <scope>provided</scope>."));
     }
 

@@ -20,7 +20,7 @@ public class SourceDeploymentForStandardCategoryCheckTest extends BasicPomTestBa
 
         assertThat(Iterables.size(pomIssues), is(1));
         PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey().rule(), is("source-deployment-for-standard-category"));
+        assertThat(pomIssue.ruleKey(), is("source-deployment-for-standard-category"));
         assertThat(pomIssue.message(), is("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources."));
     }
 
@@ -32,7 +32,7 @@ public class SourceDeploymentForStandardCategoryCheckTest extends BasicPomTestBa
 
         assertThat(Iterables.size(pomIssues), is(1));
         PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey().rule(), is("source-deployment-for-standard-category"));
+        assertThat(pomIssue.ruleKey(), is("source-deployment-for-standard-category"));
         assertThat(pomIssue.message(), is("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources."));
     }
 
@@ -44,7 +44,7 @@ public class SourceDeploymentForStandardCategoryCheckTest extends BasicPomTestBa
 
         assertThat(Iterables.size(pomIssues), is(1));
         PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey().rule(), is("source-deployment-for-standard-category"));
+        assertThat(pomIssue.ruleKey(), is("source-deployment-for-standard-category"));
         assertThat(pomIssue.message(), is("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources."));
     }
 
