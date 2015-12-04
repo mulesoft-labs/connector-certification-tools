@@ -7,6 +7,7 @@ import org.mule.tools.devkit.sonar.checks.java.NumberOfSimpleAndOptionalArgument
 import org.mule.tools.devkit.sonar.checks.java.RedundantExceptionNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.RefOnlyInComplexTypesCheck;
 import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecatedCheck;
+import org.mule.tools.devkit.sonar.checks.java.TestSuiteCheck;
 import org.mule.tools.devkit.sonar.checks.pom.ScopeProvidedInMuleDependenciesCheck;
 import org.mule.tools.devkit.sonar.checks.pom.SnapshotDependenciesCheck;
 import org.mule.tools.devkit.sonar.checks.pom.SourceDeploymentForStandardCategoryCheck;
@@ -28,6 +29,7 @@ public class ConnectorsChecks {
         builder.add(LicenseByCategoryCheck.class);
         builder.add(RestCallDeprecatedCheck.class);
         builder.add(RedundantExceptionNameCheck.class);
+        builder.add(TestSuiteCheck.class);
         return builder.build();
     }
 
