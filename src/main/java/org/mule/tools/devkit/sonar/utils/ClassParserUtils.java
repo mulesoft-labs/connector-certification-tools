@@ -123,17 +123,12 @@ public class ClassParserUtils {
 
                 @Override
                 public String apply(@Nullable Tree input) {
-                    return getStringForType((TypeTree) input);
+                    return input != null ? getStringForType((TypeTree) input) : "[null]";
                 }
             })));
             sb.append(">");
         } else {
-            final Type symbolType = type.symbolType();
-            if (!symbolType.isUnknown()) {
-                sb.append(type.toString());
-            } else {
-                sb.append(type.toString());
-            }
+            sb.append(type.toString());
         }
         return sb.toString();
     }
