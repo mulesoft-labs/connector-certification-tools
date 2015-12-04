@@ -8,20 +8,13 @@ import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
 import org.mule.api.annotations.Source;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.sonar.plugins.java.api.JavaFileScanner;
-import org.sonar.plugins.java.api.JavaFileScannerContext;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
-import org.sonar.plugins.java.api.tree.BaseTreeVisitor;
 import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.Tree;
 
-public abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implements JavaFileScanner {
-
-    private static final Logger logger = LoggerFactory.getLogger(AbstractConnectorClassCheck.class);
+public abstract class AbstractConnectorClassCheck extends BaseLoggingVisitor {
 
     public static final Predicate<AnnotationTree> ANNOTATION_TREE_PREDICATE = new Predicate<AnnotationTree>() {
 
@@ -30,14 +23,6 @@ public abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implem
             return input != null && input.annotationType().is(Tree.Kind.IDENTIFIER);
         }
     };
-
-    JavaFileScannerContext context;
-
-    @Override
-    public final void scanFile(JavaFileScannerContext context) {
-        this.context = context;
-        scan(context.getTree());
-    }
 
     @Override
     public final void visitClass(ClassTree tree) {
@@ -71,9 +56,5 @@ public abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implem
     protected void verifyConnector(@NonNull ClassTree classTree, @NonNull final IdentifierTree connectorAnnotation) {
     }
 
-    protected void logAndRaiseIssue(@NonNull Tree classTree, String message) {
-        logger.info(message);
-        context.addIssue(classTree, this, message);
-    }
 
 }

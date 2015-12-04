@@ -9,6 +9,6 @@ public class RedundantExceptionNameCheckTest {
     public void detected() {
         RedundantExceptionNameCheck check = new RedundantExceptionNameCheck();
 
-        JavaCheckVerifier.verify("src/test/files/java/RedundantExceptionNameCheck.java", check);
+        JavaCheckVerifier.verify("src/test/files/java/RedundantConnectorException.java", check);
     }
 }
