@@ -8,7 +8,8 @@ public class ConnectorCertificationCheckRegistrar implements CheckRegistrar {
 
     @Override
     public void register(CheckRegistrar.RegistrarContext registrarContext) {
-        registrarContext.registerClassesForRepository(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, ConnectorsChecks.javaChecks(), ImmutableList.<Class<? extends JavaCheck>>of());
+        registrarContext.registerClassesForRepository(ConnectorCertificationRulesDefinition.getJavaRepositoryKey(), ConnectorsChecks.javaChecks(),
+                ImmutableList.<Class<? extends JavaCheck>> of());
     }
 
 }

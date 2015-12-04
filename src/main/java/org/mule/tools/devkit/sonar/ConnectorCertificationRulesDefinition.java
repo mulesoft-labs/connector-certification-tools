@@ -26,15 +26,37 @@ import org.sonar.api.server.rule.RulesDefinitionAnnotationLoader;
 public class ConnectorCertificationRulesDefinition implements RulesDefinition {
 
     public static final String REPOSITORY_NAME = "Connector Certification";
-    public static final String REPOSITORY_KEY = "connector-certification";
+    private static final String REPOSITORY_KEY = "connector-certification-java";
+    private static final String POM_REPOSITORY_KEY = "connector-certification-mvn";
+
+    public static String getJavaRepositoryKey() {
+        return REPOSITORY_KEY;
+    }
+
+    public static String getPomRepositoryKey() {
+        return POM_REPOSITORY_KEY;
+    }
 
     @Override
     public void define(Context context) {
+        addJavaRules(context);
+        addPomRules(context);
+    }
+
+    private void addJavaRules(Context context) {
         NewRepository repo = context.createRepository(REPOSITORY_KEY, "java");
         repo.setName(REPOSITORY_NAME);
 
         RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
         annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.javaChecks(), Class.class));
+        repo.done();
+    }
+
+    private void addPomRules(Context context) {
+        NewRepository repo = context.createRepository(POM_REPOSITORY_KEY, "mvn");
+        repo.setName(REPOSITORY_NAME);
+
+        RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
         annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.pomChecks(), Class.class));
         repo.done();
     }

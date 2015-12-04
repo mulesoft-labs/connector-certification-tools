@@ -40,7 +40,7 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
             final long count = Iterables.size(Iterables.filter(annotations, HAS_REF_ONLY_ANNOTATION));
             if (count == 0) {
                 final String message = String.format("Processor '%s' contains variable '%s' of type '%s' (complex type) not annotated with @RefOnly.", tree.simpleName(),
-                        variable.simpleName(), variable.type().toString());
+                        variable.simpleName(), ClassParserUtils.getStringForType(variable.type()));
                 logAndRaiseIssue(variable, message);
             }
         }

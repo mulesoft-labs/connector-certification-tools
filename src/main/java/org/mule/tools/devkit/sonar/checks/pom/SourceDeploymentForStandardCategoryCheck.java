@@ -7,10 +7,8 @@ import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.project.MavenProject;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.rule.RuleKey;
 import org.sonar.check.Rule;
 
 import java.util.List;
@@ -38,7 +36,7 @@ import java.util.List;
 public class SourceDeploymentForStandardCategoryCheck implements PomCheck {
 
     public static final String KEY = "source-deployment-for-standard-category";
-    private static final RuleKey RULE_KEY = RuleKey.of(ConnectorCertificationRulesDefinition.REPOSITORY_KEY, KEY);
+
     private static final String SOURCE_PLUGIN_GROUP_ID = "org.apache.maven.plugins";
     private static final String SOURCE_PLUGIN_ARTIFACT_ID = "maven-source-plugin";
     private static final String SOURCE_PLUGIN_PHASE_ID = "attach-sources";
@@ -75,7 +73,7 @@ public class SourceDeploymentForStandardCategoryCheck implements PomCheck {
 
         final boolean hasSourcePlugin = mavenProject.getBuild() != null && Iterables.any(mavenProject.getBuildPlugins(), HAS_SOURCE_PLUGIN);
         if (category.equalsIgnoreCase("STANDARD") && !hasSourcePlugin) {
-            issues.add(new PomIssue(RULE_KEY, String.format("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources.")));
+            issues.add(new PomIssue(KEY, String.format("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources.")));
         }
 
         return issues;

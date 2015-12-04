@@ -1,18 +1,25 @@
 package org.mule.tools.devkit.sonar.utils;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.plugins.java.api.semantic.Type;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
+import org.sonar.plugins.java.api.tree.ParameterizedTypeTree;
+import org.sonar.plugins.java.api.tree.Tree;
 import org.sonar.plugins.java.api.tree.TypeTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class ClassParserUtils {
 
@@ -35,6 +42,15 @@ public class ClassParserUtils {
         builder.add(Enum.class.getName());
         builder.add(Date.class.getName());
         allowedComplexTypes = builder.build();
+    }
+
+    private static final ImmutableSet<String> parameterizableTypes;
+
+    static {
+        final ImmutableSet.Builder<String> builder = ImmutableSet.builder();
+        builder.add(List.class.getName());
+        builder.add(Map.class.getName());
+        parameterizableTypes = builder.build();
     }
 
     private ClassParserUtils() {
@@ -72,7 +88,22 @@ public class ClassParserUtils {
 
     public static boolean isSimpleType(@NonNull final TypeTree type) {
         final Type symbolType = type.symbolType();
-        boolean result = symbolType.isPrimitive() || symbolType.symbol().isEnum() || (symbolType.isClass() && allowedComplexTypes.contains(symbolType.fullyQualifiedName()));
+        boolean result;
+        if (symbolType.isPrimitive() || symbolType.symbol().isEnum()) {
+            result = true;
+        } else if (type.is(Tree.Kind.PARAMETERIZED_TYPE)) {
+            ParameterizedTypeTree parameterizedType = (ParameterizedTypeTree) type;
+            result = parameterizableTypes.contains(parameterizedType.type().symbolType().fullyQualifiedName())
+                    && Iterables.all(parameterizedType.typeArguments(), new Predicate<Tree>() {
+
+                        @Override
+                        public boolean apply(@Nullable Tree input) {
+                            return input != null && isSimpleType((TypeTree) input);
+                        }
+                    });
+        } else {
+            result = symbolType.isClass() && allowedComplexTypes.contains(symbolType.fullyQualifiedName());
+        }
         logger.debug("Type '{}' is a simple type -> '{}'", type.toString(), result);
         return result;
     }
@@ -82,4 +113,28 @@ public class ClassParserUtils {
         return annotationSimpleName.equals(annotationClass.getSimpleName()) || annotationSimpleName.equals(annotationClass.getCanonicalName());
     }
 
+    public static String getStringForType(TypeTree type) {
+        StringBuilder sb = new StringBuilder();
+        if (type.is(Tree.Kind.PARAMETERIZED_TYPE)) {
+            ParameterizedTypeTree parameterizedType = (ParameterizedTypeTree) type;
+            sb.append(parameterizedType.type().toString());
+            sb.append("<");
+            sb.append(Joiner.on(", ").join(Iterables.transform(parameterizedType.typeArguments(), new Function<Tree, String>() {
+
+                @Override
+                public String apply(@Nullable Tree input) {
+                    return getStringForType((TypeTree) input);
+                }
+            })));
+            sb.append(">");
+        } else {
+            final Type symbolType = type.symbolType();
+            if (!symbolType.isUnknown()) {
+                sb.append(type.toString());
+            } else {
+                sb.append(type.toString());
+            }
+        }
+        return sb.toString();
+    }
 }

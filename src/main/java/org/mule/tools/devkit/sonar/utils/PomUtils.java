@@ -12,6 +12,9 @@ import java.nio.charset.StandardCharsets;
 
 public class PomUtils {
 
+    private PomUtils() {
+    }
+
     public static MavenProject createMavenProjectFromPom() {
         MavenProject mavenProject;
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream("pom.xml"), StandardCharsets.UTF_8)) {
