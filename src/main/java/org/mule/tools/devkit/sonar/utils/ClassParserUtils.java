@@ -15,6 +15,7 @@ import org.sonar.plugins.java.api.tree.ParameterizedTypeTree;
 import org.sonar.plugins.java.api.tree.Tree;
 import org.sonar.plugins.java.api.tree.TypeTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
+import org.sonar.plugins.java.api.tree.WildcardTree;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -98,7 +99,16 @@ public class ClassParserUtils {
 
                         @Override
                         public boolean apply(@Nullable Tree input) {
-                            return input != null && isSimpleType((TypeTree) input);
+                            if (input == null) {
+                                return false;
+                            } else if (input.is(Tree.Kind.IDENTIFIER)) {
+                                return isSimpleType((TypeTree) input);
+                            } else if (input.is(Tree.Kind.EXTENDS_WILDCARD)) {
+                                return isSimpleType(((WildcardTree) input).bound());
+                            } else if (input.is(Tree.Kind.UNBOUNDED_WILDCARD)) {
+                                return false;
+                            }
+                            return false;
                         }
                     });
         } else {
@@ -123,7 +133,16 @@ public class ClassParserUtils {
 
                 @Override
                 public String apply(@Nullable Tree input) {
-                    return input != null ? getStringForType((TypeTree) input) : "[null]";
+                    if (input == null) {
+                        return "[null]";
+                    } else if (input.is(Tree.Kind.IDENTIFIER)) {
+                        return getStringForType((TypeTree) input);
+                    } else if (input.is(Tree.Kind.EXTENDS_WILDCARD)) {
+                        return "? extends " + getStringForType(((WildcardTree) input).bound());
+                    } else if (input.is(Tree.Kind.UNBOUNDED_WILDCARD)) {
+                        return "?";
+                    }
+                    return "UNKNOWN";
                 }
             })));
             sb.append(">");

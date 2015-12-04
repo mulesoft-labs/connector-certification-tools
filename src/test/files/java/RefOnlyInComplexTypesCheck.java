@@ -21,6 +21,19 @@ public class RefOnlyInComplexTypesCheck {
     }
 
     @Processor
+    public void failingMethod(List<? extends Integer> s1) {
+    }
+
+    @Processor
+    public void failingMethod2(List<? extends Object> s1) { // Noncompliant {{Processor 'failingMethod2' contains variable 's1' of type 'List<? extends Object>' (complex type) not
+                                                            // annotated with @RefOnly.}}
+    }
+
+    @Processor
+    public void failingMethod3(List<?> s1) { // Noncompliant {{Processor 'failingMethod3' contains variable 's1' of type 'List<?>' (complex type) not annotated with @RefOnly.}}
+    }
+
+    @Processor
     public void aMethod(Map<String, String> m1) {
     }
 
