@@ -1,8 +1,9 @@
 package org.mule.tools.devkit.sonar;
 
 import com.google.common.collect.ImmutableList;
+import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerProcessorCheck;
+import org.mule.tools.devkit.sonar.checks.java.FunctionalTestSuiteCheck;
 import org.mule.tools.devkit.sonar.checks.java.LicenseByCategoryCheck;
-import org.mule.tools.devkit.sonar.checks.java.FunctionalTestCoverageCheck;
 import org.mule.tools.devkit.sonar.checks.java.NumberOfComplexArgumentsCheck;
 import org.mule.tools.devkit.sonar.checks.java.NumberOfSimpleAndOptionalArgumentsCheck;
 import org.mule.tools.devkit.sonar.checks.java.RedundantExceptionNameCheck;
@@ -23,7 +24,8 @@ public class ConnectorsChecks {
 
     public static Collection<Class<? extends JavaCheck>> javaChecks() {
         final ImmutableList.Builder<Class<? extends JavaCheck>> builder = ImmutableList.builder();
-        builder.add(FunctionalTestCoverageCheck.class);
+        builder.add(FunctionalTestPerProcessorCheck.class);
+        builder.add(FunctionalTestSuiteCheck.class);
         builder.add(NumberOfComplexArgumentsCheck.class);
         builder.add(NumberOfSimpleAndOptionalArgumentsCheck.class);
         builder.add(RefOnlyInComplexTypesCheck.class);
