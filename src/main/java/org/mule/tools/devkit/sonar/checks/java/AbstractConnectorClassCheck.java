@@ -40,7 +40,7 @@ public abstract class AbstractConnectorClassCheck extends BaseTreeVisitor implem
     }
 
     @Override
-    public void visitClass(ClassTree tree) {
+    public final void visitClass(ClassTree tree) {
         for (AnnotationTree annotationTree : Iterables.filter(tree.modifiers().annotations(), ANNOTATION_TREE_PREDICATE)) {
             if (ClassParserUtils.is(annotationTree, Connector.class)) {
                 verifyConnector(tree, (IdentifierTree) annotationTree.annotationType());
