@@ -47,8 +47,7 @@ public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
                     logAndRaiseIssue(tree, "No tests have been declared under @SuiteClasses.");
                 } else {
 
-                    File dir = new File(TEST_DIR);
-                    final List<File> tests = (List<File>) FileUtils.listFiles(dir, new WildcardFileFilter("*TestCases.java"), TrueFileFilter.INSTANCE);
+                    final List<File> tests = (List<File>) FileUtils.listFiles(new File(TEST_DIR), new WildcardFileFilter("*TestCases.java"), TrueFileFilter.INSTANCE);
 
                     for (ExpressionTree test : suiteClasses) {
                         String testName = ((MemberSelectExpressionTree) test).expression().symbolType().name();
@@ -56,12 +55,11 @@ public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
 
                         if (testName.endsWith(SUFFIX)) {
                             if (Iterables.isEmpty(matchingTests)) {
-                                logAndRaiseIssue(tree, String.format("A file named '%s.java' must exist in directory 'src/test/java/../automation/functional'. ", testName));
+                                logAndRaiseIssue(test, String.format("A file named '%s.java' must exist in directory 'src/test/java/../automation/functional'.", testName));
                             }
                         } else {
-                            logAndRaiseIssue(tree, String.format("Functional tests must end with 'TestCases'. Rename test '%s' accordingly.", testName));
+                            logAndRaiseIssue(test, String.format("Functional test classes must end with 'TestCases'. Rename test '%s' accordingly.", testName));
                         }
-
                     }
                 }
             }
