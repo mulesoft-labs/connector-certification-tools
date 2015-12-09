@@ -23,4 +23,10 @@ public class FunctionalTestSuiteCheckTest {
         JavaCheckVerifier.verify("src/test/files/java/FunctionalTestSuiteCheckNoTestCasesSuffix.java", check);
     }
 
+    @Test
+    public void runWithUndeclaredTests() {
+        FunctionalTestSuiteCheck check = new FunctionalTestSuiteCheck();
+        JavaCheckVerifier.verify("src/test/files/java/FunctionalTestSuiteCheckUndeclaredTests.java", check);
+    }
+
 }

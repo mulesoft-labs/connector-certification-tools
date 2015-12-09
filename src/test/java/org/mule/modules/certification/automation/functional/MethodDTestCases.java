@@ -1,0 +1,7 @@
+package org.mule.modules.certification.automation.functional;
+
+/**
+ * Dummy data for compliant test {@code FunctionalTestSuiteCheckTest}, which loads its data from file {@code FunctionalTestPerProcessorCheckMisplacedFile} in src/test/java.
+ */
+public class MethodDTestCases {
+}
