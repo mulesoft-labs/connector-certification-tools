@@ -4,8 +4,6 @@ import com.google.common.collect.Iterables;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonar.check.Rule;
 import org.sonar.java.model.expression.IdentifierTreeImpl;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
@@ -21,7 +19,6 @@ import java.util.List;
 @ActivatedByDefault
 public class TestSuiteCheck extends BaseLoggingVisitor {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestSuiteCheck.class);
     public static final String KEY = "test-suite-annotations";
 
     @Override
