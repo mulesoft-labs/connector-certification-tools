@@ -8,6 +8,7 @@ import org.mule.modules.certification.automation.functional.MethodBTest;
 @SuiteClasses({
         MethodATestCases.class,
         MethodBTest.class })
-public class FunctionalTestSuite { // Noncompliant {{Functional tests must end with 'TestCases'. Rename test 'MethodBTest' accordingly.}}
+// Noncompliant {{Functional test classes must end with 'TestCases'. Rename test 'MethodBTest' accordingly.}}
+public class FunctionalTestSuite {
 
 }
