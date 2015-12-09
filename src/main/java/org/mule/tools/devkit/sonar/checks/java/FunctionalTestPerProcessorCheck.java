@@ -22,7 +22,7 @@ public class FunctionalTestPerProcessorCheck extends AbstractConnectorClassCheck
     public static final String KEY = "functional-test-per-processor";
 
     public static final String TEST_DIR = "src/test/java";
-    public static final String TEST_PARENT_DIR_PATTERN = "^((src/test/java/org/mule/modules)+(/\\w+/)+(automation/functional)+$)";
+    public static final Pattern TEST_PARENT_DIR_PATTERN = Pattern.compile("^((src/test/java/org/mule/modules)+(/\\w+/)+(automation/functional)+$)");
 
     @Override
     protected void verifyProcessor(@NonNull MethodTree tree, final @NonNull IdentifierTree processorAnnotation) {
@@ -34,8 +34,7 @@ public class FunctionalTestPerProcessorCheck extends AbstractConnectorClassCheck
         if (testFiles.size() != 1) {
             logAndRaiseIssue(tree, String.format("There should be one functional test per @Processor. Add proper test for processor '%s'.", tree.simpleName().name()));
         } else {
-            Pattern p = Pattern.compile(TEST_PARENT_DIR_PATTERN);
-            Matcher m = p.matcher(testFiles.get(0).getParent());
+            Matcher m = TEST_PARENT_DIR_PATTERN.matcher(testFiles.get(0).getParent());
             if (!m.matches()) {
                 logAndRaiseIssue(tree, String.format("'%s' must be placed under directory 'src/test/java/.../automation/functional'.", processorTestName));
             }
