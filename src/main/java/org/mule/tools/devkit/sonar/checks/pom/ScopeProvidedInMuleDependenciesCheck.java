@@ -18,6 +18,7 @@ public class ScopeProvidedInMuleDependenciesCheck implements PomCheck {
 
     @Override
     public Iterable<PomIssue> analyze(MavenProject mavenProject) {
+
         final List<PomIssue> issues = Lists.newArrayList();
         @SuppressWarnings("unchecked")
         List<Dependency> dependencies = mavenProject.getDependencies();
