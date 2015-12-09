@@ -14,14 +14,12 @@ import org.mule.tools.devkit.sonar.checks.pom.SourceDeploymentForStandardCategor
 import org.mule.tools.devkit.sonar.checks.pom.TestingFrameworkNotOverwrittenCheck;
 import org.sonar.plugins.java.api.JavaCheck;
 
-import java.util.Collection;
-
 public class ConnectorsChecks {
 
     private ConnectorsChecks() {
     }
 
-    public static Collection<Class<? extends JavaCheck>> javaChecks() {
+    public static Iterable<Class<? extends JavaCheck>> javaChecks() {
         final ImmutableList.Builder<Class<? extends JavaCheck>> builder = ImmutableList.builder();
         builder.add(NumberOfComplexArgumentsCheck.class);
         builder.add(NumberOfSimpleAndOptionalArgumentsCheck.class);
@@ -33,7 +31,7 @@ public class ConnectorsChecks {
         return builder.build();
     }
 
-    public static Collection<Class<?>> pomChecks() {
+    public static Iterable<Class<?>> pomChecks() {
         final ImmutableList.Builder<Class<?>> builder = ImmutableList.builder();
         builder.add(ScopeProvidedInMuleDependenciesCheck.class);
         builder.add(SnapshotDependenciesCheck.class);

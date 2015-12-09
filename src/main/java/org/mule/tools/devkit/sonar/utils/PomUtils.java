@@ -15,15 +15,24 @@ public class PomUtils {
     private PomUtils() {
     }
 
-    public static MavenProject createMavenProjectFromPom() {
-        MavenProject mavenProject;
+    public static MavenProject createMavenProjectFromPomFile() {
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream("pom.xml"), StandardCharsets.UTF_8)) {
+            return createMavenProjectFromInputStream(reader);
+        } catch (IOException e) {
+            throw new IllegalStateException("Couldn't initialize pom", e);
+        }
+    }
+
+    public static MavenProject createMavenProjectFromInputStream(InputStreamReader reader) {
+        MavenProject mavenProject;
+        try {
             MavenXpp3Reader pomReader = new MavenXpp3Reader();
             Model model = pomReader.read(reader);
             mavenProject = new MavenProject(model);
         } catch (IOException | XmlPullParserException e) {
-            throw new IllegalStateException("Couldn't initalize pom", e);
+            throw new IllegalStateException("Couldn't initialize pom", e);
         }
         return mavenProject;
     }
+
 }

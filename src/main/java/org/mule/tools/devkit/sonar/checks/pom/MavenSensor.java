@@ -27,7 +27,7 @@ public class MavenSensor implements Sensor {
     private final FileSystem fileSystem;
 
     public MavenSensor(ResourcePerspectives resourcePerspectives, FileSystem fileSystem) {
-        this.mavenProject = PomUtils.createMavenProjectFromPom();
+        this.mavenProject = PomUtils.createMavenProjectFromPomFile();
         this.resourcePerspectives = resourcePerspectives;
         this.fileSystem = fileSystem;
     }

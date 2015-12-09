@@ -44,7 +44,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
     private final MavenProject mavenProject;
 
     public LicenseByCategoryCheck() {
-        this.mavenProject = PomUtils.createMavenProjectFromPom();
+        this.mavenProject = PomUtils.createMavenProjectFromPomFile();
     }
 
     /** This constructor exists for testing only */

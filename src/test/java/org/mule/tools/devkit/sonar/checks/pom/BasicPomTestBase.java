@@ -1,9 +1,8 @@
 package org.mule.tools.devkit.sonar.checks.pom;
 
-import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.mule.tools.devkit.sonar.utils.PomUtils;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,12 +15,10 @@ public abstract class BasicPomTestBase {
     }
 
     protected MavenProject createMavenProjectFromPom(String pomResource) throws IOException, XmlPullParserException {
-        MavenProject mavenProject;
         try (InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream(pomResource), StandardCharsets.UTF_8)) {
-            MavenXpp3Reader pomReader = new MavenXpp3Reader();
-            Model model = pomReader.read(reader);
-            mavenProject = new MavenProject(model);
+            return PomUtils.createMavenProjectFromInputStream(reader);
+        } catch (IOException e) {
+            throw new IllegalStateException("Couldn't initialize pom", e);
         }
-        return mavenProject;
     }
 }
