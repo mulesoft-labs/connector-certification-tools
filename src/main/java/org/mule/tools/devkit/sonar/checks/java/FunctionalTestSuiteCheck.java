@@ -14,6 +14,7 @@ import org.sonar.java.model.expression.NewArrayTreeImpl;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.plugins.java.api.tree.ExpressionTree;
+import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MemberSelectExpressionTree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
@@ -32,8 +33,8 @@ public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
 
     @Override
     public final void visitClass(ClassTree tree) {
-
-        if (tree.simpleName().name().endsWith("TestSuite")) {
+        IdentifierTree treeName = tree.simpleName();
+        if (treeName != null && treeName.name().endsWith("TestSuite")) {
             final AnnotationTree runWithAnnotation = Iterables.find(tree.modifiers().annotations(), ClassParserUtils.hasAnnotationPredicate(SuiteClasses.class), null);
             if (runWithAnnotation == null) {
                 logAndRaiseIssue(tree, String.format("Missing @SuiteClasses annotation on Test Suite class '%s'.", tree.simpleName().name()));
@@ -58,7 +59,7 @@ public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
                                 logAndRaiseIssue(test, String.format("A file named '%s.java' must exist in directory 'src/test/java/../automation/functional'.", testName));
                             }
                         } else {
-                            logAndRaiseIssue(test, String.format("Functional test classes must end with 'TestCases'. Rename test '%s' accordingly.", testName));
+                            logAndRaiseIssue(test, String.format("Functional test classes must end with 'TestCases'. Rename '%s.java' accordingly.", testName));
                         }
                     }
                 }

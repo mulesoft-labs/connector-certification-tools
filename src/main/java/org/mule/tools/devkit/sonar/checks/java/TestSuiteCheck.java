@@ -11,6 +11,7 @@ import org.sonar.java.model.expression.IdentifierTreeImpl;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.plugins.java.api.tree.ExpressionTree;
+import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MemberSelectExpressionTree;
 import org.sonar.plugins.java.api.tree.Tree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
@@ -26,7 +27,8 @@ public class TestSuiteCheck extends BaseLoggingVisitor {
 
     @Override
     public final void visitClass(ClassTree tree) {
-        if (tree.simpleName().name().endsWith("TestSuite")) {
+        IdentifierTree treeName = tree.simpleName();
+        if (treeName != null && treeName.name().endsWith("TestSuite")) {
             final AnnotationTree runWithAnnotation = Iterables.find(tree.modifiers().annotations(), ClassParserUtils.hasAnnotationPredicate(RunWith.class), null);
             if (runWithAnnotation == null) {
                 logAndRaiseIssue(tree, String.format("Missing @RunWith annotation on Test Suite class '%s'.", tree.simpleName().name()));
