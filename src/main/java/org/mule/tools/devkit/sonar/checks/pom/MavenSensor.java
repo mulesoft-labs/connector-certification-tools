@@ -18,15 +18,15 @@ import org.sonar.api.rule.RuleKey;
 
 import java.util.List;
 
-public class ConnectorPomCheck implements Sensor {
+public class MavenSensor implements Sensor {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConnectorPomCheck.class);
+    private static final Logger logger = LoggerFactory.getLogger(MavenSensor.class);
 
     private final MavenProject mavenProject;
     private final ResourcePerspectives resourcePerspectives;
     private final FileSystem fileSystem;
 
-    public ConnectorPomCheck(ResourcePerspectives resourcePerspectives, FileSystem fileSystem) {
+    public MavenSensor(ResourcePerspectives resourcePerspectives, FileSystem fileSystem) {
         this.mavenProject = PomUtils.createMavenProjectFromPom();
         this.resourcePerspectives = resourcePerspectives;
         this.fileSystem = fileSystem;
