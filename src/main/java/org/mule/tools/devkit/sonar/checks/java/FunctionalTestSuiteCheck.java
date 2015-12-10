@@ -47,13 +47,11 @@ public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
                 if (suiteClasses.isEmpty()) {
                     logAndRaiseIssue(tree, "No tests have been declared under @SuiteClasses.");
                 } else {
-
                     final List<File> tests = (List<File>) FileUtils.listFiles(new File(TEST_DIR), new WildcardFileFilter("*TestCases.java"), TrueFileFilter.INSTANCE);
 
                     for (ExpressionTree test : suiteClasses) {
                         String testName = ((MemberSelectExpressionTree) test).expression().symbolType().name();
                         Iterable<? extends File> matchingTests = Iterables.filter(tests, new FilePredicate(testName));
-
                         if (testName.endsWith(SUFFIX)) {
                             if (Iterables.isEmpty(matchingTests)) {
                                 logAndRaiseIssue(test, String.format("A file named '%s.java' must exist in directory 'src/test/java/../automation/functional'.", testName));

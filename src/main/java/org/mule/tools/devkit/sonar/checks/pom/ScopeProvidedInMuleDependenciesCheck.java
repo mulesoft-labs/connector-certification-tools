@@ -18,19 +18,20 @@ public class ScopeProvidedInMuleDependenciesCheck implements PomCheck {
 
     @Override
     public Iterable<PomIssue> analyze(MavenProject mavenProject) {
-
         final List<PomIssue> issues = Lists.newArrayList();
         @SuppressWarnings("unchecked")
         List<Dependency> dependencies = mavenProject.getDependencies();
         for (Dependency dependency : dependencies) {
-            if (dependency.getGroupId().startsWith(ORG_MULE_GROUP_ID) || dependency.getGroupId().startsWith(COM_MULESOFT_GROUP_ID)) {
-                if (hasValidScope(dependency.getScope())) {
-                    issues.add(new PomIssue(KEY, String.format("Artifact '%s' is a Mule dependency and should be declared with <scope>provided</scope>.",
+            if (hasValidGroupId(dependency.getGroupId()) && hasValidScope(dependency.getScope())) {
+                issues.add(new PomIssue(KEY, String.format("Artifact '%s' is a Mule dependency and should be declared with <scope>provided</scope>.",
                             dependency.getArtifactId())));
-                }
             }
         }
         return issues;
+    }
+
+    private static boolean hasValidGroupId(String groupId) {
+        return groupId.startsWith(ORG_MULE_GROUP_ID) || groupId.startsWith(COM_MULESOFT_GROUP_ID);
     }
 
     private static boolean hasValidScope(String scope) {
