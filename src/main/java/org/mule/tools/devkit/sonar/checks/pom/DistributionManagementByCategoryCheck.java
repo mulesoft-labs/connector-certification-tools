@@ -36,9 +36,6 @@ public class DistributionManagementByCategoryCheck implements PomCheck {
             } else {
                 switch (category.toUpperCase()) {
                     case "PREMIUM":
-                        checkPremiumOrSelectOrCertified(category, issues, deploymentRepository, snapshotRepository);
-                        break;
-
                     case "STANDARD":
                     case "SELECT":
                     case "CERTIFIED":
