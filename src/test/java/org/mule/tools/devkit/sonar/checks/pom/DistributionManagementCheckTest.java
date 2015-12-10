@@ -15,7 +15,7 @@ public class DistributionManagementCheckTest extends BasicPomTestBase {
     @Test
     public void checkNoDistributionManagement() throws IOException, XmlPullParserException {
         final MavenProject mavenProject = createMavenProjectFromPom("DistributionManagementCheckTest-NoDistribution-pom.xml");
-        final DistributionManagementCheck check = new DistributionManagementCheck();
+        final DistributionManagementByCategoryCheck check = new DistributionManagementByCategoryCheck();
         final Iterable<PomIssue> pomIssues = check.analyze(mavenProject);
 
         assertThat(Iterables.size(pomIssues), is(1));
@@ -27,7 +27,7 @@ public class DistributionManagementCheckTest extends BasicPomTestBase {
     @Test
     public void checkNoDeployRepo() throws IOException, XmlPullParserException {
         final MavenProject mavenProject = createMavenProjectFromPom("DistributionManagementCheckTest-NoDeployRepo-pom.xml");
-        final DistributionManagementCheck check = new DistributionManagementCheck();
+        final DistributionManagementByCategoryCheck check = new DistributionManagementByCategoryCheck();
         final Iterable<PomIssue> pomIssues = check.analyze(mavenProject);
 
         assertThat(Iterables.size(pomIssues), is(1));
@@ -39,7 +39,7 @@ public class DistributionManagementCheckTest extends BasicPomTestBase {
     @Test
     public void checkNoSnapshotRepo() throws IOException, XmlPullParserException {
         final MavenProject mavenProject = createMavenProjectFromPom("DistributionManagementCheckTest-NoSnapshotRepo-pom.xml");
-        final DistributionManagementCheck check = new DistributionManagementCheck();
+        final DistributionManagementByCategoryCheck check = new DistributionManagementByCategoryCheck();
         final Iterable<PomIssue> pomIssues = check.analyze(mavenProject);
 
         assertThat(Iterables.size(pomIssues), is(1));
@@ -51,7 +51,7 @@ public class DistributionManagementCheckTest extends BasicPomTestBase {
     @Test
     public void checkWrongDistributionConfig() throws IOException, XmlPullParserException {
         final MavenProject mavenProject = createMavenProjectFromPom("DistributionManagementCheckTest-WrongDistributionConfig-pom.xml");
-        final DistributionManagementCheck check = new DistributionManagementCheck();
+        final DistributionManagementByCategoryCheck check = new DistributionManagementByCategoryCheck();
         final Iterable<PomIssue> pomIssues = check.analyze(mavenProject);
 
         assertThat(Iterables.size(pomIssues), is(1));
