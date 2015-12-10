@@ -109,8 +109,7 @@ public class DistributionManagementByCategoryCheck implements PomCheck {
     }
 
     private boolean hasSnapshotRepoId(DeploymentRepository snapshotRepo) {
-        return snapshotRepo.getId().equals("mulesoft-snapshots") && snapshotRepo.getUrl().equals("http://repository-master.mulesoft.org/snapshots/")
-                && !snapshotRepo.isUniqueVersion();
+        return snapshotRepo.getId().equals("mulesoft-snapshots");
     }
 
     private boolean hasSnapshotRepoUrl(DeploymentRepository snapshotRepo) {
