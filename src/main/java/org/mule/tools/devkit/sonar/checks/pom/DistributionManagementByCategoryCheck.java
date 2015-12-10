@@ -55,30 +55,89 @@ public class DistributionManagementByCategoryCheck implements PomCheck {
         return issues;
     }
 
-    private void checkCommunity(String category, @NonNull List<PomIssue> issues, @NonNull DeploymentRepository deploymentRepository,
-            @NonNull DeploymentRepository snapshotRepository) {
-        if (!(deploymentRepository.getId().equals("mulesoft-releases") && deploymentRepository.getName().equals("MuleSoft Repository")
-                && deploymentRepository.getUrl().equals("http://repository-master.mulesoft.org/releases/") && snapshotRepository.getId().equals("mulesoft-snapshots")
-                && snapshotRepository.getName().equals("MuleSoft Snapshot Repository") && snapshotRepository.getUrl().equals("http://repository-master.mulesoft.org/snapshots/") && !snapshotRepository
-                    .isUniqueVersion())) {
-            logAndRaiseIssue(issues, String.format("Distribution Management must be properly configured in pom.xml for %s category.", category));
+    private void checkCommunity(String category, @NonNull List<PomIssue> issues, @NonNull DeploymentRepository deployRepo, @NonNull DeploymentRepository snapshotRepo) {
+        if (!hasDeployRepoId(deployRepo)) {
+            logAndRaiseIssue(issues, String.format("%s connectors must have a <repository> tag configured with <id>mulesoft-releases</id>.", category));
         }
-
+        if (!hasDeployRepoUrl(deployRepo)) {
+            logAndRaiseIssue(issues,
+                    String.format("%s connectors must have a <repository> tag configured with <url>http://repository-master.mulesoft.org/releases/</url>.", category));
+        }
+        if (!hasSnapshotRepoId(snapshotRepo)) {
+            logAndRaiseIssue(issues, String.format("%s connectors must have a <snapshotRepository> tag configured with <id>mulesoft-snapshots</id>.", category));
+        }
+        if (!hasSnapshotRepoUrl(snapshotRepo)) {
+            logAndRaiseIssue(issues,
+                    String.format("%s connectors must have a <snapshotRepository> tag configured with <url>http://repository-master.mulesoft.org/releases/</url>.", category));
+        }
+        if (!hasSnapshotRepoUniqueVersion(snapshotRepo)) {
+            logAndRaiseIssue(issues,
+                    String.format("%s connectors must have a <snapshotRepository> tag configured with <uniqueVersion>false</uniqueVersion>. Default value is 'true'.", category));
+        }
     }
 
-    private void checkPremiumOrSelectOrCertified(String category, @NonNull List<PomIssue> issues, @NonNull DeploymentRepository deploymentRepository,
-            @NonNull DeploymentRepository snapshotRepository) {
-        if (!(deploymentRepository.getId().equals("mule-ee-releases") && deploymentRepository.getName().equals("MuleEE Releases Repository")
-                && deploymentRepository.getUrl().equals("https://repository-master.mulesoft.org/nexus/content/repositories/releases-ee/")
-                && snapshotRepository.getId().equals("mule-ee-snapshots") && snapshotRepository.getName().equals("MuleEE Snapshots Repository")
-                && snapshotRepository.getUrl().equals("https://repository-master.mulesoft.org/snapshots/") && !snapshotRepository.isUniqueVersion())) {
-            logAndRaiseIssue(issues, String.format("Distribution Management must be properly configured in pom.xml for %s category.", category));
+    private void checkPremiumOrSelectOrCertified(String category, @NonNull List<PomIssue> issues, @NonNull DeploymentRepository deployRepoEE,
+            @NonNull DeploymentRepository snapshotRepoEE) {
+        if (!hasDeployRepoEEId(deployRepoEE)) {
+            logAndRaiseIssue(issues, String.format("%s connectors must have a <repository> tag configured with <id>mulesoft-ee-releases</id>.", category));
         }
+        if (!hasDeployRepoEEUrl(deployRepoEE)) {
+            logAndRaiseIssue(issues, String.format(
+                    "%s connectors must have a <repository> tag configured with <url>https://repository-master.mulesoft.org/nexus/content/repositories/releases-ee/</url>.",
+                    category));
+        }
+        if (!hasSnapshotRepoEEId(snapshotRepoEE)) {
+            logAndRaiseIssue(issues, String.format("%s connectors must have a <snapshotRepository> tag configured with <id>mulesoft-ee-snapshots</id>.", category));
+        }
+        if (!hasSnapshotRepoEEUrl(snapshotRepoEE)) {
+            logAndRaiseIssue(issues, String.format(
+                    "%s connectors must have a <snapshotRepository> tag configured with <url>repository-master.mulesoft.org/nexus/content/repositories/ci-snapshots/</url>.",
+                    category));
+        }
+        if (!hasSnapshotRepoUniqueVersion(snapshotRepoEE)) {
+            logAndRaiseIssue(issues,
+                    String.format("%s connectors must have a <snapshotRepository> tag configured with <uniqueVersion>false</uniqueVersion>. Default value is 'true'.", category));
+        }
+    }
 
+    private boolean hasDeployRepoId(DeploymentRepository deployRepo) {
+        return deployRepo.getId().equals("mulesoft-releases");
+    }
+
+    private boolean hasDeployRepoUrl(DeploymentRepository deployRepo) {
+        return deployRepo.getUrl().equals("http://repository-master.mulesoft.org/releases/");
+    }
+
+    private boolean hasSnapshotRepoId(DeploymentRepository snapshotRepo) {
+        return snapshotRepo.getId().equals("mulesoft-snapshots");
+    }
+
+    private boolean hasSnapshotRepoUrl(DeploymentRepository snapshotRepo) {
+        return snapshotRepo.getUrl().equals("http://repository-master.mulesoft.org/snapshots/");
+    }
+
+    private boolean hasSnapshotRepoUniqueVersion(DeploymentRepository snapshotRepo) {
+        return !snapshotRepo.isUniqueVersion();
+    }
+
+    private boolean hasDeployRepoEEId(DeploymentRepository deployRepoEE) {
+        return deployRepoEE.getId().equals("mule-ee-releases");
+    }
+
+    private boolean hasDeployRepoEEUrl(DeploymentRepository deployRepoEE) {
+        return deployRepoEE.getUrl().equals("https://repository-master.mulesoft.org/nexus/content/repositories/releases-ee/");
+    }
+
+    private boolean hasSnapshotRepoEEId(DeploymentRepository snapshotRepoEE) {
+        return snapshotRepoEE.getId().equals("mule-ee-snapshots");
+    }
+
+    private boolean hasSnapshotRepoEEUrl(DeploymentRepository snapshotRepoEE) {
+        return snapshotRepoEE.getUrl().equals("https://repository-master.mulesoft.org/nexus/content/repositories/ci-snapshots/");
     }
 
     private final void logAndRaiseIssue(List<PomIssue> issues, String message) {
-        issues.add((new PomIssue(KEY, message)));
+        issues.add(new PomIssue(KEY, message));
     }
 
 }

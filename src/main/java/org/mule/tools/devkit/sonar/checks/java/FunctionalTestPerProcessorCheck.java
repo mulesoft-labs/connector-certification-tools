@@ -25,7 +25,7 @@ public class FunctionalTestPerProcessorCheck extends AbstractConnectorClassCheck
     public static final Pattern TEST_PARENT_DIR_PATTERN = Pattern.compile("^((src/test/java/org/mule/modules)+(/\\w+/)+(automation/functional)+$)");
 
     @Override
-    protected void verifyProcessor(@NonNull MethodTree tree, final @NonNull IdentifierTree processorAnnotation) {
+    protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
 
         String processorTestName = StringUtils.capitalizeFirstLetter(tree.simpleName().name()) + "TestCases.java";
         File dir = new File(TEST_DIR);

@@ -57,7 +57,7 @@ public class DistributionManagementCheckTest extends BasicPomTestBase {
         assertThat(Iterables.size(pomIssues), is(1));
         PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
         assertThat(pomIssue.ruleKey(), is("distribution-management-by-category"));
-        assertThat(pomIssue.message(), is("Distribution Management must be properly configured in pom.xml for Community category."));
+        assertThat(pomIssue.message(), is("Premium connectors must have a <repository> tag configured with <id>mulesoft-ee-releases</id>."));
 
     }
 }
