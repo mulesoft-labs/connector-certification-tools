@@ -10,6 +10,7 @@ import org.mule.tools.devkit.sonar.checks.java.RedundantExceptionNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.RefOnlyInComplexTypesCheck;
 import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecatedCheck;
 import org.mule.tools.devkit.sonar.checks.java.TestSuiteCheck;
+import org.mule.tools.devkit.sonar.checks.pom.DistributionManagementByCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.pom.ScopeProvidedInMuleDependenciesCheck;
 import org.mule.tools.devkit.sonar.checks.pom.SnapshotDependenciesCheck;
 import org.mule.tools.devkit.sonar.checks.pom.SourceDeploymentForStandardCategoryCheck;
@@ -37,6 +38,7 @@ public class ConnectorsChecks {
 
     public static Iterable<Class<?>> pomChecks() {
         final ImmutableList.Builder<Class<?>> builder = ImmutableList.builder();
+        builder.add(DistributionManagementByCategoryCheck.class);
         builder.add(ScopeProvidedInMuleDependenciesCheck.class);
         builder.add(SnapshotDependenciesCheck.class);
         builder.add(SourceDeploymentForStandardCategoryCheck.class);

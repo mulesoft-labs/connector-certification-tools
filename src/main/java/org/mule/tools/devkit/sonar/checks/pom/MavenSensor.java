@@ -59,6 +59,7 @@ public class MavenSensor implements Sensor {
 
     private Iterable<PomCheck> buildPomAllChecks() {
         List<PomCheck> scanners = Lists.newArrayList();
+        scanners.add(new DistributionManagementByCategoryCheck());
         scanners.add(new ScopeProvidedInMuleDependenciesCheck());
         scanners.add(new SnapshotDependenciesCheck());
         scanners.add(new SourceDeploymentForStandardCategoryCheck());

@@ -5,7 +5,6 @@ import org.apache.maven.model.DeploymentRepository;
 import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.project.MavenProject;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.slf4j.LoggerFactory;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
@@ -79,7 +78,6 @@ public class DistributionManagementByCategoryCheck implements PomCheck {
     }
 
     private final void logAndRaiseIssue(List<PomIssue> issues, String message) {
-        LoggerFactory.getLogger(getClass()).info(message);
         issues.add((new PomIssue(KEY, message)));
     }
 
