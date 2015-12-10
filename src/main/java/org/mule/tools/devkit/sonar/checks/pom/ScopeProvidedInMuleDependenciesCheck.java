@@ -24,12 +24,16 @@ public class ScopeProvidedInMuleDependenciesCheck implements PomCheck {
         List<Dependency> dependencies = mavenProject.getDependencies();
         for (Dependency dependency : dependencies) {
             if (dependency.getGroupId().startsWith(ORG_MULE_GROUP_ID) || dependency.getGroupId().startsWith(COM_MULESOFT_GROUP_ID)) {
-                if (StringUtils.isEmpty(dependency.getScope()) || dependency.getScope().equals("compile")) {
+                if (hasValidScope(dependency.getScope())) {
                     issues.add(new PomIssue(KEY, String.format("Artifact '%s' is a Mule dependency and should be declared with <scope>provided</scope>.",
                             dependency.getArtifactId())));
                 }
             }
         }
         return issues;
+    }
+
+    private static boolean hasValidScope(String scope) {
+        return StringUtils.isEmpty(scope) || scope.equals("compile");
     }
 }
