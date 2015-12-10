@@ -16,7 +16,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import java.util.List;
 
-@Rule(key = TestSuiteCheck.KEY, name = "Test Suite classes need to be annotated with @RunWith(Suite.class)", tags = { "connector-certification" })
+@Rule(key = TestSuiteCheck.KEY, name = "Test Suite classes need to be annotated with @RunWith(Suite.class)", description = "Test Suite classes need to be annotated with @RunWith(Suite.class)", tags = { "connector-certification" })
 @ActivatedByDefault
 public class TestSuiteCheck extends BaseLoggingVisitor {
 
