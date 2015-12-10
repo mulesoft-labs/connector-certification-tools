@@ -93,24 +93,9 @@ public class ClassParserUtils {
         if (symbolType.isPrimitive() || symbolType.symbol().isEnum()) {
             result = true;
         } else if (type.is(Tree.Kind.PARAMETERIZED_TYPE)) {
-            ParameterizedTypeTree parameterizedType = (ParameterizedTypeTree) type;
-            result = parameterizableTypes.contains(parameterizedType.type().symbolType().fullyQualifiedName())
-                    && Iterables.all(parameterizedType.typeArguments(), new Predicate<Tree>() {
-
-                        @Override
-                        public boolean apply(@Nullable Tree input) {
-                            if (input == null) {
-                                return false;
-                            } else if (input.is(Tree.Kind.IDENTIFIER)) {
-                                return isSimpleType((TypeTree) input);
-                            } else if (input.is(Tree.Kind.EXTENDS_WILDCARD)) {
-                                return isSimpleType(((WildcardTree) input).bound());
-                            } else if (input.is(Tree.Kind.UNBOUNDED_WILDCARD)) {
-                                return false;
-                            }
-                            return false;
-                        }
-                    });
+            ParameterizedTypeTree parametrizedType = (ParameterizedTypeTree) type;
+            result = parameterizableTypes.contains(parametrizedType.type().symbolType().fullyQualifiedName())
+                    && Iterables.all(parametrizedType.typeArguments(), simpleTypeCategoryPredicate());
         } else {
             result = symbolType.isClass() && allowedComplexTypes.contains(symbolType.fullyQualifiedName());
         }
@@ -126,29 +111,52 @@ public class ClassParserUtils {
     public static String getStringForType(TypeTree type) {
         StringBuilder sb = new StringBuilder();
         if (type.is(Tree.Kind.PARAMETERIZED_TYPE)) {
-            ParameterizedTypeTree parameterizedType = (ParameterizedTypeTree) type;
-            sb.append(parameterizedType.type().toString());
+            ParameterizedTypeTree parametrizedType = (ParameterizedTypeTree) type;
+            sb.append(parametrizedType.type().toString());
             sb.append("<");
-            sb.append(Joiner.on(", ").join(Iterables.transform(parameterizedType.typeArguments(), new Function<Tree, String>() {
-
-                @Override
-                public String apply(@Nullable Tree input) {
-                    if (input == null) {
-                        return "[null]";
-                    } else if (input.is(Tree.Kind.IDENTIFIER)) {
-                        return getStringForType((TypeTree) input);
-                    } else if (input.is(Tree.Kind.EXTENDS_WILDCARD)) {
-                        return "? extends " + getStringForType(((WildcardTree) input).bound());
-                    } else if (input.is(Tree.Kind.UNBOUNDED_WILDCARD)) {
-                        return "?";
-                    }
-                    return "UNKNOWN";
-                }
-            })));
+            sb.append(Joiner.on(", ").join(Iterables.transform(parametrizedType.typeArguments(), stringCategoryFunction())));
             sb.append(">");
         } else {
             sb.append(type.toString());
         }
         return sb.toString();
+    }
+
+    private static Function<Tree, String> stringCategoryFunction(){
+        return new Function<Tree, String>() {
+
+            @Override
+            public String apply(@Nullable Tree input) {
+                if (input == null) {
+                    return "[null]";
+                } else if (input.is(Tree.Kind.IDENTIFIER)) {
+                    return getStringForType((TypeTree) input);
+                } else if (input.is(Tree.Kind.EXTENDS_WILDCARD)) {
+                    return "? extends " + getStringForType(((WildcardTree) input).bound());
+                } else if (input.is(Tree.Kind.UNBOUNDED_WILDCARD)) {
+                    return "?";
+                }
+                return "UNKNOWN";
+            }
+        };
+    }
+
+    private static Predicate<Tree> simpleTypeCategoryPredicate(){
+        return new Predicate<Tree>() {
+
+            @Override
+            public boolean apply(@Nullable Tree input) {
+                if (input == null) {
+                    return false;
+                } else if (input.is(Tree.Kind.IDENTIFIER)) {
+                    return isSimpleType((TypeTree) input);
+                } else if (input.is(Tree.Kind.EXTENDS_WILDCARD)) {
+                    return isSimpleType(((WildcardTree) input).bound());
+                } else if (input.is(Tree.Kind.UNBOUNDED_WILDCARD)) {
+                    return false;
+                }
+                return false;
+            }
+        };
     }
 }
