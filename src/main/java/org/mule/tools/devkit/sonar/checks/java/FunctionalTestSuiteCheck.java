@@ -68,7 +68,7 @@ public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
         super.visitClass(tree);
     }
 
-    class FilePredicate implements Predicate<File> {
+    static class FilePredicate implements Predicate<File> {
 
         private String filename;
 
@@ -81,6 +81,6 @@ public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
             return filename.equals(FilenameUtils.removeExtension(file.getName())) && FILE_PATH_PATTERN.matcher(file.getPath()).find();
 
         }
-    };
+    }
 
 }
