@@ -1,10 +1,11 @@
-package org.mule.tools.devkit.sonar.checks.pom;
+package org.mule.tools.devkit.sonar.checks.maven;
 
 import com.google.common.collect.Lists;
 import org.apache.maven.model.DeploymentRepository;
 import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.project.MavenProject;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
@@ -12,13 +13,13 @@ import java.util.List;
 
 @Rule(key = DistributionManagementByCategoryCheck.KEY, name = "Distribution Management must be properly configured in pom.xml", description = "Checks that <distributionManagement> is declared in pom.xml and correctly configured (both <repository> and <snapshotRepository>) based on the connector category.", tags = { "connector-certification" })
 @ActivatedByDefault
-public class DistributionManagementByCategoryCheck implements PomCheck {
+public class DistributionManagementByCategoryCheck implements MavenCheck {
 
     public static final String KEY = "distribution-management-by-category";
 
     @Override
-    public Iterable<PomIssue> analyze(MavenProject mavenProject) {
-        final List<PomIssue> issues = Lists.newArrayList();
+    public Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
+        final List<ConnectorIssue> issues = Lists.newArrayList();
         String category = mavenProject.getProperties().getProperty("category");
         DistributionManagement distribution = mavenProject.getDistributionManagement();
 
@@ -55,7 +56,7 @@ public class DistributionManagementByCategoryCheck implements PomCheck {
         return issues;
     }
 
-    private void checkCommunity(String category, @NonNull List<PomIssue> issues, @NonNull DeploymentRepository deployRepo, @NonNull DeploymentRepository snapshotRepo) {
+    private void checkCommunity(String category, @NonNull List<ConnectorIssue> issues, @NonNull DeploymentRepository deployRepo, @NonNull DeploymentRepository snapshotRepo) {
         if (!hasDeployRepoId(deployRepo)) {
             logAndRaiseIssue(issues, String.format("%s connectors must have a <repository> tag configured with <id>mulesoft-releases</id>.", category));
         }
@@ -76,7 +77,7 @@ public class DistributionManagementByCategoryCheck implements PomCheck {
         }
     }
 
-    private void checkPremiumOrSelectOrCertified(String category, @NonNull List<PomIssue> issues, @NonNull DeploymentRepository deployRepoEE,
+    private void checkPremiumOrSelectOrCertified(String category, @NonNull List<ConnectorIssue> issues, @NonNull DeploymentRepository deployRepoEE,
             @NonNull DeploymentRepository snapshotRepoEE) {
         if (!hasDeployRepoEEId(deployRepoEE)) {
             logAndRaiseIssue(issues, String.format("%s connectors must have a <repository> tag configured with <id>mulesoft-ee-releases</id>.", category));
@@ -136,8 +137,8 @@ public class DistributionManagementByCategoryCheck implements PomCheck {
         return snapshotRepoEE.getUrl().equals("https://repository-master.mulesoft.org/nexus/content/repositories/ci-snapshots/");
     }
 
-    private final void logAndRaiseIssue(List<PomIssue> issues, String message) {
-        issues.add(new PomIssue(KEY, message));
+    private final void logAndRaiseIssue(List<ConnectorIssue> issues, String message) {
+        issues.add(new ConnectorIssue(KEY, message));
     }
 
 }

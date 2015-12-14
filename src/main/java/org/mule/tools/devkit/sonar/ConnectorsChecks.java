@@ -12,11 +12,11 @@ import org.mule.tools.devkit.sonar.checks.java.RedundantExceptionNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.RefOnlyInComplexTypesCheck;
 import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecationCheck;
 import org.mule.tools.devkit.sonar.checks.java.TestSuiteCheck;
-import org.mule.tools.devkit.sonar.checks.pom.DistributionManagementByCategoryCheck;
-import org.mule.tools.devkit.sonar.checks.pom.ScopeProvidedInMuleDependenciesCheck;
-import org.mule.tools.devkit.sonar.checks.pom.SnapshotDependenciesCheck;
-import org.mule.tools.devkit.sonar.checks.pom.SourceDeploymentForStandardCategoryCheck;
-import org.mule.tools.devkit.sonar.checks.pom.TestingFrameworkNotOverwrittenCheck;
+import org.mule.tools.devkit.sonar.checks.maven.DistributionManagementByCategoryCheck;
+import org.mule.tools.devkit.sonar.checks.maven.ScopeProvidedInMuleDependenciesCheck;
+import org.mule.tools.devkit.sonar.checks.maven.SnapshotDependenciesCheck;
+import org.mule.tools.devkit.sonar.checks.maven.SourceDeploymentForStandardCategoryCheck;
+import org.mule.tools.devkit.sonar.checks.maven.TestingFrameworkNotOverwrittenCheck;
 import org.sonar.plugins.java.api.JavaCheck;
 
 public class ConnectorsChecks {
@@ -40,7 +40,7 @@ public class ConnectorsChecks {
         return builder.build();
     }
 
-    public static Iterable<Class<?>> pomChecks() {
+    public static Iterable<Class<?>> mavenChecks() {
         final ImmutableList.Builder<Class<?>> builder = ImmutableList.builder();
         builder.add(DistributionManagementByCategoryCheck.class);
         builder.add(ScopeProvidedInMuleDependenciesCheck.class);
@@ -50,4 +50,8 @@ public class ConnectorsChecks {
         return builder.build();
     }
 
+    public static Iterable<Class<?>> structureChecks() {
+        final ImmutableList.Builder<Class<?>> builder = ImmutableList.builder();
+        return builder.build();
+    }
 }

@@ -4,11 +4,11 @@ import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.utils.ValidationMessages;
 
-public class ConnectorCertificationMvnProfile extends ProfileDefinition {
+public class ConnectorCertificationJavaProfile extends ProfileDefinition {
 
     @Override
     public RulesProfile createProfile(ValidationMessages validation) {
-        return RulesProfile.create(ConnectorCertificationRulesDefinition.REPOSITORY_NAME, "mvn");
+        return RulesProfile.create(ConnectorCertificationRulesDefinition.REPOSITORY_NAME, "java");
     }
 
 }

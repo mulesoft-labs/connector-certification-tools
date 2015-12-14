@@ -1,9 +1,10 @@
-package org.mule.tools.devkit.sonar.checks.pom;
+package org.mule.tools.devkit.sonar.checks.maven;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
+import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.mule.tools.devkit.sonar.utils.PomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +33,12 @@ public class MavenSensor implements Sensor {
         this.fileSystem = fileSystem;
     }
 
-    private void logAndRaiseIssue(InputFile pomFile, PomIssue pomIssue) {
-        logger.info(pomIssue.message());
+    private void logAndRaiseIssue(InputFile pomFile, ConnectorIssue connectorIssue) {
+        logger.info(connectorIssue.message());
         Issuable issuable = resourcePerspectives.as(Issuable.class, pomFile);
         if (issuable != null) {
-            issuable.addIssue(issuable.newIssueBuilder().ruleKey(RuleKey.of(ConnectorCertificationRulesDefinition.getPomRepositoryKey(), pomIssue.ruleKey()))
-                    .message(pomIssue.message()).build());
+            issuable.addIssue(issuable.newIssueBuilder().ruleKey(RuleKey.of(ConnectorCertificationRulesDefinition.getMvnRepositoryKey(), connectorIssue.ruleKey()))
+                    .message(connectorIssue.message()).build());
         }
     }
 
@@ -49,16 +50,16 @@ public class MavenSensor implements Sensor {
     @Override
     public void analyse(Project project, SensorContext sensorContext) {
         final InputFile pomFile = Iterables.getOnlyElement(fileSystem.inputFiles(fileSystem.predicates().matchesPathPattern("pom.xml")));
-        for (PomCheck pomCheck : buildPomAllChecks()) {
-            final Iterable<PomIssue> analyse = pomCheck.analyze(mavenProject);
-            for (PomIssue issue : analyse) {
+        for (MavenCheck mavenCheck : buildMavenChecks()) {
+            final Iterable<ConnectorIssue> analyse = mavenCheck.analyze(mavenProject);
+            for (ConnectorIssue issue : analyse) {
                 logAndRaiseIssue(pomFile, issue);
             }
         }
     }
 
-    private Iterable<PomCheck> buildPomAllChecks() {
-        List<PomCheck> scanners = Lists.newArrayList();
+    private Iterable<MavenCheck> buildMavenChecks() {
+        List<MavenCheck> scanners = Lists.newArrayList();
         scanners.add(new DistributionManagementByCategoryCheck());
         scanners.add(new ScopeProvidedInMuleDependenciesCheck());
         scanners.add(new SnapshotDependenciesCheck());

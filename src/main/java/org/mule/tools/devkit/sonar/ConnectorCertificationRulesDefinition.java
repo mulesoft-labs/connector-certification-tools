@@ -26,25 +26,31 @@ import org.sonar.api.server.rule.RulesDefinitionAnnotationLoader;
 public class ConnectorCertificationRulesDefinition implements RulesDefinition {
 
     public static final String REPOSITORY_NAME = "Connector Certification";
-    private static final String REPOSITORY_KEY = "connector-certification-java";
+    private static final String JAVA_REPOSITORY_KEY = "connector-certification-java";
     private static final String POM_REPOSITORY_KEY = "connector-certification-mvn";
+    private static final String STRUCT_REPOSITORY_KEY = "connector-certification-struct";
 
     public static String getJavaRepositoryKey() {
-        return REPOSITORY_KEY;
+        return JAVA_REPOSITORY_KEY;
     }
 
-    public static String getPomRepositoryKey() {
+    public static String getMvnRepositoryKey() {
         return POM_REPOSITORY_KEY;
+    }
+
+    public static String getStructRepositoryKey() {
+        return STRUCT_REPOSITORY_KEY;
     }
 
     @Override
     public void define(Context context) {
         addJavaRules(context);
-        addPomRules(context);
+        addMavenRules(context);
+        addStructureRules(context);
     }
 
     private void addJavaRules(Context context) {
-        NewRepository repo = context.createRepository(REPOSITORY_KEY, "java");
+        NewRepository repo = context.createRepository(JAVA_REPOSITORY_KEY, "java");
         repo.setName(REPOSITORY_NAME);
 
         RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
@@ -52,12 +58,21 @@ public class ConnectorCertificationRulesDefinition implements RulesDefinition {
         repo.done();
     }
 
-    private void addPomRules(Context context) {
+    private void addMavenRules(Context context) {
         NewRepository repo = context.createRepository(POM_REPOSITORY_KEY, "mvn");
         repo.setName(REPOSITORY_NAME);
 
         RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
-        annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.pomChecks(), Class.class));
+        annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.mavenChecks(), Class.class));
+        repo.done();
+    }
+
+    private void addStructureRules(Context context) {
+        NewRepository repo = context.createRepository(STRUCT_REPOSITORY_KEY, "struct");
+        repo.setName(REPOSITORY_NAME);
+
+        RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
+        annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.structureChecks(), Class.class));
         repo.done();
     }
 }

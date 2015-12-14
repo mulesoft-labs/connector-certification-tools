@@ -1,37 +1,38 @@
-package org.mule.tools.devkit.sonar.checks.pom;
+package org.mule.tools.devkit.sonar.checks.maven;
 
 import com.google.common.collect.Lists;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Parent;
 import org.apache.maven.project.MavenProject;
+import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.sonar.check.Rule;
 
 import java.util.List;
 
 @Rule(key = SnapshotDependenciesCheck.KEY, name = "SNAPSHOT dependencies are NOT allowed in pom.xml", description = "Checks that no SNAPSHOT versions are declared in pom.xml", tags = { "connector-certification" })
-public class SnapshotDependenciesCheck implements PomCheck {
+public class SnapshotDependenciesCheck implements MavenCheck {
 
     public static final String KEY = "snapshot-dependencies-not-allowed";
 
     private static final String SNAPSHOT = "SNAPSHOT";
 
     @Override
-    public Iterable<PomIssue> analyze(MavenProject mavenProject) {
-        final List<PomIssue> issues = Lists.newArrayList();
+    public Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
+        final List<ConnectorIssue> issues = Lists.newArrayList();
         List<Dependency> dependencies = mavenProject.getDependencies();
 
         if (mavenProject.getVersion().endsWith(SNAPSHOT)) {
-            issues.add(new PomIssue(KEY, buildMessage(mavenProject.getArtifactId())));
+            issues.add(new ConnectorIssue(KEY, buildMessage(mavenProject.getArtifactId())));
         }
 
         Parent parent = (mavenProject.getModel()).getParent();
         if (parent != null && parent.getVersion().endsWith(SNAPSHOT)) {
-            issues.add(new PomIssue(KEY, buildMessage(parent.getArtifactId())));
+            issues.add(new ConnectorIssue(KEY, buildMessage(parent.getArtifactId())));
         }
 
         for (Dependency dependency : dependencies) {
             if (dependency.getVersion().endsWith(SNAPSHOT)) {
-                issues.add(new PomIssue(KEY, buildMessage(dependency.getArtifactId())));
+                issues.add(new ConnectorIssue(KEY, buildMessage(dependency.getArtifactId())));
             }
         }
         return issues;

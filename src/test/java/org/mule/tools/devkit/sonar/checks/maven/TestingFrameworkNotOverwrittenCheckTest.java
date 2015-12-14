@@ -1,9 +1,10 @@
-package org.mule.tools.devkit.sonar.checks.pom;
+package org.mule.tools.devkit.sonar.checks.maven;
 
 import com.google.common.collect.Iterables;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.junit.Test;
+import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 
 import java.io.IOException;
 
@@ -16,11 +17,11 @@ public class TestingFrameworkNotOverwrittenCheckTest extends BasicPomTestBase {
     public void checkTestingFrameworkNotOverwritten() throws IOException, XmlPullParserException {
         final MavenProject mavenProject = createMavenProjectFromPom(pomForCurrentClass());
         final TestingFrameworkNotOverwrittenCheck check = new TestingFrameworkNotOverwrittenCheck();
-        final Iterable<PomIssue> pomIssues = check.analyze(mavenProject);
+        final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
 
         assertThat(Iterables.size(pomIssues), is(1));
-        PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey(), is("testing-framework-not-overwritten"));
-        assertThat(pomIssue.message(), is("'connector-testing-framework' must not be overwritten."));
+        ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
+        assertThat(connectorIssue.ruleKey(), is("testing-framework-not-overwritten"));
+        assertThat(connectorIssue.message(), is("'connector-testing-framework' must not be overwritten."));
     }
 }

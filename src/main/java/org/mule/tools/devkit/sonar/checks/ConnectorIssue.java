@@ -1,11 +1,11 @@
-package org.mule.tools.devkit.sonar.checks.pom;
+package org.mule.tools.devkit.sonar.checks;
 
-public class PomIssue {
+public class ConnectorIssue {
 
     private final String ruleKey;
     private final String message;
 
-    public PomIssue(String ruleKey, String message) {
+    public ConnectorIssue(String ruleKey, String message) {
         this.ruleKey = ruleKey;
         this.message = message;
     }

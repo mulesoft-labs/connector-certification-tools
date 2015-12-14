@@ -1,9 +1,10 @@
-package org.mule.tools.devkit.sonar.checks.pom;
+package org.mule.tools.devkit.sonar.checks.maven;
 
 import com.google.common.collect.Iterables;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.junit.Test;
+import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 
 import java.io.IOException;
 
@@ -16,36 +17,36 @@ public class SourceDeploymentForStandardCategoryCheckTest extends BasicPomTestBa
     public void checkSourceDeployment() throws IOException, XmlPullParserException {
         final MavenProject mavenProject = createMavenProjectFromPom(pomForCurrentClass());
         final SourceDeploymentForStandardCategoryCheck check = new SourceDeploymentForStandardCategoryCheck();
-        final Iterable<PomIssue> pomIssues = check.analyze(mavenProject);
+        final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
 
         assertThat(Iterables.size(pomIssues), is(1));
-        PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey(), is("source-deployment-for-standard-category"));
-        assertThat(pomIssue.message(), is("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources."));
+        ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
+        assertThat(connectorIssue.ruleKey(), is("source-deployment-for-standard-category"));
+        assertThat(connectorIssue.message(), is("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources."));
     }
 
     @Test
     public void checkSourceDeploymentEmptyBuild() throws IOException, XmlPullParserException {
         final MavenProject mavenProject = createMavenProjectFromPom("SourceDeploymentForStandardCategoryCheckTest-EmptyBuild-pom.xml");
         final SourceDeploymentForStandardCategoryCheck check = new SourceDeploymentForStandardCategoryCheck();
-        final Iterable<PomIssue> pomIssues = check.analyze(mavenProject);
+        final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
 
         assertThat(Iterables.size(pomIssues), is(1));
-        PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey(), is("source-deployment-for-standard-category"));
-        assertThat(pomIssue.message(), is("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources."));
+        ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
+        assertThat(connectorIssue.ruleKey(), is("source-deployment-for-standard-category"));
+        assertThat(connectorIssue.message(), is("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources."));
     }
 
     @Test
     public void checkSourceDeploymentWrongPhase() throws IOException, XmlPullParserException {
         final MavenProject mavenProject = createMavenProjectFromPom("SourceDeploymentForStandardCategoryCheckTest-WrongPhase-pom.xml");
         final SourceDeploymentForStandardCategoryCheck check = new SourceDeploymentForStandardCategoryCheck();
-        final Iterable<PomIssue> pomIssues = check.analyze(mavenProject);
+        final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
 
         assertThat(Iterables.size(pomIssues), is(1));
-        PomIssue pomIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(pomIssue.ruleKey(), is("source-deployment-for-standard-category"));
-        assertThat(pomIssue.message(), is("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources."));
+        ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
+        assertThat(connectorIssue.ruleKey(), is("source-deployment-for-standard-category"));
+        assertThat(connectorIssue.message(), is("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources."));
     }
 
 }
