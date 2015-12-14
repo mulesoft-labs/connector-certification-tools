@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
 public class FunctionalTestPerProcessorCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "functional-test-per-processor";
-
     public static final String TEST_DIR = "src/test/java";
     public static final Pattern TEST_PARENT_DIR_PATTERN = Pattern.compile("^((src/test/java/org/mule/modules)+(/\\w+/)+(automation/functional)+$)");
 

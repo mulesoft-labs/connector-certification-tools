@@ -11,8 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.plugins.java.api.semantic.Type;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
+import org.sonar.plugins.java.api.tree.IdentifierTree;
+import org.sonar.plugins.java.api.tree.MemberSelectExpressionTree;
 import org.sonar.plugins.java.api.tree.ParameterizedTypeTree;
 import org.sonar.plugins.java.api.tree.Tree;
+import org.sonar.plugins.java.api.tree.Tree.Kind;
 import org.sonar.plugins.java.api.tree.TypeTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
 import org.sonar.plugins.java.api.tree.WildcardTree;
@@ -54,6 +57,17 @@ public class ClassParserUtils {
         parameterizableTypes = builder.build();
     }
 
+    private static final ImmutableSet<String> connectionConfigTypes;
+
+    static {
+        final ImmutableSet.Builder<String> builder = ImmutableSet.builder();
+        builder.add("Configuration");
+        builder.add("ConnectionManagement");
+        builder.add("OAuth");
+        builder.add("OAuth2");
+        connectionConfigTypes = builder.build();
+    }
+
     private ClassParserUtils() {
     }
 
@@ -83,6 +97,23 @@ public class ClassParserUtils {
             @Override
             public boolean apply(@Nullable AnnotationTree input) {
                 return input != null && is(input, annotationClass);
+            }
+        };
+    }
+
+    public static Predicate<AnnotationTree> hasConfigAnnotationPredicate() {
+
+        return new Predicate<AnnotationTree>() {
+
+            @Override
+            public boolean apply(@Nullable AnnotationTree input) {
+                String name;
+                if (input.annotationType().is(Kind.MEMBER_SELECT)) {
+                    name = ((MemberSelectExpressionTree) input.annotationType()).identifier().name();
+                } else {
+                    name = ((IdentifierTree) input.annotationType()).name();
+                }
+                return input != null && connectionConfigTypes.contains(name);
             }
         };
     }
@@ -122,7 +153,7 @@ public class ClassParserUtils {
         return sb.toString();
     }
 
-    private static Function<Tree, String> stringCategoryFunction(){
+    private static Function<Tree, String> stringCategoryFunction() {
         return new Function<Tree, String>() {
 
             @Override
@@ -141,7 +172,7 @@ public class ClassParserUtils {
         };
     }
 
-    private static Predicate<Tree> simpleTypeCategoryPredicate(){
+    private static Predicate<Tree> simpleTypeCategoryPredicate() {
         return new Predicate<Tree>() {
 
             @Override

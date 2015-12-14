@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Rule;
-import org.sonar.java.model.expression.IdentifierTreeImpl;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.plugins.java.api.tree.ExpressionTree;
@@ -38,10 +37,10 @@ public class TestSuiteCheck extends BaseLoggingVisitor {
                     final ExpressionTree argument = Iterables.getOnlyElement(arguments);
                     if (argument.is(Tree.Kind.MEMBER_SELECT)) {
                         final ExpressionTree expressionTree = ((MemberSelectExpressionTree) argument).expression();
-                        if (!((IdentifierTreeImpl) expressionTree).name().equals(Suite.class.getSimpleName())) {
+                        if (!((IdentifierTree) expressionTree).name().equals(Suite.class.getSimpleName())) {
                             logAndRaiseIssue(tree, String.format(
                                     "Found @RunWith annotation on Test Suite class '%s', but different runner specified (%s.class instead of %s.class).", tree.simpleName().name(),
-                                    ((IdentifierTreeImpl) expressionTree).name(), Suite.class.getSimpleName()));
+                                    ((IdentifierTree) expressionTree).name(), Suite.class.getSimpleName()));
                         }
                     }
                 }
