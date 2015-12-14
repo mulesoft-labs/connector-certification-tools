@@ -1,6 +1,7 @@
-import org.mule.api.annotations.components.MetaDataCategory;
-
-import org.mule.api.annotations.Connector;
+import org.mule.api.annotations.components.Configuration;
+import org.mule.api.annotations.components.ConnectionManagement;
+import org.mule.api.annotations.oauth.OAuth;
+import org.mule.api.annotations.oauth.OAuth2;
 
 @ConnectionManagement(friendlyName = "Configuration")
 public class MyConnectorBasicAuthConfig {
