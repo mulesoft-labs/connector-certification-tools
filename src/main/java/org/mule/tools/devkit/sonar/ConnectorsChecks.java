@@ -1,14 +1,16 @@
 package org.mule.tools.devkit.sonar;
 
 import com.google.common.collect.ImmutableList;
+import org.mule.tools.devkit.sonar.checks.java.ConfigFriendlyNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerProcessorCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestSuiteCheck;
 import org.mule.tools.devkit.sonar.checks.java.LicenseByCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.java.NumberOfComplexArgumentsCheck;
 import org.mule.tools.devkit.sonar.checks.java.NumberOfSimpleAndOptionalArgumentsCheck;
+import org.mule.tools.devkit.sonar.checks.java.PayloadDeprecationCheck;
 import org.mule.tools.devkit.sonar.checks.java.RedundantExceptionNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.RefOnlyInComplexTypesCheck;
-import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecatedCheck;
+import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecationCheck;
 import org.mule.tools.devkit.sonar.checks.java.TestSuiteCheck;
 import org.mule.tools.devkit.sonar.checks.pom.DistributionManagementByCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.pom.ScopeProvidedInMuleDependenciesCheck;
@@ -24,13 +26,15 @@ public class ConnectorsChecks {
 
     public static Iterable<Class<? extends JavaCheck>> javaChecks() {
         final ImmutableList.Builder<Class<? extends JavaCheck>> builder = ImmutableList.builder();
+        builder.add(ConfigFriendlyNameCheck.class);
         builder.add(FunctionalTestPerProcessorCheck.class);
         builder.add(FunctionalTestSuiteCheck.class);
         builder.add(NumberOfComplexArgumentsCheck.class);
         builder.add(NumberOfSimpleAndOptionalArgumentsCheck.class);
+        builder.add(PayloadDeprecationCheck.class);
         builder.add(RefOnlyInComplexTypesCheck.class);
         builder.add(LicenseByCategoryCheck.class);
-        builder.add(RestCallDeprecatedCheck.class);
+        builder.add(RestCallDeprecationCheck.class);
         builder.add(RedundantExceptionNameCheck.class);
         builder.add(TestSuiteCheck.class);
         return builder.build();

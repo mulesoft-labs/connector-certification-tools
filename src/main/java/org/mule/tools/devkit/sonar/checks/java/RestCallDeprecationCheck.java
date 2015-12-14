@@ -14,9 +14,9 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import java.util.List;
 
-@Rule(key = RestCallDeprecatedCheck.KEY, name = "@RestCall annotation is deprecated", description = "Support for @RestCall processors has been deprecated in favor of RAML. Consider migrating your connector to REST Connect.", tags = { "connector-certification" })
+@Rule(key = RestCallDeprecationCheck.KEY, name = "@RestCall annotation is deprecated", description = "Support for @RestCall processors has been deprecated in favor of RAML. Consider migrating your connector to REST Connect.", tags = { "connector-certification" })
 @ActivatedByDefault
-public class RestCallDeprecatedCheck extends AbstractConnectorClassCheck {
+public class RestCallDeprecationCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "restcall-annotation-deprecated";
 
@@ -30,12 +30,10 @@ public class RestCallDeprecatedCheck extends AbstractConnectorClassCheck {
 
     @Override
     protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
-
         List<? extends AnnotationTree> annotations = tree.modifiers().annotations();
-
         final long count = Iterables.size(Iterables.filter(annotations, HAS_REST_CALL_ANNOTATION));
         if (count > 0) {
-            final String message = String.format("@RestCall should be removed from processor '%s' as it has been deprecated.", tree.simpleName());
+            final String message = String.format("@RestCall should be removed from processor '%s' as it is deprecated.", tree.simpleName());
             logAndRaiseIssue(tree, message);
         }
 
