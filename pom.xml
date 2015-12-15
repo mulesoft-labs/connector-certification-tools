@@ -46,6 +46,28 @@
             <groupId>org.mule.modules</groupId>
             <artifactId>mule-module-annotations</artifactId>
             <version>3.7.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mule.tools.devkit</groupId>
+                    <artifactId>mule-devkit-shade</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mule.modules</groupId>
+                    <artifactId>mule-module-devkit-support</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mule</groupId>
+                    <artifactId>mule-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mule.modules</groupId>
+                    <artifactId>mule-module-http</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.inject</groupId>
+                    <artifactId>javax.inject</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.mule.tools.devkit</groupId>
@@ -92,7 +114,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.5</version>
-            <scope>compile</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.sonarsource.java</groupId>

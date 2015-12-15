@@ -62,7 +62,7 @@ public class StructureSensor implements Sensor {
 
     private Iterable<StructureCheck> buildStructureChecks() {
         List<StructureCheck> scanners = Lists.newArrayList();
-        scanners.add(new LicenseDeclarationFilesCheck());
+//        scanners.add(new LicenseDeclarationFilesCheck());
         return scanners;
     }
 }
