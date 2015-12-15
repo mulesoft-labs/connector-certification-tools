@@ -1,6 +1,7 @@
 package org.mule.tools.devkit.sonar;
 
-import org.mule.tools.devkit.sonar.checks.pom.MavenSensor;
+import org.mule.tools.devkit.sonar.checks.maven.MavenSensor;
+import org.mule.tools.devkit.sonar.checks.structure.StructureSensor;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
@@ -20,14 +21,17 @@ public final class ConnectorCertificationPlugin extends SonarPlugin {
     public List getExtensions() {
         return Arrays.asList(
 
-                // server extensions -> objects are instantiated during server startup
-                ConnectorCertificationRulesDefinition.class, MvnLanguage.class,
+        // server extensions -> objects are instantiated during server startup
+                ConnectorCertificationRulesDefinition.class, MvnLanguage.class, StructureLanguage.class,
 
                 // batch extensions
                 // Java checks
-                ConnectorCertificationProfile.class, ConnectorCertificationCheckRegistrar.class,
+                ConnectorCertificationJavaProfile.class, ConnectorCertificationCheckRegistrar.class,
 
                 // Maven checks
-                ConnectorCertificationMvnProfile.class, MavenSensor.class);
+                ConnectorCertificationMvnProfile.class, MavenSensor.class,
+
+                // Structure checks
+                ConnectorCertificationStructProfile.class, StructureSensor.class);
     }
 }

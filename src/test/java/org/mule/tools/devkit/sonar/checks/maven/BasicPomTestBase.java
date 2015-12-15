@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.checks.pom;
+package org.mule.tools.devkit.sonar.checks.maven;
 
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -18,7 +18,7 @@ public abstract class BasicPomTestBase {
         try (InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream(pomResource), StandardCharsets.UTF_8)) {
             return PomUtils.createMavenProjectFromInputStream(reader);
         } catch (IOException e) {
-            throw new IllegalStateException("Couldn't initialize pom", e);
+            throw new IllegalStateException("Couldn't initialize pom.xml", e);
         }
     }
 }

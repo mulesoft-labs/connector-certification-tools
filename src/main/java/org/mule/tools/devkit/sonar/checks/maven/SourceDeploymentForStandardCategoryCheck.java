@@ -1,4 +1,4 @@
-package org.mule.tools.devkit.sonar.checks.pom;
+package org.mule.tools.devkit.sonar.checks.maven;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -7,6 +7,7 @@ import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.project.MavenProject;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.check.Rule;
@@ -33,7 +34,7 @@ import java.util.List;
         + "``"
         + "\n\n"
         + "IMPORTANT: since DevKit 3.7.2, the Standard category is no longer supported thus the connector should be migrated to either Premium, Select or Certified.", tags = { "connector-certification" })
-public class SourceDeploymentForStandardCategoryCheck implements PomCheck {
+public class SourceDeploymentForStandardCategoryCheck implements MavenCheck {
 
     public static final String KEY = "source-deployment-for-standard-category";
 
@@ -65,15 +66,15 @@ public class SourceDeploymentForStandardCategoryCheck implements PomCheck {
     };
 
     @Override
-    public Iterable<PomIssue> analyze(MavenProject mavenProject) {
-        final List<PomIssue> issues = Lists.newArrayList();
+    public Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
+        final List<ConnectorIssue> issues = Lists.newArrayList();
 
         String category = mavenProject.getProperties().getProperty("category");
         logger.debug("Parsed Category version -> {}", category);
 
         final boolean hasSourcePlugin = mavenProject.getBuild() != null && Iterables.any(mavenProject.getBuildPlugins(), HAS_SOURCE_PLUGIN);
         if (category.equalsIgnoreCase("STANDARD") && !hasSourcePlugin) {
-            issues.add(new PomIssue(KEY, String.format("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources.")));
+            issues.add(new ConnectorIssue(KEY, String.format("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources.")));
         }
 
         return issues;
