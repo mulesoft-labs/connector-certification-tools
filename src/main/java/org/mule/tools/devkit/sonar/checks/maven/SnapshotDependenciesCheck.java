@@ -19,20 +19,22 @@ public class SnapshotDependenciesCheck implements MavenCheck {
     @Override
     public Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
         final List<ConnectorIssue> issues = Lists.newArrayList();
-        List<Dependency> dependencies = mavenProject.getDependencies();
 
         if (mavenProject.getVersion().endsWith(SNAPSHOT)) {
             issues.add(new ConnectorIssue(KEY, buildMessage(mavenProject.getArtifactId())));
         }
 
-        Parent parent = (mavenProject.getModel()).getParent();
+        Parent parent = mavenProject.getModel().getParent();
         if (parent != null && parent.getVersion().endsWith(SNAPSHOT)) {
             issues.add(new ConnectorIssue(KEY, buildMessage(parent.getArtifactId())));
         }
 
-        for (Dependency dependency : dependencies) {
-            if (dependency.getVersion().endsWith(SNAPSHOT)) {
-                issues.add(new ConnectorIssue(KEY, buildMessage(dependency.getArtifactId())));
+        List<Dependency> dependencies = mavenProject.getDependencies();
+        if (dependencies != null) {
+            for (Dependency dependency : dependencies) {
+                if (dependency.getVersion().endsWith(SNAPSHOT)) {
+                    issues.add(new ConnectorIssue(KEY, buildMessage(dependency.getArtifactId())));
+                }
             }
         }
         return issues;

@@ -49,11 +49,13 @@ public class MavenSensor implements Sensor {
 
     @Override
     public void analyse(Project project, SensorContext sensorContext) {
-        final InputFile pomFile = Iterables.getOnlyElement(fileSystem.inputFiles(fileSystem.predicates().matchesPathPattern("pom.xml")));
-        for (MavenCheck mavenCheck : buildMavenChecks()) {
-            final Iterable<ConnectorIssue> analyse = mavenCheck.analyze(mavenProject);
-            for (ConnectorIssue issue : analyse) {
-                logAndRaiseIssue(pomFile, issue);
+        if (PomUtils.isDevKitConnector(mavenProject)) {
+            final InputFile pomFile = Iterables.getOnlyElement(fileSystem.inputFiles(fileSystem.predicates().matchesPathPattern("pom.xml")));
+            for (MavenCheck mavenCheck : buildMavenChecks()) {
+                final Iterable<ConnectorIssue> analyse = mavenCheck.analyze(mavenProject);
+                for (ConnectorIssue issue : analyse) {
+                    logAndRaiseIssue(pomFile, issue);
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 package org.mule.tools.devkit.sonar.utils;
 
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -11,6 +12,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public class PomUtils {
+
+    public static final String DEVKIT_GROUP_ID = "org.mule.tools.devkit";
+    public static final String DEVKIT_ARTIFACT_ID = "mule-devkit-parent";
 
     private PomUtils() {
     }
@@ -33,6 +37,11 @@ public class PomUtils {
             throw new IllegalStateException("Couldn't initialize pom", e);
         }
         return mavenProject;
+    }
+
+    public static boolean isDevKitConnector(MavenProject mavenProject) {
+        final Parent parent = mavenProject.getModel().getParent();
+        return parent != null && parent.getGroupId().equals(DEVKIT_GROUP_ID) && parent.getArtifactId().equals(DEVKIT_ARTIFACT_ID);
     }
 
 }

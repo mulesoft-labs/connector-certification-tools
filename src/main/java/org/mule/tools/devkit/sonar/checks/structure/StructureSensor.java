@@ -50,12 +50,13 @@ public class StructureSensor implements Sensor {
 
     @Override
     public void analyse(Project project, SensorContext sensorContext) {
-        // final InputFile pomFile = Iterables.getOnlyElement(fileSystem.inputFiles(fileSystem.predicates().all()));
-        final Directory demo = Directory.fromIOFile(new File("demo"), project);
-        for (StructureCheck structureCheck : buildStructureChecks()) {
-            final Iterable<ConnectorIssue> analyse = structureCheck.analyze(mavenProject, project);
-            for (ConnectorIssue issue : analyse) {
-                logAndRaiseIssue(demo, issue);
+        if (PomUtils.isDevKitConnector(mavenProject)) {
+            final Directory demo = Directory.fromIOFile(new File("demo"), project);
+            for (StructureCheck structureCheck : buildStructureChecks()) {
+                final Iterable<ConnectorIssue> analyse = structureCheck.analyze(mavenProject, project);
+                for (ConnectorIssue issue : analyse) {
+                    logAndRaiseIssue(demo, issue);
+                }
             }
         }
     }
