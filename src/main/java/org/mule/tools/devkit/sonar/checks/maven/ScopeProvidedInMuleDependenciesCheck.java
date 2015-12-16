@@ -22,10 +22,12 @@ public class ScopeProvidedInMuleDependenciesCheck implements MavenCheck {
         final List<ConnectorIssue> issues = Lists.newArrayList();
         @SuppressWarnings("unchecked")
         List<Dependency> dependencies = mavenProject.getDependencies();
-        for (Dependency dependency : dependencies) {
-            if (hasValidGroupId(dependency.getGroupId()) && hasValidScope(dependency.getScope())) {
-                issues.add(new ConnectorIssue(KEY, String.format("Artifact '%s' is a Mule dependency and should be declared with <scope>provided</scope>.",
-                        dependency.getArtifactId())));
+        if (dependencies != null) {
+            for (Dependency dependency : dependencies) {
+                if (hasValidGroupId(dependency.getGroupId()) && hasValidScope(dependency.getScope())) {
+                    issues.add(new ConnectorIssue(KEY, String.format("Artifact '%s' is a Mule dependency and should be declared with <scope>provided</scope>.",
+                            dependency.getArtifactId())));
+                }
             }
         }
         return issues;

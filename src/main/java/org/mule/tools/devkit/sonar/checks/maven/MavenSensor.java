@@ -23,12 +23,10 @@ public class MavenSensor implements Sensor {
 
     private static final Logger logger = LoggerFactory.getLogger(MavenSensor.class);
 
-    private final MavenProject mavenProject;
     private final ResourcePerspectives resourcePerspectives;
     private final FileSystem fileSystem;
 
     public MavenSensor(ResourcePerspectives resourcePerspectives, FileSystem fileSystem) {
-        this.mavenProject = PomUtils.createMavenProjectFromPomFile();
         this.resourcePerspectives = resourcePerspectives;
         this.fileSystem = fileSystem;
     }
@@ -49,6 +47,7 @@ public class MavenSensor implements Sensor {
 
     @Override
     public void analyse(Project project, SensorContext sensorContext) {
+        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(fileSystem.baseDir());
         if (PomUtils.isDevKitConnector(mavenProject)) {
             final InputFile pomFile = Iterables.getOnlyElement(fileSystem.inputFiles(fileSystem.predicates().matchesPathPattern("pom.xml")));
             for (MavenCheck mavenCheck : buildMavenChecks()) {

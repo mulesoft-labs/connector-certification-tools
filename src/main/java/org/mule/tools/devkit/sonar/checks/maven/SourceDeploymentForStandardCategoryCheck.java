@@ -74,7 +74,7 @@ public class SourceDeploymentForStandardCategoryCheck implements MavenCheck {
 
         final boolean hasSourcePlugin = mavenProject.getBuild() != null && Iterables.any(mavenProject.getBuildPlugins(), HAS_SOURCE_PLUGIN);
         if (category.equalsIgnoreCase("STANDARD") && !hasSourcePlugin) {
-            issues.add(new ConnectorIssue(KEY, String.format("Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources.")));
+            issues.add(new ConnectorIssue(KEY, "Standard connectors must declare a 'maven-source-plugin' in pom.xml to prevent the deployment of its sources."));
         }
 
         return issues;

@@ -5,17 +5,19 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.junit.Test;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
+import org.mule.tools.devkit.sonar.utils.PomUtils;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class ScopeProvidedInMuleDependenciesCheckTest extends BasicPomTestBase {
+public class ScopeProvidedInMuleDependenciesCheckTest {
 
     @Test
     public void checkNoScope() throws IOException, XmlPullParserException {
-        final MavenProject mavenProject = createMavenProjectFromPom(pomForCurrentClass());
+        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/scope-provided-in-mule-dependencies/no-scope"));
         final ScopeProvidedInMuleDependenciesCheck check = new ScopeProvidedInMuleDependenciesCheck();
         final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
 
@@ -27,7 +29,7 @@ public class ScopeProvidedInMuleDependenciesCheckTest extends BasicPomTestBase {
 
     @Test
     public void checkScopeCompile() throws IOException, XmlPullParserException {
-        final MavenProject mavenProject = createMavenProjectFromPom("ScopeProvidedInMuleDependenciesCheckTest-ScopeCompile-pom.xml");
+        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/scope-provided-in-mule-dependencies/scope-compile"));
         final ScopeProvidedInMuleDependenciesCheck check = new ScopeProvidedInMuleDependenciesCheck();
         final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
 

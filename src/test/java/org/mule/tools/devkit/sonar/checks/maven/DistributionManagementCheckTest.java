@@ -5,17 +5,19 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.junit.Test;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
+import org.mule.tools.devkit.sonar.utils.PomUtils;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class DistributionManagementCheckTest extends BasicPomTestBase {
+public class DistributionManagementCheckTest {
 
     @Test
     public void checkNoDistributionManagement() throws IOException, XmlPullParserException {
-        final MavenProject mavenProject = createMavenProjectFromPom("DistributionManagementCheckTest-NoDistribution-pom.xml");
+        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/distribution-management-by-category/no-distribution-management"));
         final DistributionManagementByCategoryCheck check = new DistributionManagementByCategoryCheck();
         final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
 
@@ -28,7 +30,7 @@ public class DistributionManagementCheckTest extends BasicPomTestBase {
 
     @Test
     public void checkNoDeployRepo() throws IOException, XmlPullParserException {
-        final MavenProject mavenProject = createMavenProjectFromPom("DistributionManagementCheckTest-NoDeployRepo-pom.xml");
+        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/distribution-management-by-category/no-deploy-repo"));
         final DistributionManagementByCategoryCheck check = new DistributionManagementByCategoryCheck();
         final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
 
@@ -40,7 +42,7 @@ public class DistributionManagementCheckTest extends BasicPomTestBase {
 
     @Test
     public void checkNoSnapshotRepo() throws IOException, XmlPullParserException {
-        final MavenProject mavenProject = createMavenProjectFromPom("DistributionManagementCheckTest-NoSnapshotRepo-pom.xml");
+        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/distribution-management-by-category/no-snapshot-repo"));
         final DistributionManagementByCategoryCheck check = new DistributionManagementByCategoryCheck();
         final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
 
@@ -52,7 +54,7 @@ public class DistributionManagementCheckTest extends BasicPomTestBase {
 
     @Test
     public void checkWrongDistributionConfig() throws IOException, XmlPullParserException {
-        final MavenProject mavenProject = createMavenProjectFromPom("DistributionManagementCheckTest-WrongDistributionConfig-pom.xml");
+        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/distribution-management-by-category/wrong-distribution-config"));
         final DistributionManagementByCategoryCheck check = new DistributionManagementByCategoryCheck();
         final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
 

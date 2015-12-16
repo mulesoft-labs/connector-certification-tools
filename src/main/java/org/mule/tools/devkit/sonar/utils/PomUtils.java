@@ -4,12 +4,16 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.mule.tools.devkit.sonar.checks.ConnectorCategory;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 public class PomUtils {
 
@@ -19,14 +23,16 @@ public class PomUtils {
     private PomUtils() {
     }
 
-    public static MavenProject createMavenProjectFromPomFile() {
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream("pom.xml"), StandardCharsets.UTF_8)) {
+    @NonNull
+    public static MavenProject createMavenProjectFromPomFile(File baseDir) {
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(new File(baseDir, "pom.xml")), StandardCharsets.UTF_8)) {
             return createMavenProjectFromInputStream(reader);
         } catch (IOException e) {
             throw new IllegalStateException("Couldn't initialize pom", e);
         }
     }
 
+    @NonNull
     public static MavenProject createMavenProjectFromInputStream(InputStreamReader reader) {
         MavenProject mavenProject;
         try {
@@ -44,4 +50,17 @@ public class PomUtils {
         return parent != null && parent.getGroupId().equals(DEVKIT_GROUP_ID) && parent.getArtifactId().equals(DEVKIT_ARTIFACT_ID);
     }
 
+    @NonNull
+    public static ConnectorCategory category(MavenProject mavenProject) {
+        final Properties properties = mavenProject.getProperties();
+        ConnectorCategory category = ConnectorCategory.UNKNOWN;
+        if (properties != null) {
+            try {
+                category = ConnectorCategory.valueOf(properties.getProperty("category").toUpperCase());
+            } catch (IllegalArgumentException e) {
+                category = ConnectorCategory.UNKNOWN;
+            }
+        }
+        return category;
+    }
 }

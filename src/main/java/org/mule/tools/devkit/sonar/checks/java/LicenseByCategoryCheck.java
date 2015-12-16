@@ -1,6 +1,7 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.apache.maven.project.MavenProject;
@@ -8,8 +9,11 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
 import org.mule.api.annotations.licensing.RequiresEntitlement;
+import org.mule.tools.devkit.sonar.checks.ConnectorCategory;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.mule.tools.devkit.sonar.utils.PomUtils;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.internal.DefaultFileSystem;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.AssignmentExpressionTree;
@@ -18,6 +22,7 @@ import org.sonar.plugins.java.api.tree.ExpressionTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.Tree;
 
+import java.io.File;
 import java.util.List;
 
 @Rule(key = LicenseByCategoryCheck.KEY, name = "Licensing annotations must match the category declared in pom.xml", description = "Checks the correct usage of @RequiresEnterpriseLicense and @RequiresEntitlement according to category defined in pom.xml.", tags = { "connector-certification" })
@@ -41,39 +46,39 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
         }
     };
 
-    private final MavenProject mavenProject;
+    private final FileSystem fileSystem;
 
     public LicenseByCategoryCheck() {
-        this.mavenProject = PomUtils.createMavenProjectFromPomFile();
+        this.fileSystem = null;
     }
 
     /** This constructor exists for testing only */
     @VisibleForTesting
-    protected LicenseByCategoryCheck(MavenProject mavenProject) {
-        this.mavenProject = mavenProject;
+    protected LicenseByCategoryCheck(FileSystem fileSystem) {
+        this.fileSystem = fileSystem;
     }
 
     @Override
     protected void verifyConnector(@NonNull ClassTree classTree, @NonNull IdentifierTree connectorAnnotation) {
+        MavenProject mavenProject = fileSystem != null ? PomUtils.createMavenProjectFromPomFile(fileSystem.baseDir()) : PomUtils.createMavenProjectFromPomFile(new File("."));
+        ConnectorCategory category = PomUtils.category(mavenProject);
         final List<? extends AnnotationTree> annotations = classTree.modifiers().annotations();
 
         boolean hasEnterpriseAnnotation = Iterables.any(annotations, HAS_REQUIRES_ENTERPRISE_LICENSE_ANNOTATION);
         boolean hasEntitlementAnnotation = Iterables.any(annotations, HAS_REQUIRES_ENTITLEMENT_ANNOTATION);
 
-        String category = mavenProject.getProperties().getProperty("category");
-
-        switch (category.toUpperCase()) {
-            case "PREMIUM":
+        switch (category) {
+            case PREMIUM:
                 checkPremium(classTree, annotations, hasEnterpriseAnnotation, hasEntitlementAnnotation);
                 break;
 
-            case "STANDARD":
-            case "SELECT":
-            case "CERTIFIED":
+            case STANDARD:
+            case SELECT:
+            case CERTIFIED:
                 checkSelectOrCertified(classTree, hasEnterpriseAnnotation, hasEntitlementAnnotation);
                 break;
 
-            case "COMMUNITY":
+            case COMMUNITY:
                 checkCommunity(classTree, hasEnterpriseAnnotation, hasEntitlementAnnotation);
                 break;
 
