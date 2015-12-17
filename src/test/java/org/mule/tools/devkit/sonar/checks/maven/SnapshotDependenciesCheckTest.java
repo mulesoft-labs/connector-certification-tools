@@ -24,7 +24,8 @@ public class SnapshotDependenciesCheckTest {
         assertThat(Iterables.size(pomIssues), is(1));
         ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
         assertThat(connectorIssue.ruleKey(), is("snapshot-dependencies-not-allowed"));
-        assertThat(connectorIssue.message(), is("Remove SNAPSHOT version from artifact 'mule-devkit-annotations'."));
+        assertThat(connectorIssue.message(),
+                is("Project version is not a snapshot (1.0.0), so it should not declare any snapshot dependencies (mule-devkit-annotations:3.7.2-SNAPSHOT)."));
     }
 
     @Test
@@ -36,19 +37,7 @@ public class SnapshotDependenciesCheckTest {
         assertThat(Iterables.size(pomIssues), is(1));
         ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
         assertThat(connectorIssue.ruleKey(), is("snapshot-dependencies-not-allowed"));
-        assertThat(connectorIssue.message(), is("Remove SNAPSHOT version from artifact 'mule-devkit-parent'."));
+        assertThat(connectorIssue.message(),
+                is("Project version is not a snapshot (1.0.0), so it should not inherit from a snapshot version parent (mule-devkit-parent:3.7.2-SNAPSHOT)."));
     }
-
-    @Test
-    public void checkSnapshotInProjectVersion() throws IOException, XmlPullParserException {
-        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/snapshot-dependencies-not-allowed/snapshot-in-project-version"));
-        final SnapshotDependenciesCheck check = new SnapshotDependenciesCheck();
-        final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
-
-        assertThat(Iterables.size(pomIssues), is(1));
-        ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(connectorIssue.ruleKey(), is("snapshot-dependencies-not-allowed"));
-        assertThat(connectorIssue.message(), is("Remove SNAPSHOT version from artifact 'certification-plugin'."));
-    }
-
 }

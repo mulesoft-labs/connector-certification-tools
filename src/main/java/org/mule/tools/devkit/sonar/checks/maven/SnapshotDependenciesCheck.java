@@ -21,27 +21,28 @@ public class SnapshotDependenciesCheck implements MavenCheck {
     public Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
         final List<ConnectorIssue> issues = Lists.newArrayList();
 
-        if (mavenProject.getVersion().endsWith(SNAPSHOT)) {
-            issues.add(new ConnectorIssue(KEY, buildMessage(mavenProject.getArtifactId())));
-        }
+        if (!mavenProject.getVersion().endsWith(SNAPSHOT)) {
+            Parent parent = mavenProject.getModel().getParent();
+            if (parent != null && parent.getVersion().endsWith(SNAPSHOT)) {
+                issues.add(new ConnectorIssue(KEY, String.format("Project version is not a snapshot (%s), so it should not inherit from a snapshot version parent (%s:%s).",
+                        mavenProject.getVersion(), parent.getArtifactId(), parent.getVersion())));
+            }
 
-        Parent parent = mavenProject.getModel().getParent();
-        if (parent != null && parent.getVersion().endsWith(SNAPSHOT)) {
-            issues.add(new ConnectorIssue(KEY, buildMessage(parent.getArtifactId())));
-        }
-
-        List<Dependency> dependencies = mavenProject.getDependencies();
-        if (dependencies != null) {
-            for (Dependency dependency : dependencies) {
-                if (dependency.getVersion().endsWith(SNAPSHOT)) {
-                    issues.add(new ConnectorIssue(KEY, buildMessage(dependency.getArtifactId())));
+            if (mavenProject.getDependencies() != null) {
+                @SuppressWarnings("unchecked")
+                List<Dependency> dependencies = mavenProject.getDependencies();
+                if (dependencies != null) {
+                    for (Dependency dependency : dependencies) {
+                        if (dependency.getVersion().endsWith(SNAPSHOT)) {
+                            issues.add(new ConnectorIssue(KEY, String.format("Project version is not a snapshot (%s), so it should not declare any snapshot dependencies (%s:%s).",
+                                    mavenProject.getVersion(), dependency.getArtifactId(), dependency.getVersion())));
+                        }
+                    }
                 }
             }
         }
+
         return issues;
     }
 
-    public String buildMessage(String arg) {
-        return String.format("Remove SNAPSHOT version from artifact '%s'.", arg);
-    }
 }
