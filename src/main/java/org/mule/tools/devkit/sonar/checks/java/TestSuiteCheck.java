@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.ClassTree;
@@ -15,7 +16,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import java.util.List;
 
-@Rule(key = TestSuiteCheck.KEY, name = "Test Suite classes need to be annotated with @RunWith(Suite.class)", description = "Test Suite classes need to be annotated with @RunWith(Suite.class)", tags = { "connector-certification" })
+@Rule(key = TestSuiteCheck.KEY, name = "Test Suite classes need to be annotated with @RunWith(Suite.class)", description = "Test Suite classes need to be annotated with @RunWith(Suite.class)", priority = Priority.CRITICAL, tags = { "connector-certification" })
 @ActivatedByDefault
 public class TestSuiteCheck extends BaseLoggingVisitor {
 

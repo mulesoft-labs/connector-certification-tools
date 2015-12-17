@@ -14,6 +14,7 @@ import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.mule.tools.devkit.sonar.utils.PomUtils;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.internal.DefaultFileSystem;
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.AssignmentExpressionTree;
@@ -25,7 +26,7 @@ import org.sonar.plugins.java.api.tree.Tree;
 import java.io.File;
 import java.util.List;
 
-@Rule(key = LicenseByCategoryCheck.KEY, name = "Licensing annotations must match the category declared in pom.xml", description = "Checks the correct usage of @RequiresEnterpriseLicense and @RequiresEntitlement according to category defined in pom.xml.", tags = { "connector-certification" })
+@Rule(key = LicenseByCategoryCheck.KEY, name = "Licensing annotations must match the category declared in pom.xml", description = "Checks the correct usage of @RequiresEnterpriseLicense and @RequiresEntitlement according to category defined in pom.xml.", priority = Priority.BLOCKER, tags = { "connector-certification" })
 public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "license-by-category";

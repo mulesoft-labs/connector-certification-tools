@@ -10,6 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 
 import java.util.List;
@@ -33,7 +34,7 @@ import java.util.List;
         + "<build>\n"
         + "``"
         + "\n\n"
-        + "IMPORTANT: since DevKit 3.7.2, the Standard category is no longer supported thus the connector should be migrated to either Premium, Select or Certified.", tags = { "connector-certification" })
+        + "IMPORTANT: since DevKit 3.7.2, the Standard category is no longer supported thus the connector should be migrated to either Premium, Select or Certified.", priority = Priority.CRITICAL, tags = { "connector-certification" })
 public class SourceDeploymentForStandardCategoryCheck implements MavenCheck {
 
     public static final String KEY = "source-deployment-for-standard-category";

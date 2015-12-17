@@ -6,6 +6,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.api.annotations.rest.RestCall;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
@@ -14,7 +15,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import java.util.List;
 
-@Rule(key = RestCallDeprecationCheck.KEY, name = "@RestCall annotation is deprecated", description = "Support for @RestCall processors has been deprecated in favor of RAML. Consider migrating your connector to REST Connect.", tags = { "connector-certification" })
+@Rule(key = RestCallDeprecationCheck.KEY, name = "@RestCall annotation is deprecated", description = "Support for @RestCall processors has been deprecated in favor of RAML. Consider migrating your connector to REST Connect.", priority = Priority.CRITICAL, tags = { "connector-certification" })
 @ActivatedByDefault
 public class RestCallDeprecationCheck extends AbstractConnectorClassCheck {
 

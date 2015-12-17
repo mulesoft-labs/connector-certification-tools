@@ -8,6 +8,7 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.junit.runners.Suite.SuiteClasses;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.java.ast.parser.InitializerListTreeImpl;
 import org.sonar.java.model.expression.NewArrayTreeImpl;
@@ -22,7 +23,7 @@ import java.io.File;
 import java.util.List;
 import java.util.regex.Pattern;
 
-@Rule(key = FunctionalTestSuiteCheck.KEY, name = "Functional test coverage", description = "Checks that: 1. There is ONE unit test per @Processor. 2. TestCases class names for processors end with 'TestCases'. 3. All test cases in each package (functional, system and unit) are included in their corresponding *TestSuite classes.", tags = { "connector-certification" })
+@Rule(key = FunctionalTestSuiteCheck.KEY, name = "Functional test coverage", description = "Checks that: 1. There exists a @SuiteClasses annotation on Test Suite classes. 2. TestCases class names for processors end with 'TestCases'. 3. All test cases in each package (functional, system and unit) are included in their corresponding *TestSuite classes.", priority = Priority.CRITICAL, tags = { "connector-certification" })
 @ActivatedByDefault
 public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
 

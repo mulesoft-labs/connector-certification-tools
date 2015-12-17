@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.AssignmentExpressionTree;
@@ -15,7 +16,7 @@ import org.sonar.plugins.java.api.tree.Tree;
 
 import java.util.List;
 
-@Rule(key = ConfigFriendlyNameCheck.KEY, name = "@Config 'friendlyName' must follow a convention.", description = "Checks that @MetadataCategory follows a naming convention.", tags = { "connector-certification" })
+@Rule(key = ConfigFriendlyNameCheck.KEY, name = "@Config 'friendlyName' must follow a convention.", description = "Checks that @MetadataCategory follows a naming convention.", priority = Priority.MAJOR, tags = { "connector-certification" })
 public class ConfigFriendlyNameCheck extends BaseLoggingVisitor {
 
     public static final String KEY = "config-friendly-name";

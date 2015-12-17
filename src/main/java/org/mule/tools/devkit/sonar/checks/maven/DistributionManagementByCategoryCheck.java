@@ -6,12 +6,13 @@ import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.project.MavenProject;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import java.util.List;
 
-@Rule(key = DistributionManagementByCategoryCheck.KEY, name = "Distribution Management must be properly configured in pom.xml", description = "Checks that <distributionManagement> is declared in pom.xml and correctly configured (both <repository> and <snapshotRepository>) based on the connector category.", tags = { "connector-certification" })
+@Rule(key = DistributionManagementByCategoryCheck.KEY, name = "Distribution Management must be properly configured in pom.xml", description = "Checks that <distributionManagement> is declared in pom.xml and correctly configured (both <repository> and <snapshotRepository>) based on the connector category.", priority = Priority.BLOCKER, tags = { "connector-certification" })
 @ActivatedByDefault
 public class DistributionManagementByCategoryCheck implements MavenCheck {
 

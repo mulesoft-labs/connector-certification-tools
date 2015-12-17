@@ -3,13 +3,14 @@ package org.mule.tools.devkit.sonar.checks.java;
 import com.google.common.collect.Iterables;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-@Rule(key = NumberOfComplexArgumentsCheck.KEY, name = "Too many complex-type arguments in a processor", description = "Checks, for every @Processor, that the number of complex-type arguments is less than max allowed.", tags = { "connector-certification" })
+@Rule(key = NumberOfComplexArgumentsCheck.KEY, name = "Too many complex-type arguments in a processor", description = "Checks, for every @Processor, that the number of complex-type arguments is less than max allowed.", priority = Priority.MAJOR, tags = { "connector-certification" })
 @ActivatedByDefault
 public class NumberOfComplexArgumentsCheck extends AbstractConnectorClassCheck {
 

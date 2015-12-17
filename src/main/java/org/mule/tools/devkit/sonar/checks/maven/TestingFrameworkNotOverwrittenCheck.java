@@ -4,11 +4,12 @@ import com.google.common.collect.Lists;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 
 import java.util.List;
 
-@Rule(key = TestingFrameworkNotOverwrittenCheck.KEY, name = "Connector Testing Framework (CTF) version must not be overwritten", description = "This rule checks that the Connector Testing Framework (CTF) dependency is not overwritten in pom.xml (it is inherited from DevKit's Parent POM", tags = { "connector-certification" })
+@Rule(key = TestingFrameworkNotOverwrittenCheck.KEY, name = "Connector Testing Framework (CTF) version must not be overwritten", description = "This rule checks that the Connector Testing Framework (CTF) dependency is not overwritten in pom.xml (it is inherited from DevKit's Parent POM", priority = Priority.CRITICAL, tags = { "connector-certification" })
 public class TestingFrameworkNotOverwrittenCheck implements MavenCheck {
 
     public static final String KEY = "testing-framework-not-overwritten";

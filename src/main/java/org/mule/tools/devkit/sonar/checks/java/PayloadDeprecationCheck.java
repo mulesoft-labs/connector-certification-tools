@@ -6,12 +6,13 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.api.annotations.param.Payload;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
 
-@Rule(key = PayloadDeprecationCheck.KEY, name = "@Payload annotation is deprecated", description = "Support for @Payload has been deprecated. Use @Default(\"#[payload]\") instead.", tags = { "connector-certification" })
+@Rule(key = PayloadDeprecationCheck.KEY, name = "@Payload annotation is deprecated", description = "Support for @Payload has been deprecated. Use @Default(\"#[payload]\") instead.", priority = Priority.CRITICAL, tags = { "connector-certification" })
 public class PayloadDeprecationCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "payload-annotation-deprecated";

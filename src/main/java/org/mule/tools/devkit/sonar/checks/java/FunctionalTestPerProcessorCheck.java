@@ -5,6 +5,7 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.codehaus.plexus.util.StringUtils;
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Rule(key = FunctionalTestPerProcessorCheck.KEY, name = "One test per processor", description = "Checks that there is ONE test per @Processor annotation and that its name ends with the suffix 'TestCases'.", tags = { "connector-certification" })
+@Rule(key = FunctionalTestPerProcessorCheck.KEY, name = "One test per processor", description = "Checks that there is ONE test per @Processor annotation and that its name ends with the suffix 'TestCases'.", priority = Priority.CRITICAL, tags = { "connector-certification" })
 @ActivatedByDefault
 public class FunctionalTestPerProcessorCheck extends AbstractConnectorClassCheck {
 

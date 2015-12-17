@@ -6,6 +6,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mule.api.annotations.param.RefOnly;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
@@ -15,7 +16,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import java.util.List;
 
-@Rule(key = RefOnlyInComplexTypesCheck.KEY, name = "Complex-type arguments must be marked with @RefOnly", description = "Checks that all complex-type arguments of a processor are annotated with @RefOnly.", tags = { "connector-certification" })
+@Rule(key = RefOnlyInComplexTypesCheck.KEY, name = "Complex-type arguments must be marked with @RefOnly", description = "Checks that all complex-type arguments of a processor are annotated with @RefOnly.", priority = Priority.CRITICAL, tags = { "connector-certification" })
 @ActivatedByDefault
 public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 

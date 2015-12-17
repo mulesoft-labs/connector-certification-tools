@@ -15,7 +15,7 @@ import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-@Rule(key = NumberOfSimpleAndOptionalArgumentsCheck.KEY, name = "Too many @Optional arguments in a processor", description = "Checks, for every @Processor, that the number of optional arguments (each of which must be of simple-type) doesn't exceed the maximum allowed. If it does, the suggested approach is to wrap them all in a separate POJO class. ", priority = Priority.CRITICAL, tags = { "connector-certification" })
+@Rule(key = NumberOfSimpleAndOptionalArgumentsCheck.KEY, name = "Too many @Optional arguments in a processor", description = "Checks, for every @Processor, that the number of optional arguments (each of which must be of simple-type) doesn't exceed the maximum allowed. If it does, the suggested approach is to wrap them all in a separate POJO class. ", priority = Priority.MAJOR, tags = { "connector-certification" })
 @ActivatedByDefault
 public class NumberOfSimpleAndOptionalArgumentsCheck extends AbstractConnectorClassCheck {
 
