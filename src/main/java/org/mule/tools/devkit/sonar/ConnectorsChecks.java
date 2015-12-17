@@ -18,6 +18,8 @@ import org.mule.tools.devkit.sonar.checks.maven.SnapshotDependenciesCheck;
 import org.mule.tools.devkit.sonar.checks.maven.SourceDeploymentForStandardCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.maven.TestingFrameworkNotOverwrittenCheck;
 import org.mule.tools.devkit.sonar.checks.structure.LicenseDeclarationFilesCheck;
+import org.mule.tools.devkit.sonar.checks.structure.ReleaseNotesExistsCheck;
+import org.mule.tools.devkit.sonar.checks.structure.UserManualExistsCheck;
 import org.sonar.plugins.java.api.JavaCheck;
 
 public class ConnectorsChecks {
@@ -54,6 +56,8 @@ public class ConnectorsChecks {
     public static Iterable<Class<?>> structureChecks() {
         final ImmutableList.Builder<Class<?>> builder = ImmutableList.builder();
         builder.add(LicenseDeclarationFilesCheck.class);
+        builder.add(UserManualExistsCheck.class);
+        builder.add(ReleaseNotesExistsCheck.class);
         return builder.build();
     }
 }
