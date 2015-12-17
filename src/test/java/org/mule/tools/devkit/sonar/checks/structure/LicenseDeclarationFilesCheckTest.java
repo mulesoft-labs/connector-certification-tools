@@ -34,10 +34,10 @@ public class LicenseDeclarationFilesCheckTest {
         assertThat(Iterables.size(pomIssues), is(2));
         final ConnectorIssue first = Iterables.getFirst(pomIssues, null);
         assertThat(first.ruleKey(), is("license-declaration-files"));
-        assertThat(first.message(), is("File LICENSE.md is missing. Please add a license file."));
+        assertThat(first.message(), is("File 'LICENSE.md' is missing. Please add a license file."));
         final ConnectorIssue second = Iterables.getLast(pomIssues);
         assertThat(second.ruleKey(), is("license-declaration-files"));
-        assertThat(second.message(), is("File LICENSE_HEADER.txt is missing. Please add a license file."));
+        assertThat(second.message(), is("File 'LICENSE_HEADER.txt' is missing. Please add a license file."));
     }
 
     @Test
@@ -51,11 +51,11 @@ public class LicenseDeclarationFilesCheckTest {
         assertThat(Iterables.size(pomIssues), is(2));
         final ConnectorIssue first = Iterables.getFirst(pomIssues, null);
         assertThat(first.ruleKey(), is("license-declaration-files"));
-        assertThat(first.message(), startsWith("Difference in license file LICENSE.md. Please check the diff between expected and actual:"));
+        assertThat(first.message(), startsWith("Difference in license file 'LICENSE.md'. Please check the diff between expected and actual:"));
         assertThat(first.message(), containsString("LICENSE.md.community"));
         final ConnectorIssue second = Iterables.getLast(pomIssues);
         assertThat(second.ruleKey(), is("license-declaration-files"));
-        assertThat(second.message(), startsWith("Difference in license file LICENSE_HEADER.txt. Please check the diff between expected and actual:"));
+        assertThat(second.message(), startsWith("Difference in license file 'LICENSE_HEADER.txt'. Please check the diff between expected and actual:"));
         assertThat(second.message(), containsString("LICENSE_HEADER.txt.community"));
     }
 
@@ -70,11 +70,11 @@ public class LicenseDeclarationFilesCheckTest {
         assertThat(Iterables.size(pomIssues), is(2));
         final ConnectorIssue first = Iterables.getFirst(pomIssues, null);
         assertThat(first.ruleKey(), is("license-declaration-files"));
-        assertThat(first.message(), startsWith("Difference in license file LICENSE.md. Please check the diff between expected and actual:"));
+        assertThat(first.message(), startsWith("Difference in license file 'LICENSE.md'. Please check the diff between expected and actual:"));
         assertThat(first.message(), containsString("LICENSE.md.certified"));
         final ConnectorIssue second = Iterables.getLast(pomIssues);
         assertThat(second.ruleKey(), is("license-declaration-files"));
-        assertThat(second.message(), startsWith("Difference in license file LICENSE_HEADER.txt. Please check the diff between expected and actual:"));
+        assertThat(second.message(), startsWith("Difference in license file 'LICENSE_HEADER.txt'. Please check the diff between expected and actual:"));
         assertThat(second.message(), containsString("LICENSE_HEADER.txt.certified"));
     }
 
@@ -89,11 +89,11 @@ public class LicenseDeclarationFilesCheckTest {
         assertThat(Iterables.size(pomIssues), is(2));
         final ConnectorIssue first = Iterables.getFirst(pomIssues, null);
         assertThat(first.ruleKey(), is("license-declaration-files"));
-        assertThat(first.message(), startsWith("Difference in license file LICENSE.md. Please check the diff between expected and actual:"));
+        assertThat(first.message(), startsWith("Difference in license file 'LICENSE.md'. Please check the diff between expected and actual:"));
         assertThat(first.message(), containsString("LICENSE.md.select"));
         final ConnectorIssue second = Iterables.getLast(pomIssues);
         assertThat(second.ruleKey(), is("license-declaration-files"));
-        assertThat(second.message(), startsWith("Difference in license file LICENSE_HEADER.txt. Please check the diff between expected and actual:"));
+        assertThat(second.message(), startsWith("Difference in license file 'LICENSE_HEADER.txt'. Please check the diff between expected and actual:"));
         assertThat(second.message(), containsString("LICENSE_HEADER.txt.select"));
     }
 
@@ -108,11 +108,11 @@ public class LicenseDeclarationFilesCheckTest {
         assertThat(Iterables.size(pomIssues), is(2));
         final ConnectorIssue first = Iterables.getFirst(pomIssues, null);
         assertThat(first.ruleKey(), is("license-declaration-files"));
-        assertThat(first.message(), startsWith("Difference in license file LICENSE.md. Please check the diff between expected and actual:"));
+        assertThat(first.message(), startsWith("Difference in license file 'LICENSE.md'. Please check the diff between expected and actual:"));
         assertThat(first.message(), containsString("LICENSE.md.standard"));
         final ConnectorIssue second = Iterables.getLast(pomIssues);
         assertThat(second.ruleKey(), is("license-declaration-files"));
-        assertThat(second.message(), startsWith("Difference in license file LICENSE_HEADER.txt. Please check the diff between expected and actual:"));
+        assertThat(second.message(), startsWith("Difference in license file 'LICENSE_HEADER.txt'. Please check the diff between expected and actual:"));
         assertThat(second.message(), containsString("LICENSE_HEADER.txt.standard"));
     }
 

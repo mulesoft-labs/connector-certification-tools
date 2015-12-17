@@ -28,7 +28,7 @@ public class UserManualExistsCheckTest {
         assertThat(Iterables.size(pomIssues), is(1));
         final ConnectorIssue first = Iterables.getFirst(pomIssues, null);
         assertThat(first.ruleKey(), is("user-manual-exists"));
-        assertThat(first.message(), is("File user-manual.adoc is missing."));
+        assertThat(first.message(), is("File 'user-manual.adoc' is missing."));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class UserManualExistsCheckTest {
         assertThat(Iterables.size(pomIssues), is(1));
         final ConnectorIssue first = Iterables.getFirst(pomIssues, null);
         assertThat(first.ruleKey(), is("user-manual-exists"));
-        assertThat(first.message(), is("File user-manual.adoc found but doesn't have proper content (size: 14 bytes)."));
+        assertThat(first.message(), is("File 'user-manual.adoc' found but doesn't have proper content (size: 14 bytes)."));
     }
 
 }

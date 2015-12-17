@@ -60,7 +60,7 @@ public class LicenseDeclarationFilesCheck implements StructureCheck {
         final String masterFileName = String.format("%s.%s", fileName, category.name().toLowerCase());
         Path path = fileSystem.baseDir().toPath().resolve(fileName);
         if (!Files.exists(path)) {
-            issues.add(new ConnectorIssue(KEY, String.format("File %s is missing. Please add a license file.", fileName)));
+            issues.add(new ConnectorIssue(KEY, String.format("File '%s' is missing. Please add a license file.", fileName)));
         } else {
             try {
                 List<String> originalContent = Files.readAllLines(path, StandardCharsets.UTF_8);
@@ -68,11 +68,11 @@ public class LicenseDeclarationFilesCheck implements StructureCheck {
 
                 Patch patch = DiffUtils.diff(masterContent, originalContent);
                 if (!patch.getDeltas().isEmpty()) {
-                    issues.add(new ConnectorIssue(KEY, String.format("Difference in license file %s. Please check the diff between expected and actual:\n%s", fileName,
-                            Joiner.on("\n").join(DiffUtils.generateUnifiedDiff(masterFileName, fileName, originalContent, patch, 5)))));
+                    issues.add(new ConnectorIssue(KEY, String.format("Difference in license file '%s'. Please check the diff between expected and actual:\n%s", fileName, Joiner
+                            .on("\n").join(DiffUtils.generateUnifiedDiff(masterFileName, fileName, originalContent, patch, 5)))));
                 }
             } catch (IOException e) {
-                issues.add(new ConnectorIssue(KEY, String.format("Problem reading license file: %s.", fileName)));
+                issues.add(new ConnectorIssue(KEY, String.format("Problem reading license file: '%s'.", fileName)));
             }
         }
     }

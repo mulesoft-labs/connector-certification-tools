@@ -30,15 +30,15 @@ public class UserManualExistsCheck implements StructureCheck {
         final List<ConnectorIssue> issues = Lists.newArrayList();
         Path path = fileSystem.baseDir().toPath().resolve(DOC_FOLDER).resolve(USER_MANUAL_FILE);
         if (!Files.exists(path)) {
-            issues.add(new ConnectorIssue(KEY, String.format("File %s is missing.", path.toFile().getName())));
+            issues.add(new ConnectorIssue(KEY, String.format("File '%s' is missing.", path.toFile().getName())));
         } else {
             try {
                 final long fileSize = Files.size(path);
                 if (fileSize < 100) {
-                    issues.add(new ConnectorIssue(KEY, String.format("File %s found but doesn't have proper content (size: %s bytes).", path.toFile().getName(), fileSize)));
+                    issues.add(new ConnectorIssue(KEY, String.format("File '%s' found but doesn't have proper content (size: %s bytes).", path.toFile().getName(), fileSize)));
                 }
             } catch (IOException e) {
-                issues.add(new ConnectorIssue(KEY, String.format("Could not read file %s", path.toFile().getName())));
+                issues.add(new ConnectorIssue(KEY, String.format("Could not read file '%s'", path.toFile().getName())));
             }
         }
         return issues;
