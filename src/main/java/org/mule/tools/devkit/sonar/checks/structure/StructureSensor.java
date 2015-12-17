@@ -64,6 +64,7 @@ public class StructureSensor implements Sensor {
         scanners.add(new UserManualExistsCheck(fileSystem));
         scanners.add(new ReleaseNotesExistsCheck(fileSystem));
         scanners.add(new IconsExistCheck(fileSystem));
+        scanners.add(new ReadmeExistsCheck(fileSystem));
         return scanners;
     }
 }

@@ -19,6 +19,7 @@ import org.mule.tools.devkit.sonar.checks.maven.SourceDeploymentForStandardCateg
 import org.mule.tools.devkit.sonar.checks.maven.TestingFrameworkNotOverwrittenCheck;
 import org.mule.tools.devkit.sonar.checks.structure.IconsExistCheck;
 import org.mule.tools.devkit.sonar.checks.structure.LicenseDeclarationFilesCheck;
+import org.mule.tools.devkit.sonar.checks.structure.ReadmeExistsCheck;
 import org.mule.tools.devkit.sonar.checks.structure.ReleaseNotesExistsCheck;
 import org.mule.tools.devkit.sonar.checks.structure.UserManualExistsCheck;
 import org.sonar.plugins.java.api.JavaCheck;
@@ -60,6 +61,7 @@ public class ConnectorsChecks {
         builder.add(UserManualExistsCheck.class);
         builder.add(ReleaseNotesExistsCheck.class);
         builder.add(IconsExistCheck.class);
+        builder.add(ReadmeExistsCheck.class);
         return builder.build();
     }
 }
