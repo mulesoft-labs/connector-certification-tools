@@ -62,6 +62,7 @@ public class StructureSensor implements Sensor {
         List<StructureCheck> scanners = Lists.newArrayList();
         scanners.add(new LicenseDeclarationFilesCheck(fileSystem));
         scanners.add(new UserManualExistsCheck(fileSystem));
+        scanners.add(new ReleaseNotesExistsCheck(fileSystem));
         return scanners;
     }
 }
