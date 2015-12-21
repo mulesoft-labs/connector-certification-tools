@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.maven.project.MavenProject;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -25,13 +26,12 @@ import java.util.regex.Pattern;
 public class TestSuiteFoldersExistCheck implements StructureCheck {
 
     public static final String KEY = "test-suite-folders-exists";
-    public final ImmutableList<String> defaultPackages = ImmutableList.of("functional", "system", "unit", "runner");
+    public static ImmutableList<String> defaultPackages = ImmutableList.of("functional", "system", "unit", "runner");
     public static final Pattern TEST_PACKAGES_PATTERN = Pattern.compile("^((.*?)(org/mule/modules)+(/\\w+/)+(automation/)+(functional|system|unit|runner)$)");
     public static final Predicate<File> HAS_VALID_TEST_PACKAGE = new Predicate<File>() {
 
         @Override
         public boolean apply(@Nullable File input) {
-
             return input != null && TEST_PACKAGES_PATTERN.matcher(input.getPath()).find();
         }
     };
@@ -45,14 +45,14 @@ public class TestSuiteFoldersExistCheck implements StructureCheck {
     @Override
     public Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
         final List<ConnectorIssue> issues = Lists.newArrayList();
+        final List<String> packagesCopy = Lists.newArrayList(defaultPackages);
         final File dir = fileSystem.baseDir();
 
         Collection<File> directories = FileUtils.listFilesAndDirs(dir, new NotFileFilter(TrueFileFilter.INSTANCE), DirectoryFileFilter.DIRECTORY);
         Iterable<File> suites = Iterables.filter(directories, HAS_VALID_TEST_PACKAGE);
-        List<String> packagesCopy = Lists.newArrayList(defaultPackages);
 
         for (File suite : suites) {
-            String suiteName = suite.getPath().substring(suite.getPath().lastIndexOf("/") + 1);
+            String suiteName = StringUtils.substringAfterLast(suite.getPath(), "/");
             if (defaultPackages.contains(suiteName)) {
                 packagesCopy.remove(suiteName);
             }
