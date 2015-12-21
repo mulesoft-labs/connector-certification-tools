@@ -8,7 +8,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.maven.project.MavenProject;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -26,7 +25,7 @@ import java.util.regex.Pattern;
 public class TestSuiteFoldersExistCheck implements StructureCheck {
 
     public static final String KEY = "test-suite-folders-exists";
-    public static ImmutableList<String> defaultPackages = ImmutableList.of("functional", "system", "unit", "runner");
+    public static final ImmutableList<String> defaultPackages = ImmutableList.of("functional", "system", "unit", "runner");
     public static final Pattern TEST_PACKAGES_PATTERN = Pattern.compile("^((.*?)(org/mule/modules)+(/\\w+/)+(automation/)+(functional|system|unit|runner)$)");
     public static final Predicate<File> HAS_VALID_TEST_PACKAGE = new Predicate<File>() {
 
@@ -52,13 +51,13 @@ public class TestSuiteFoldersExistCheck implements StructureCheck {
         Iterable<File> suites = Iterables.filter(directories, HAS_VALID_TEST_PACKAGE);
 
         for (File suite : suites) {
-            String suiteName = StringUtils.substringAfterLast(suite.getPath(), "/");
+            String suiteName = suite.getName();
             if (defaultPackages.contains(suiteName)) {
                 packagesCopy.remove(suiteName);
             }
         }
 
-        if (packagesCopy.size() > 0) {
+        if (!packagesCopy.isEmpty()) {
             for (String noSuite : packagesCopy) {
                 issues.add(new ConnectorIssue(KEY, String.format("%s test suite directory doesn't exist.", WordUtils.capitalize(noSuite))));
             }
