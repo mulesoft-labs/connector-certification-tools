@@ -26,7 +26,7 @@ public class TestSuiteFoldersExistCheckTest {
         final Iterable<ConnectorIssue> pomIssues = check.analyze(null);
 
         assertThat(Iterables.size(pomIssues), is(1));
-        final ConnectorIssue first = Iterables.getFirst(pomIssues, null);
+        final ConnectorIssue first = Iterables.getOnlyElement(pomIssues, null);
         assertThat(first.ruleKey(), is("test-suite-folders-exists"));
         assertThat(first.message(), is("System test suite directory doesn't exist."));
     }
