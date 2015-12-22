@@ -14,8 +14,6 @@ public class LicenseByCategoryCheckTest {
     }
 
     private void runForCategory(String category, String testClass) {
-        // MavenProject mavenProject = new MavenProject();
-        // mavenProject.getProperties().setProperty("category", category);
         FileSystem fileSystem = new DefaultFileSystem().setBaseDir(new File(String.format("src/test/files/java/licensechecks/%s", category.toLowerCase())));
         LicenseByCategoryCheck check = new LicenseByCategoryCheck(fileSystem);
 

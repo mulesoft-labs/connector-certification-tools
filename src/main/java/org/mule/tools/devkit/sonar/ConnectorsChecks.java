@@ -11,6 +11,7 @@ import org.mule.tools.devkit.sonar.checks.java.PayloadDeprecationCheck;
 import org.mule.tools.devkit.sonar.checks.java.RedundantExceptionNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.RefOnlyInComplexTypesCheck;
 import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecationCheck;
+import org.mule.tools.devkit.sonar.checks.java.TestCasesExtendAbstractTestCasesCheck;
 import org.mule.tools.devkit.sonar.checks.java.TestSuiteCheck;
 import org.mule.tools.devkit.sonar.checks.maven.DistributionManagementByCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.maven.ScopeProvidedInMuleDependenciesCheck;
@@ -33,7 +34,6 @@ public class ConnectorsChecks {
         final ImmutableList.Builder<Class<? extends JavaCheck>> builder = ImmutableList.builder();
         builder.add(ConfigFriendlyNameCheck.class);
         builder.add(FunctionalTestPerProcessorCheck.class);
-        builder.add(FunctionalTestSuiteCheck.class);
         builder.add(NumberOfComplexArgumentsCheck.class);
         builder.add(NumberOfSimpleAndOptionalArgumentsCheck.class);
         builder.add(PayloadDeprecationCheck.class);
@@ -41,7 +41,14 @@ public class ConnectorsChecks {
         builder.add(LicenseByCategoryCheck.class);
         builder.add(RestCallDeprecationCheck.class);
         builder.add(RedundantExceptionNameCheck.class);
+        return builder.build();
+    }
+
+    public static Iterable<Class<? extends JavaCheck>> javaTestChecks() {
+        final ImmutableList.Builder<Class<? extends JavaCheck>> builder = ImmutableList.builder();
+        builder.add(FunctionalTestSuiteCheck.class);
         builder.add(TestSuiteCheck.class);
+        builder.add(TestCasesExtendAbstractTestCasesCheck.class);
         return builder.build();
     }
 
