@@ -2,6 +2,7 @@ package org.mule.tools.devkit.sonar.checks.java;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -10,15 +11,17 @@ import org.junit.runners.Suite.SuiteClasses;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.java.ast.parser.InitializerListTreeImpl;
-import org.sonar.java.model.expression.NewArrayTreeImpl;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.plugins.java.api.tree.ExpressionTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
+import org.sonar.plugins.java.api.tree.ListTree;
 import org.sonar.plugins.java.api.tree.MemberSelectExpressionTree;
+import org.sonar.plugins.java.api.tree.NewArrayTree;
+import org.sonar.plugins.java.api.tree.Tree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -35,51 +38,42 @@ public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
     @Override
     public final void visitClass(ClassTree tree) {
         IdentifierTree treeName = tree.simpleName();
-        if (treeName != null && treeName.name().endsWith("TestSuite")) {
+        if (treeName != null && treeName.name().equals("FunctionalTestSuite")) {
             final AnnotationTree runWithAnnotation = Iterables.find(tree.modifiers().annotations(), ClassParserUtils.hasAnnotationPredicate(SuiteClasses.class), null);
             if (runWithAnnotation == null) {
                 logAndRaiseIssue(tree, String.format("Missing @SuiteClasses annotation on Test Suite class '%s'.", tree.simpleName().name()));
             } else {
                 final List<ExpressionTree> arguments = runWithAnnotation.arguments();
-                final NewArrayTreeImpl arrayTree = (NewArrayTreeImpl) Iterables.getOnlyElement(arguments);
+                final ExpressionTree expressionTree = Iterables.getOnlyElement(arguments);
 
-                InitializerListTreeImpl suiteClasses = (InitializerListTreeImpl) arrayTree.initializers();
+                if (expressionTree.is(Tree.Kind.NEW_ARRAY)) {
+                    ListTree<ExpressionTree> suiteClasses = ((NewArrayTree) expressionTree).initializers();
+                    if (suiteClasses.isEmpty()) {
+                        logAndRaiseIssue(tree, "No tests have been declared under @SuiteClasses.");
+                    } else {
+                        final List<File> tests = Lists.newArrayList(FileUtils.listFiles(new File(TEST_DIR), new WildcardFileFilter("*TestCases.java"), TrueFileFilter.INSTANCE));
+                        for (ExpressionTree test : suiteClasses) {
+                            final String testName = ((IdentifierTree) ((MemberSelectExpressionTree) test).expression()).name();
+                            Iterable<? extends File> matchingTests = Iterables.filter(tests, new Predicate<File>() {
 
-                if (suiteClasses.isEmpty()) {
-                    logAndRaiseIssue(tree, "No tests have been declared under @SuiteClasses.");
-                } else {
-                    final List<File> tests = (List<File>) FileUtils.listFiles(new File(TEST_DIR), new WildcardFileFilter("*TestCases.java"), TrueFileFilter.INSTANCE);
-
-                    for (ExpressionTree test : suiteClasses) {
-                        String testName = ((MemberSelectExpressionTree) test).expression().symbolType().name();
-                        Iterable<? extends File> matchingTests = Iterables.filter(tests, new FilePredicate(testName));
-                        if (testName.endsWith(SUFFIX)) {
-                            if (Iterables.isEmpty(matchingTests)) {
-                                logAndRaiseIssue(test, String.format("A file named '%s.java' must exist in directory 'src/test/java/../automation/functional'.", testName));
+                                @Override
+                                public boolean apply(@Nullable File input) {
+                                    return input != null && testName.equals(FilenameUtils.removeExtension(input.getName())) && FILE_PATH_PATTERN.matcher(input.getPath()).find();
+                                }
+                            });
+                            if (testName.endsWith(SUFFIX)) {
+                                if (Iterables.isEmpty(matchingTests)) {
+                                    logAndRaiseIssue(test, String.format("A file named '%s.java' must exist in directory 'src/test/java/.../automation/functional'.", testName));
+                                }
+                            } else {
+                                logAndRaiseIssue(test, String.format("Functional test class name must end with 'TestCases'. Rename '%s.java' accordingly.", testName));
                             }
-                        } else {
-                            logAndRaiseIssue(test, String.format("Functional test classes must end with 'TestCases'. Rename '%s.java' accordingly.", testName));
                         }
                     }
                 }
             }
         }
         super.visitClass(tree);
-    }
-
-    static class FilePredicate implements Predicate<File> {
-
-        private String filename;
-
-        public FilePredicate(final String filename) {
-            this.filename = filename;
-        }
-
-        @Override
-        public boolean apply(File file) {
-            return filename.equals(FilenameUtils.removeExtension(file.getName())) && FILE_PATH_PATTERN.matcher(file.getPath()).find();
-
-        }
     }
 
 }
