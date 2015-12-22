@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -62,6 +63,7 @@ public class IconsExistCheck implements StructureCheck {
                             issues.add(new ConnectorIssue(KEY, String.format("Unexpected file found in 'icons' folder: '%s'.", file.getName())));
                         }
                     } catch (IOException e) {
+                        LoggerFactory.getLogger(getClass()).warn(String.format("Problem reading file: %s", file.getName()), e);
                         issues.add(new ConnectorIssue(KEY, String.format("Problem reading icon file '%s'.", file.getName())));
                     }
                 }

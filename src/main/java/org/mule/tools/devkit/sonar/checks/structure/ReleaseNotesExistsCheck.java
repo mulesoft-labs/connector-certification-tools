@@ -3,6 +3,7 @@ package org.mule.tools.devkit.sonar.checks.structure;
 import com.google.common.collect.Lists;
 import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -38,6 +39,7 @@ public class ReleaseNotesExistsCheck implements StructureCheck {
                     issues.add(new ConnectorIssue(KEY, String.format("File %s found but doesn't have proper content (size: %s bytes).", path.toFile().getName(), fileSize)));
                 }
             } catch (IOException e) {
+                LoggerFactory.getLogger(getClass()).warn(String.format("Problem reading file: %s", path.toFile().getName()), e);
                 issues.add(new ConnectorIssue(KEY, String.format("Could not read file %s", path.toFile().getName())));
             }
         }

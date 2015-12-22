@@ -49,7 +49,7 @@ public class ConfigFriendlyNameCheck extends BaseLoggingVisitor {
                     argument = (AssignmentExpressionTree) Iterables.getOnlyElement(arguments);
                 }
 
-                final LiteralTree expression = ((LiteralTree) argument.expression());
+                final LiteralTree expression = (LiteralTree) argument.expression();
                 String friendlyName = expression.token().text().replaceAll("^\"|\"$", "");
 
                 switch (annotationName) {

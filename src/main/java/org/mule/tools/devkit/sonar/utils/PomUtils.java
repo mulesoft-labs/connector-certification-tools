@@ -7,6 +7,7 @@ import org.apache.maven.project.MavenProject;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.mule.tools.devkit.sonar.checks.ConnectorCategory;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,6 +59,7 @@ public class PomUtils {
             try {
                 category = ConnectorCategory.valueOf(properties.getProperty("category").toUpperCase());
             } catch (IllegalArgumentException e) {
+                LoggerFactory.getLogger(PomUtils.class).warn(String.format("Cannot parse Connector Category: %s", properties.getProperty("category")), e);
                 category = ConnectorCategory.UNKNOWN;
             }
         }

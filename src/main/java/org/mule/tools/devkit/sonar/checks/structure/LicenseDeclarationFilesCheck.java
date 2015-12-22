@@ -9,6 +9,7 @@ import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.checks.ConnectorCategory;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.mule.tools.devkit.sonar.utils.PomUtils;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -68,10 +69,11 @@ public class LicenseDeclarationFilesCheck implements StructureCheck {
 
                 Patch patch = DiffUtils.diff(masterContent, originalContent);
                 if (!patch.getDeltas().isEmpty()) {
-                    issues.add(new ConnectorIssue(KEY, String.format("Difference in license file '%s'. Please check the diff between expected and actual:\n%s", fileName, Joiner
+                    issues.add(new ConnectorIssue(KEY, String.format("Difference in license file '%s'. Please check the diff between expected and actual:%n%s", fileName, Joiner
                             .on("\n").join(DiffUtils.generateUnifiedDiff(masterFileName, fileName, originalContent, patch, 5)))));
                 }
             } catch (IOException e) {
+                LoggerFactory.getLogger(getClass()).warn(String.format("Problem reading file: %s", fileName), e);
                 issues.add(new ConnectorIssue(KEY, String.format("Problem reading license file: '%s'.", fileName)));
             }
         }
