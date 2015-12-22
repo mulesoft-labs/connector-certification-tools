@@ -11,7 +11,6 @@ import org.mule.tools.devkit.sonar.checks.java.PayloadDeprecationCheck;
 import org.mule.tools.devkit.sonar.checks.java.RedundantExceptionNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.RefOnlyInComplexTypesCheck;
 import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecationCheck;
-import org.mule.tools.devkit.sonar.checks.java.TestCasesExtendAbstractTestCasesCheck;
 import org.mule.tools.devkit.sonar.checks.java.TestSuiteCheck;
 import org.mule.tools.devkit.sonar.checks.maven.DistributionManagementByCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.maven.ScopeProvidedInMuleDependenciesCheck;
@@ -22,6 +21,8 @@ import org.mule.tools.devkit.sonar.checks.structure.IconsExistCheck;
 import org.mule.tools.devkit.sonar.checks.structure.LicenseDeclarationFilesCheck;
 import org.mule.tools.devkit.sonar.checks.structure.ReadmeExistsCheck;
 import org.mule.tools.devkit.sonar.checks.structure.ReleaseNotesExistsCheck;
+import org.mule.tools.devkit.sonar.checks.structure.TestResourcesFolderExistsCheck;
+import org.mule.tools.devkit.sonar.checks.structure.TestSuiteFoldersExistCheck;
 import org.mule.tools.devkit.sonar.checks.structure.UserManualExistsCheck;
 import org.sonar.plugins.java.api.JavaCheck;
 
@@ -48,7 +49,6 @@ public class ConnectorsChecks {
         final ImmutableList.Builder<Class<? extends JavaCheck>> builder = ImmutableList.builder();
         builder.add(FunctionalTestSuiteCheck.class);
         builder.add(TestSuiteCheck.class);
-        builder.add(TestCasesExtendAbstractTestCasesCheck.class);
         return builder.build();
     }
 
@@ -64,11 +64,13 @@ public class ConnectorsChecks {
 
     public static Iterable<Class<?>> structureChecks() {
         final ImmutableList.Builder<Class<?>> builder = ImmutableList.builder();
-        builder.add(LicenseDeclarationFilesCheck.class);
-        builder.add(UserManualExistsCheck.class);
-        builder.add(ReleaseNotesExistsCheck.class);
         builder.add(IconsExistCheck.class);
+        builder.add(LicenseDeclarationFilesCheck.class);
         builder.add(ReadmeExistsCheck.class);
+        builder.add(ReleaseNotesExistsCheck.class);
+        builder.add(TestResourcesFolderExistsCheck.class);
+        builder.add(TestSuiteFoldersExistCheck.class);
+        builder.add(UserManualExistsCheck.class);
         return builder.build();
     }
 }

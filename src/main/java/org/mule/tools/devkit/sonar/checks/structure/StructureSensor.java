@@ -60,11 +60,13 @@ public class StructureSensor implements Sensor {
 
     private Iterable<StructureCheck> buildStructureChecks() {
         List<StructureCheck> scanners = Lists.newArrayList();
-        scanners.add(new LicenseDeclarationFilesCheck(fileSystem));
-        scanners.add(new UserManualExistsCheck(fileSystem));
-        scanners.add(new ReleaseNotesExistsCheck(fileSystem));
         scanners.add(new IconsExistCheck(fileSystem));
+        scanners.add(new LicenseDeclarationFilesCheck(fileSystem));
         scanners.add(new ReadmeExistsCheck(fileSystem));
+        scanners.add(new ReleaseNotesExistsCheck(fileSystem));
+        scanners.add(new UserManualExistsCheck(fileSystem));
+        scanners.add(new TestResourcesFolderExistsCheck(fileSystem));
+        scanners.add(new TestSuiteFoldersExistCheck(fileSystem));
         return scanners;
     }
 }

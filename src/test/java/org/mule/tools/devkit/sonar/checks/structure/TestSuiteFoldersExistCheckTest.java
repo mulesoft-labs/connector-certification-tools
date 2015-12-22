@@ -14,21 +14,21 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ReadmeExistsCheckTest {
+public class TestSuiteFoldersExistCheckTest {
 
     final FileSystem fs = mock(FileSystem.class);
 
     @Test
-    public void checkNotExists() throws IOException, XmlPullParserException {
-        final File baseDir = new File("src/test/files/structure/readme-exists/not-exists");
+    public void checkSystemNotExists() throws IOException, XmlPullParserException {
+        final File baseDir = new File("src/test/files/structure/test-suite-folders-exist/system-not-exists");
         when(fs.baseDir()).thenReturn(baseDir);
-        final ReadmeExistsCheck check = new ReadmeExistsCheck(fs);
+        final TestSuiteFoldersExistCheck check = new TestSuiteFoldersExistCheck(fs);
         final Iterable<ConnectorIssue> pomIssues = check.analyze(null);
 
         assertThat(Iterables.size(pomIssues), is(1));
-        final ConnectorIssue first = Iterables.getFirst(pomIssues, null);
-        assertThat(first.ruleKey(), is("readme-exists"));
-        assertThat(first.message(), is("README.md doesn't exist."));
+        final ConnectorIssue first = Iterables.getOnlyElement(pomIssues, null);
+        assertThat(first.ruleKey(), is("test-suite-folders-exists"));
+        assertThat(first.message(), is("System test suite directory doesn't exist."));
     }
 
 }
