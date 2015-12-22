@@ -28,7 +28,7 @@ public class ReadmeExistsCheckTest {
         assertThat(Iterables.size(pomIssues), is(1));
         final ConnectorIssue first = Iterables.getFirst(pomIssues, null);
         assertThat(first.ruleKey(), is("readme-exists"));
-        assertThat(first.message(), is("File README.md is missing."));
+        assertThat(first.message(), is("README.md doesn't exist."));
     }
 
 }

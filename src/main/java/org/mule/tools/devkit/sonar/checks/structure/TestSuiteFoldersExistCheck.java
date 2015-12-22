@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 public class TestSuiteFoldersExistCheck implements StructureCheck {
 
     public static final String KEY = "test-suite-folders-exists";
-    public static final ImmutableList<String> defaultPackages = ImmutableList.of("functional", "system", "unit", "runner");
+    public static final ImmutableList<String> packages = ImmutableList.of("functional", "system", "unit", "runner");
     public static final Pattern TEST_PACKAGES_PATTERN = Pattern.compile("^((.*?)(org/mule/modules)+(/\\w+/)+(automation/)+(functional|system|unit|runner)$)");
     public static final Predicate<File> HAS_VALID_TEST_PACKAGE = new Predicate<File>() {
 
@@ -44,26 +44,27 @@ public class TestSuiteFoldersExistCheck implements StructureCheck {
     @Override
     public Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
         final List<ConnectorIssue> issues = Lists.newArrayList();
-        final List<String> packagesCopy = Lists.newArrayList(defaultPackages);
         final File dir = fileSystem.baseDir();
 
         Collection<File> directories = FileUtils.listFilesAndDirs(dir, new NotFileFilter(TrueFileFilter.INSTANCE), DirectoryFileFilter.DIRECTORY);
         Iterable<File> suites = Iterables.filter(directories, HAS_VALID_TEST_PACKAGE);
 
-        for (File suite : suites) {
-            String suiteName = suite.getName();
-            if (defaultPackages.contains(suiteName)) {
-                packagesCopy.remove(suiteName);
+        for (final String suite : packages) {
+            if (!Iterables.any(suites, getPredicateForSuite(suite))) {
+                issues.add(new ConnectorIssue(KEY, String.format("%s test suite directory doesn't exist.", WordUtils.capitalize(suite))));
             }
         }
-
-        if (!packagesCopy.isEmpty()) {
-            for (String noSuite : packagesCopy) {
-                issues.add(new ConnectorIssue(KEY, String.format("%s test suite directory doesn't exist.", WordUtils.capitalize(noSuite))));
-            }
-        }
-
         return issues;
+    }
+
+    private Predicate<File> getPredicateForSuite(final String suite) {
+        return new Predicate<File>() {
+
+            @Override
+            public boolean apply(File input) {
+                return input != null && input.getName().equals(suite);
+            }
+        };
     }
 
 }

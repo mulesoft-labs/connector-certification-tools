@@ -28,6 +28,6 @@ public class TestResourcesFolderExistsCheckTest {
         assertThat(Iterables.size(pomIssues), is(1));
         final ConnectorIssue first = Iterables.getOnlyElement(pomIssues, null);
         assertThat(first.ruleKey(), is("test-resources-folder-exists"));
-        assertThat(first.message(), is("Test Resources directory doesn't exist."));
+        assertThat(first.message(), is("src/test/resources doesn't exist."));
     }
 }
