@@ -11,8 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.plugins.java.api.semantic.Type;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
+import org.sonar.plugins.java.api.tree.ExpressionTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MemberSelectExpressionTree;
+import org.sonar.plugins.java.api.tree.PackageDeclarationTree;
 import org.sonar.plugins.java.api.tree.ParameterizedTypeTree;
 import org.sonar.plugins.java.api.tree.Tree;
 import org.sonar.plugins.java.api.tree.Tree.Kind;
@@ -21,9 +23,12 @@ import org.sonar.plugins.java.api.tree.VariableTree;
 import org.sonar.plugins.java.api.tree.WildcardTree;
 
 import java.math.BigDecimal;
+import java.util.ArrayDeque;
 import java.util.Date;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class ClassParserUtils {
 
@@ -107,13 +112,16 @@ public class ClassParserUtils {
 
             @Override
             public boolean apply(@Nullable AnnotationTree input) {
+                if (input == null) {
+                    return false;
+                }
                 String name;
                 if (input.annotationType().is(Kind.MEMBER_SELECT)) {
                     name = ((MemberSelectExpressionTree) input.annotationType()).identifier().name();
                 } else {
                     name = ((IdentifierTree) input.annotationType()).name();
                 }
-                return input != null && connectionConfigTypes.contains(name);
+                return connectionConfigTypes.contains(name);
             }
         };
     }
@@ -189,5 +197,17 @@ public class ClassParserUtils {
                 return false;
             }
         };
+    }
+
+    public static String extractFullyQualifiedPackageName(PackageDeclarationTree tree) {
+        final Deque<String> stack = new ArrayDeque<>();
+        ExpressionTree expressionTree = tree.packageName();
+        while (expressionTree.is(Kind.MEMBER_SELECT)) {
+            MemberSelectExpressionTree mset = (MemberSelectExpressionTree) expressionTree;
+            stack.push(mset.identifier().name());
+            expressionTree = mset.expression();
+        }
+        stack.push(((IdentifierTree) expressionTree).name());
+        return Joiner.on('.').join(stack);
     }
 }

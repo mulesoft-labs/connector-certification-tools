@@ -31,7 +31,7 @@ public class IconsExistCheck implements StructureCheck {
 
         @Override
         public boolean apply(@Nullable File input) {
-            return input.getName().endsWith(".png");
+            return input != null && input.getName().endsWith(".png");
         }
     };
 

@@ -37,7 +37,7 @@ public class ConfigFriendlyNameCheck extends BaseLoggingVisitor {
                         String.format("@%s must define a friendlyName. If there is a single configuration, 'Configuration' must be used as friendlyName.", annotationName));
             } else {
                 AssignmentExpressionTree argument;
-                if (arguments.size() > 0) {
+                if (!arguments.isEmpty()) {
                     argument = (AssignmentExpressionTree) Iterables.find(arguments, new Predicate<ExpressionTree>() {
 
                         @Override
