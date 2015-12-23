@@ -1,7 +1,6 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.apache.maven.project.MavenProject;
@@ -13,7 +12,6 @@ import org.mule.tools.devkit.sonar.checks.ConnectorCategory;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.mule.tools.devkit.sonar.utils.PomUtils;
 import org.sonar.api.batch.fs.FileSystem;
-import org.sonar.api.batch.fs.internal.DefaultFileSystem;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
@@ -53,7 +51,9 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
         this.fileSystem = null;
     }
 
-    /** This constructor exists for testing only */
+    /**
+     * This constructor exists for testing only
+     */
     @VisibleForTesting
     protected LicenseByCategoryCheck(FileSystem fileSystem) {
         this.fileSystem = fileSystem;
