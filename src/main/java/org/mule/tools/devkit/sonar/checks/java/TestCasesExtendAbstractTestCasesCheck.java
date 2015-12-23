@@ -2,6 +2,7 @@ package org.mule.tools.devkit.sonar.checks.java;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.Test;
 import org.mule.tools.devkit.ctf.junit.AbstractTestCase;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
@@ -12,8 +13,6 @@ import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.Tree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
-
-import javax.annotation.Nullable;
 
 @Rule(key = TestCasesExtendAbstractTestCasesCheck.KEY, name = "TestCases classes should extend project's AbstractTestCase class", description = "Test Cases should extend project's AbstractTestCase class", priority = Priority.CRITICAL, tags = { "connector-certification" })
 @ActivatedByDefault
