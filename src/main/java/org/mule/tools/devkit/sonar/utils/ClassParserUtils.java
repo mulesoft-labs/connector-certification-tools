@@ -28,7 +28,6 @@ import java.util.Date;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 public class ClassParserUtils {
 
