@@ -11,6 +11,8 @@ import org.sonar.api.batch.fs.FileSystem;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.startsWith;
@@ -125,5 +127,21 @@ public class LicenseDeclarationFilesCheckTest {
         final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
 
         assertThat(pomIssues, Matchers.<ConnectorIssue> emptyIterable());
+    }
+
+    @Test
+    public void withUpdatedYear() throws IOException, XmlPullParserException {
+        final File baseDir = new File("src/test/files/structure/license-declaration-files/with-updated-year");
+        when(fs.baseDir()).thenReturn(baseDir);
+        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(baseDir);
+        final LicenseDeclarationFilesCheck check = new LicenseDeclarationFilesCheck(fs);
+        final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
+
+        assertThat(Iterables.size(pomIssues), is(1));
+        final ConnectorIssue first = Iterables.getOnlyElement(pomIssues);
+        assertThat(first.ruleKey(), is("license-declaration-files"));
+        assertThat(first.message(), startsWith("Difference in license file 'LICENSE_HEADER.txt'. Please check the diff between expected and actual:"));
+        assertThat(first.message(), containsString("-(c) 2003-" + new SimpleDateFormat("yyyy").format(new Date()) + " MuleSoft"));
+        assertThat(first.message(), containsString("+(c) 2003-2014 MuleSoft"));
     }
 }

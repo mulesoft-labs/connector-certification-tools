@@ -1,5 +1,6 @@
 package org.mule.tools.devkit.sonar.checks.structure;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
@@ -14,10 +15,14 @@ import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Rule(key = LicenseDeclarationFilesCheck.KEY, name = "License files should be present", description = "There should exist 2 files named LICENSE_HEADER.txt and LICENSE.md, and they should have the right content depending on the connector category", priority = Priority.BLOCKER, tags = { "connector-certification" })
@@ -27,6 +32,7 @@ public class LicenseDeclarationFilesCheck implements StructureCheck {
 
     private static final String LICENSE_FILE = "LICENSE.md";
     private static final String LICENSE_HEADER_FILE = "LICENSE_HEADER.txt";
+    private static final DateFormat YEAR_FORMAT = new SimpleDateFormat("YYYY");
     private final FileSystem fileSystem;
 
     public LicenseDeclarationFilesCheck(FileSystem fileSystem) {
@@ -64,8 +70,15 @@ public class LicenseDeclarationFilesCheck implements StructureCheck {
             issues.add(new ConnectorIssue(KEY, String.format("File '%s' is missing. Please add a license file.", fileName)));
         } else {
             try {
+                final Function<String, String> replaceYearFunction = new Function<String, String>() {
+
+                    @Override
+                    public String apply(@Nullable String input) {
+                        return input != null ? input.replace("${current_year}", YEAR_FORMAT.format(new Date())) : null;
+                    }
+                };
                 List<String> originalContent = Files.readAllLines(path, StandardCharsets.UTF_8);
-                List<String> masterContent = Resources.readLines(getClass().getResource(masterFileName), StandardCharsets.UTF_8);
+                List<String> masterContent = Lists.transform(Resources.readLines(getClass().getResource(masterFileName), StandardCharsets.UTF_8), replaceYearFunction);
 
                 Patch patch = DiffUtils.diff(masterContent, originalContent);
                 if (!patch.getDeltas().isEmpty()) {
