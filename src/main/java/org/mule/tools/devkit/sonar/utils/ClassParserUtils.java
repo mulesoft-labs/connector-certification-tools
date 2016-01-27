@@ -209,4 +209,16 @@ public class ClassParserUtils {
         stack.push(((IdentifierTree) expressionTree).name());
         return Joiner.on('.').join(stack);
     }
+
+    public static String extractFullyQualifiedClassName(MemberSelectExpressionTree tree) {
+        final Deque<String> stack = new ArrayDeque<>();
+        ExpressionTree expressionTree = tree;
+        while (expressionTree.is(Kind.MEMBER_SELECT)) {
+            MemberSelectExpressionTree mset = (MemberSelectExpressionTree) expressionTree;
+            stack.push(mset.identifier().name());
+            expressionTree = mset.expression();
+        }
+        stack.push(((IdentifierTree) expressionTree).name());
+        return Joiner.on('.').join(stack);
+    }
 }

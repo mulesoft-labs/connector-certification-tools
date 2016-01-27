@@ -23,6 +23,12 @@ public class TestSuiteCheckTest {
     }
 
     @Test
+    public void runWithAnnotationOtherFullyQualifiedRunnerClass() {
+        TestSuiteCheck check = new TestSuiteCheck();
+        JavaCheckVerifier.verify("src/test/files/java/TestSuiteCheckOtherFQRunnerClass.java", check);
+    }
+
+    @Test
     public void runWithAnnotationOtherRunnerClass() {
         TestSuiteCheck check = new TestSuiteCheck();
         JavaCheckVerifier.verify("src/test/files/java/TestSuiteCheckOtherRunnerClass.java", check);
