@@ -2,7 +2,7 @@ package org.mule.tools.devkit.sonar.checks.java;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;

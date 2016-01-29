@@ -3,8 +3,8 @@ package org.mule.tools.devkit.sonar.checks.java;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.mule.api.annotations.param.Optional;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
@@ -29,7 +29,7 @@ public class NumberOfSimpleAndOptionalArgumentsCheck extends AbstractConnectorCl
     protected int maxArgumentsAllowed = DEFAULT_MAX_ALLOWED;
 
     @Override
-    protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
+    protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
         long count = Iterables.size(Iterables.filter(tree.parameters(), Predicates.and(ClassParserUtils.simpleTypePredicate(),
 
         new Predicate<VariableTree>() {

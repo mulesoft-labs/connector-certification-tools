@@ -4,8 +4,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.apache.maven.project.MavenProject;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
 import org.mule.api.annotations.licensing.RequiresEntitlement;
 import org.mule.tools.devkit.sonar.checks.ConnectorCategory;
@@ -60,7 +60,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
     }
 
     @Override
-    protected void verifyConnector(@NonNull ClassTree classTree, @NonNull IdentifierTree connectorAnnotation) {
+    protected void verifyConnector(@NotNull ClassTree classTree, @NotNull IdentifierTree connectorAnnotation) {
         MavenProject mavenProject = fileSystem != null ? PomUtils.createMavenProjectFromPomFile(fileSystem.baseDir()) : PomUtils.createMavenProjectFromPomFile(new File("."));
         ConnectorCategory category = PomUtils.category(mavenProject);
         final List<? extends AnnotationTree> annotations = classTree.modifiers().annotations();
@@ -89,19 +89,19 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
         }
     }
 
-    private void checkCommunity(@NonNull ClassTree classTree, boolean hasEnterpriseAnnotation, boolean hasEntitlementAnnotation) {
+    private void checkCommunity(@NotNull ClassTree classTree, boolean hasEnterpriseAnnotation, boolean hasEntitlementAnnotation) {
         if (hasEnterpriseAnnotation || hasEntitlementAnnotation) {
             logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense and @RequiresEntitlement must not be present for Community category.");
         }
     }
 
-    private void checkSelectOrCertified(@NonNull ClassTree classTree, boolean hasEnterpriseAnnotation, boolean hasEntitlementAnnotation) {
+    private void checkSelectOrCertified(@NotNull ClassTree classTree, boolean hasEnterpriseAnnotation, boolean hasEntitlementAnnotation) {
         if (!hasEnterpriseAnnotation || hasEntitlementAnnotation) {
             logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.");
         }
     }
 
-    private void checkPremium(@NonNull ClassTree classTree, List<? extends AnnotationTree> annotations, boolean hasEnterpriseAnnotation, boolean hasEntitlementAnnotation) {
+    private void checkPremium(@NotNull ClassTree classTree, List<? extends AnnotationTree> annotations, boolean hasEnterpriseAnnotation, boolean hasEntitlementAnnotation) {
         if (!hasEnterpriseAnnotation || !hasEntitlementAnnotation) {
             logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense and @RequiresEntitlement need to be defined for Premium category.");
         }

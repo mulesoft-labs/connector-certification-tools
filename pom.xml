@@ -38,41 +38,9 @@
             <version>2.2.1</version>
         </dependency>
         <dependency>
-            <groupId>org.checkerframework</groupId>
-            <artifactId>checker-qual</artifactId>
-            <version>1.9.7</version>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.java-diff-utils</groupId>
-            <artifactId>diffutils</artifactId>
-            <version>1.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-annotations</artifactId>
-            <version>3.7.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mule.tools.devkit</groupId>
-                    <artifactId>mule-devkit-shade</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.mule.modules</groupId>
-                    <artifactId>mule-module-devkit-support</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.mule</groupId>
-                    <artifactId>mule-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.mule.modules</groupId>
-                    <artifactId>mule-module-http</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.inject</groupId>
-                    <artifactId>javax.inject</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.intellij</groupId>
+            <artifactId>annotations</artifactId>
+            <version>12.0</version>
         </dependency>
         <dependency>
             <groupId>org.mule.tools.devkit</groupId>
@@ -84,6 +52,10 @@
                     <artifactId>mule-devkit-shade</artifactId>
                 </exclusion>
                 <exclusion>
+                    <groupId>cglib</groupId>
+                    <artifactId>cglib-nodep</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>org.mule.modules</groupId>
                     <artifactId>mule-module-devkit-support</artifactId>
                 </exclusion>
@@ -101,69 +73,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.mule.tools.devkit</groupId>
-            <artifactId>connector-testing-framework</artifactId>
-            <version>1.0.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mule.tools.devkit</groupId>
-                    <artifactId>mule-devkit-apidoc-model</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.mule.tools.devkit</groupId>
-                    <artifactId>connector-testing-framework-serializer-engine</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.mule.tools.devkit</groupId>
-                    <artifactId>connector-testing-framework-serializers</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.spotify</groupId>
-                    <artifactId>docker-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.intellij</groupId>
-                    <artifactId>annotations</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.maven.shared</groupId>
-                    <artifactId>maven-invoker</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>commons-io</groupId>
-                    <artifactId>commons-io</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>cglib</groupId>
-                    <artifactId>cglib</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sun.jersey</groupId>
-                    <artifactId>jersey-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sun.jersey.contribs</groupId>
-                    <artifactId>jersey-multipart</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.java.dev.jna</groupId>
-                    <artifactId>jna</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.java.dev.jna</groupId>
-                    <artifactId>jna-platform</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.mulesoft.cloudhub</groupId>
-                    <artifactId>cloudhub-client-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.skyscreamer</groupId>
-                    <artifactId>jsonassert</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <!-- unit tests -->
         <dependency>
@@ -171,6 +80,12 @@
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>

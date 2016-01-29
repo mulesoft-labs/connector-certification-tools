@@ -2,8 +2,8 @@ package org.mule.tools.devkit.sonar.checks.java;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.mule.api.annotations.param.RefOnly;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
@@ -31,7 +31,7 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
     };
 
     @Override
-    protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
+    protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
 
         Iterable<? extends VariableTree> complexTypes = Iterables.filter(tree.parameters(), ClassParserUtils.complexTypePredicate());
         for (VariableTree variable : complexTypes) {

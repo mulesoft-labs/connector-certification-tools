@@ -4,7 +4,7 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.mule.tools.devkit.sonar.checks.ConnectorCategory;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class PomUtils {
     private PomUtils() {
     }
 
-    @NonNull
+    @NotNull
     public static MavenProject createMavenProjectFromPomFile(File baseDir) {
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(new File(baseDir, "pom.xml")), StandardCharsets.UTF_8)) {
             return createMavenProjectFromInputStream(reader);
@@ -33,7 +33,7 @@ public class PomUtils {
         }
     }
 
-    @NonNull
+    @NotNull
     public static MavenProject createMavenProjectFromInputStream(InputStreamReader reader) {
         MavenProject mavenProject;
         try {
@@ -51,7 +51,7 @@ public class PomUtils {
         return parent != null && parent.getGroupId().equals(DEVKIT_GROUP_ID) && parent.getArtifactId().equals(DEVKIT_ARTIFACT_ID);
     }
 
-    @NonNull
+    @NotNull
     public static ConnectorCategory category(MavenProject mavenProject) {
         final Properties properties = mavenProject.getProperties();
         ConnectorCategory category = ConnectorCategory.UNKNOWN;

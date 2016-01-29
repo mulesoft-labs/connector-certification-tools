@@ -5,8 +5,8 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.plugins.java.api.semantic.Type;
@@ -125,7 +125,7 @@ public class ClassParserUtils {
         };
     }
 
-    public static boolean isSimpleType(@NonNull final TypeTree type) {
+    public static boolean isSimpleType(@NotNull final TypeTree type) {
         final Type symbolType = type.symbolType();
         boolean result;
         if (symbolType.isPrimitive() || symbolType.symbol().isEnum()) {
@@ -141,7 +141,7 @@ public class ClassParserUtils {
         return result;
     }
 
-    public static boolean is(@NonNull AnnotationTree annotation, @NonNull final Class<?> annotationClass) {
+    public static boolean is(@NotNull AnnotationTree annotation, @NotNull final Class<?> annotationClass) {
         final String annotationSimpleName = annotation.annotationType().toString();
         return annotationSimpleName.equals(annotationClass.getSimpleName()) || annotationSimpleName.equals(annotationClass.getCanonicalName());
     }

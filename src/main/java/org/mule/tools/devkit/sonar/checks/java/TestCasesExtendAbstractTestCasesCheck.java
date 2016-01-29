@@ -2,9 +2,8 @@ package org.mule.tools.devkit.sonar.checks.java;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
-import org.mule.tools.devkit.ctf.junit.AbstractTestCase;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -37,7 +36,7 @@ public class TestCasesExtendAbstractTestCasesCheck extends BaseLoggingVisitor {
             }
         });
 
-        if (isTestClass && isFunctional && !classTree.symbol().type().isSubtypeOf(AbstractTestCase.class.getName())) {
+        if (isTestClass && isFunctional && !classTree.symbol().type().isSubtypeOf("org.mule.tools.devkit.ctf.junit.AbstractTestCase")) {
             logAndRaiseIssue(classTree, String.format("Test case '%s' should inherit from AbstractTestCase.", classTree.simpleName().name()));
         }
     }

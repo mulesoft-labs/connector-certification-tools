@@ -10,7 +10,7 @@ import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang.WordUtils;
 import org.apache.maven.project.MavenProject;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.check.Priority;

@@ -1,9 +1,7 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
 import org.mule.api.annotations.Source;
@@ -13,6 +11,9 @@ import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.Tree;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 public abstract class AbstractConnectorClassCheck extends BaseLoggingVisitor {
 
@@ -47,14 +48,13 @@ public abstract class AbstractConnectorClassCheck extends BaseLoggingVisitor {
         super.visitMethod(tree);
     }
 
-    protected void verifySource(@NonNull MethodTree methodTree, @NonNull final IdentifierTree sourceAnnotation) {
+    protected void verifySource(@NotNull MethodTree methodTree, @NotNull final IdentifierTree sourceAnnotation) {
     }
 
-    protected void verifyProcessor(@NonNull final MethodTree methodTree, @NonNull final IdentifierTree processorAnnotation) {
+    protected void verifyProcessor(@NotNull final MethodTree methodTree, @NotNull final IdentifierTree processorAnnotation) {
     }
 
-    protected void verifyConnector(@NonNull ClassTree classTree, @NonNull final IdentifierTree connectorAnnotation) {
+    protected void verifyConnector(@NotNull ClassTree classTree, @NotNull final IdentifierTree connectorAnnotation) {
     }
-
 
 }

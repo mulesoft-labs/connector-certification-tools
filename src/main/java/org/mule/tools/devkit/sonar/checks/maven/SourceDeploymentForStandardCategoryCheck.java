@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.project.MavenProject;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

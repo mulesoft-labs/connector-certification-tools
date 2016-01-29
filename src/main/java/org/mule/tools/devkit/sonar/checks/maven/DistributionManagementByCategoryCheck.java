@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import org.apache.maven.model.DeploymentRepository;
 import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.project.MavenProject;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -57,7 +57,7 @@ public class DistributionManagementByCategoryCheck implements MavenCheck {
         return issues;
     }
 
-    private void checkCommunity(String category, @NonNull List<ConnectorIssue> issues, @NonNull DeploymentRepository deployRepo, @NonNull DeploymentRepository snapshotRepo) {
+    private void checkCommunity(String category, @NotNull List<ConnectorIssue> issues, @NotNull DeploymentRepository deployRepo, @NotNull DeploymentRepository snapshotRepo) {
         if (!hasDeployRepoId(deployRepo)) {
             logAndRaiseIssue(issues, String.format("%s connectors must have a <repository> tag configured with <id>mulesoft-releases</id>.", category));
         }
@@ -78,8 +78,8 @@ public class DistributionManagementByCategoryCheck implements MavenCheck {
         }
     }
 
-    private void checkPremiumOrSelectOrCertified(String category, @NonNull List<ConnectorIssue> issues, @NonNull DeploymentRepository deployRepoEE,
-            @NonNull DeploymentRepository snapshotRepoEE) {
+    private void checkPremiumOrSelectOrCertified(String category, @NotNull List<ConnectorIssue> issues, @NotNull DeploymentRepository deployRepoEE,
+            @NotNull DeploymentRepository snapshotRepoEE) {
         if (!hasDeployRepoEEId(deployRepoEE)) {
             logAndRaiseIssue(issues, String.format("%s connectors must have a <repository> tag configured with <id>mulesoft-ee-releases</id>.", category));
         }

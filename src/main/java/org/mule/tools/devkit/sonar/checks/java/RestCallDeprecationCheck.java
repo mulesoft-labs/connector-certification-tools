@@ -1,9 +1,9 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.mule.api.annotations.rest.RestCall;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
@@ -13,7 +13,8 @@ import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-import java.util.List;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 @Rule(key = RestCallDeprecationCheck.KEY, name = "@RestCall annotation is deprecated", description = "Support for @RestCall processors has been deprecated in favor of RAML. Consider migrating your connector to REST Connect.", priority = Priority.CRITICAL, tags = { "connector-certification" })
 @ActivatedByDefault
@@ -30,7 +31,7 @@ public class RestCallDeprecationCheck extends AbstractConnectorClassCheck {
     };
 
     @Override
-    protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
+    protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
         List<? extends AnnotationTree> annotations = tree.modifiers().annotations();
         final long count = Iterables.size(Iterables.filter(annotations, HAS_REST_CALL_ANNOTATION));
         if (count > 0) {

@@ -2,8 +2,8 @@ package org.mule.tools.devkit.sonar.checks.java;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.mule.api.annotations.param.Payload;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
@@ -25,7 +25,7 @@ public class PayloadDeprecationCheck extends AbstractConnectorClassCheck {
     };
 
     @Override
-    protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
+    protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
         if (!Iterables.isEmpty(Iterables.filter(tree.parameters(), HAS_PAYLOAD_ANNOTATION))) {
             final String message = String.format("@Payload must be removed from processor '%s' as it has been deprecated.", tree.simpleName());
             logAndRaiseIssue(tree, message);

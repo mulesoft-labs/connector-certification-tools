@@ -3,7 +3,7 @@ package org.mule.tools.devkit.sonar.checks.java;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 import org.codehaus.plexus.util.StringUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -25,7 +25,7 @@ public class FunctionalTestPerProcessorCheck extends AbstractConnectorClassCheck
     public static final Pattern TEST_PARENT_DIR_PATTERN = Pattern.compile("^((src/test/java/org/mule/modules)+(/\\w+/)+(automation/functional)+$)");
 
     @Override
-    protected void verifyProcessor(@NonNull MethodTree tree, @NonNull final IdentifierTree processorAnnotation) {
+    protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
 
         String processorTestName = StringUtils.capitalizeFirstLetter(tree.simpleName().name()) + "TestCases.java";
         File dir = new File(TEST_DIR);

@@ -1,6 +1,6 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 import org.sonar.plugins.java.api.JavaFileScanner;
 import org.sonar.plugins.java.api.JavaFileScannerContext;
@@ -17,7 +17,7 @@ public abstract class BaseLoggingVisitor extends BaseTreeVisitor implements Java
         scan(context.getTree());
     }
 
-    protected final void logAndRaiseIssue(@NonNull Tree classTree, String message) {
+    protected final void logAndRaiseIssue(@NotNull Tree classTree, String message) {
         LoggerFactory.getLogger(getClass()).info(message);
         context.addIssue(classTree, this, message);
     }
