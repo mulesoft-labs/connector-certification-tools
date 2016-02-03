@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.project.MavenProject;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.mule.tools.devkit.sonar.checks.ConnectorCategory;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.mule.tools.devkit.sonar.utils.PomUtils;
@@ -31,8 +31,9 @@ public class LicenseDeclarationFilesCheck implements StructureCheck {
 
     private static final String LICENSE_FILE = "LICENSE.md";
     private static final String LICENSE_HEADER_FILE = "LICENSE_HEADER.txt";
-    private static final DateFormat YEAR_FORMAT = new SimpleDateFormat("YYYY");
-    public static final Pattern TOKENIZER_PATTERN = Pattern.compile("[\\w']+");
+    private static final Pattern TOKENIZER_PATTERN = Pattern.compile("[\\w']+");
+    private static final DateTimeFormatter YEAR_FORMAT = DateTimeFormat.forPattern("yyyy");
+
     private final FileSystem fileSystem;
 
     public LicenseDeclarationFilesCheck(FileSystem fileSystem) {
@@ -71,7 +72,8 @@ public class LicenseDeclarationFilesCheck implements StructureCheck {
         } else {
             try {
                 String connectorText = FileUtils.readFileToString(path.toFile(), StandardCharsets.UTF_8);
-                String masterText = Resources.toString(getClass().getResource(masterFileName), StandardCharsets.UTF_8).replace("${current_year}", YEAR_FORMAT.format(new Date()));
+                String masterText = Resources.toString(getClass().getResource(masterFileName), StandardCharsets.UTF_8)
+                        .replace("${current_year}", YEAR_FORMAT.print(new DateTime()));
 
                 // Check that connectorText doesn't have ${current_year} string
                 if (connectorText.contains("${current_year}")) {

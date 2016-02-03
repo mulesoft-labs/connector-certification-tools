@@ -24,6 +24,7 @@ public class RestCallDeprecationCheck extends AbstractConnectorClassCheck {
 
     public static final Predicate<AnnotationTree> HAS_REST_CALL_ANNOTATION = new Predicate<AnnotationTree>() {
 
+        @SuppressWarnings("deprecation")
         @Override
         public boolean apply(@Nullable AnnotationTree input) {
             return input != null && ClassParserUtils.is(input, RestCall.class);
