@@ -16,7 +16,8 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
-@Rule(key = RestCallDeprecationCheck.KEY, name = "@RestCall annotation is deprecated", description = "Support for @RestCall processors has been deprecated in favor of RAML. Consider migrating your connector to REST Connect.", priority = Priority.CRITICAL, tags = { "connector-certification" })
+@Rule(key = RestCallDeprecationCheck.KEY, name = "@RestCall annotation is deprecated", description = "Support for @RestCall processors has been deprecated in favor of RAML. Consider migrating your connector to REST Connect.", priority = Priority.CRITICAL, tags = { "connector-certification"
+})
 @ActivatedByDefault
 public class RestCallDeprecationCheck extends AbstractConnectorClassCheck {
 
@@ -41,5 +42,4 @@ public class RestCallDeprecationCheck extends AbstractConnectorClassCheck {
         }
 
     }
-
 }

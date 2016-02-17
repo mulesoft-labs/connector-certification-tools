@@ -1,6 +1,5 @@
 package org.mule.tools.devkit.sonar;
 
-import com.google.common.collect.ImmutableList;
 import org.mule.tools.devkit.sonar.checks.java.ConfigFriendlyNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerProcessorCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestSuiteCheck;
@@ -18,6 +17,7 @@ import org.mule.tools.devkit.sonar.checks.maven.ScopeProvidedInMuleDependenciesC
 import org.mule.tools.devkit.sonar.checks.maven.SnapshotDependenciesCheck;
 import org.mule.tools.devkit.sonar.checks.maven.SourceDeploymentForStandardCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.maven.TestingFrameworkNotOverwrittenCheck;
+import org.mule.tools.devkit.sonar.checks.structure.DemoExistCheck;
 import org.mule.tools.devkit.sonar.checks.structure.IconsExistCheck;
 import org.mule.tools.devkit.sonar.checks.structure.LicenseDeclarationFilesCheck;
 import org.mule.tools.devkit.sonar.checks.structure.ReadmeExistsCheck;
@@ -26,6 +26,8 @@ import org.mule.tools.devkit.sonar.checks.structure.TestResourcesFolderExistsChe
 import org.mule.tools.devkit.sonar.checks.structure.TestSuiteFoldersExistCheck;
 import org.mule.tools.devkit.sonar.checks.structure.UserManualExistsCheck;
 import org.sonar.plugins.java.api.JavaCheck;
+
+import com.google.common.collect.ImmutableList;
 
 public class ConnectorsChecks {
 
@@ -73,6 +75,7 @@ public class ConnectorsChecks {
         builder.add(TestResourcesFolderExistsCheck.class);
         builder.add(TestSuiteFoldersExistCheck.class);
         builder.add(UserManualExistsCheck.class);
+        builder.add(DemoExistCheck.class);
         return builder.build();
     }
 }

@@ -1,6 +1,7 @@
 package org.mule.tools.devkit.sonar.checks.structure;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
@@ -17,7 +18,7 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rule.RuleKey;
 
-import java.util.List;
+import com.google.common.collect.Lists;
 
 public class StructureSensor implements Sensor {
 
@@ -35,8 +36,10 @@ public class StructureSensor implements Sensor {
         logger.info(connectorIssue.message());
         Issuable issuable = resourcePerspectives.as(Issuable.class, pomFile);
         if (issuable != null) {
-            issuable.addIssue(issuable.newIssueBuilder().ruleKey(RuleKey.of(ConnectorCertificationRulesDefinition.getStructRepositoryKey(), connectorIssue.ruleKey()))
-                    .message(StringUtils.abbreviate(connectorIssue.message(), 4000)).build());
+            issuable.addIssue(issuable.newIssueBuilder()
+                    .ruleKey(RuleKey.of(ConnectorCertificationRulesDefinition.getStructRepositoryKey(), connectorIssue.ruleKey()))
+                    .message(StringUtils.abbreviate(connectorIssue.message(), 4000))
+                    .build());
         }
     }
 
@@ -67,6 +70,7 @@ public class StructureSensor implements Sensor {
         scanners.add(new UserManualExistsCheck(fileSystem));
         scanners.add(new TestResourcesFolderExistsCheck(fileSystem));
         scanners.add(new TestSuiteFoldersExistCheck(fileSystem));
+        scanners.add(new DemoExistCheck(fileSystem));
         return scanners;
     }
 }
