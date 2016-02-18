@@ -29,7 +29,7 @@ public class DemoExistCheck implements StructureCheck {
 
         @Override
         public boolean accept(Path file) throws IOException {
-            return (Files.isDirectory(file));
+            return Files.isDirectory(file);
         }
     };
 
@@ -55,15 +55,11 @@ public class DemoExistCheck implements StructureCheck {
                         return input != null && input.toFile().isDirectory();
                     }
                 }));
-                if (demos.size() < 1) {
+                if (demos.isEmpty()) {
                     issues.add(new ConnectorIssue(KEY, "'demo' directory exists, but contains no demos."));
                 } else {
                     for (final Path demoDir : demos) {
-                        final Path readmePath = demoDir.resolve("README.md");
-                        if (!Files.exists(readmePath)) {
-                            issues.add(new ConnectorIssue(KEY, String.format("demo named '%s' is missing a README.md file explaining the purpose of the demo.",
-                                    demoDir.getFileName())));
-                        }
+                        checkReadmeMd(issues, demoDir);
                     }
                 }
             } catch (IOException e) {
@@ -71,6 +67,12 @@ public class DemoExistCheck implements StructureCheck {
             }
         }
         return issues;
+    }
+
+    private void checkReadmeMd(List<ConnectorIssue> issues, Path demoDir) {
+        if (!Files.exists(demoDir.resolve("README.md"))) {
+            issues.add(new ConnectorIssue(KEY, String.format("demo named '%s' is missing a README.md file explaining the purpose of the demo.", demoDir.getFileName())));
+        }
     }
 
 }

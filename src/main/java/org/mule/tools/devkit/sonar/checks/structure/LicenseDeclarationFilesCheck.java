@@ -24,7 +24,8 @@ import org.sonar.check.Rule;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 
-@Rule(key = LicenseDeclarationFilesCheck.KEY, name = "License files should be present", description = "There should exist 2 files named LICENSE_HEADER.txt and LICENSE.md, and they should have the right content depending on the connector category", priority = Priority.BLOCKER, tags = { "connector-certification" })
+@Rule(key = LicenseDeclarationFilesCheck.KEY, name = "License files should be present", description = "There should exist 2 files named LICENSE_HEADER.txt and LICENSE.md, and they should have the right content depending on the connector category", priority = Priority.BLOCKER, tags = { "connector-certification"
+})
 public class LicenseDeclarationFilesCheck implements StructureCheck {
 
     public static final String KEY = "license-declaration-files";
@@ -61,6 +62,8 @@ public class LicenseDeclarationFilesCheck implements StructureCheck {
             case PREMIUM:
                 // Nothing to validate, Premium license can be totally custom
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid connector category: " + category);
         }
     }
 
@@ -87,20 +90,24 @@ public class LicenseDeclarationFilesCheck implements StructureCheck {
                     issues.add(new ConnectorIssue(KEY, String.format("Difference in license file '%s'. Content is shorter than expected. Please use the base template: %s.",
                             fileName, masterFileName)));
                 } else {
-                    int i;
-                    for (i = 0; i < masterTokens.size() && masterTokens.get(i).equals(connectorTokens.get(i)); i++) {
-                    }
-                    if (i < masterTokens.size()) {
-                        // It found 2 different words
-                        issues.add(new ConnectorIssue(KEY, String.format(
-                                "Difference in license file '%s'. Found word '%s' where '%s' was expected. Please use the base template: %s", fileName, connectorTokens.get(i),
-                                masterTokens.get(i), masterFileName)));
-                    }
+                    checkFileContent(issues, fileName, masterFileName, masterTokens, connectorTokens);
                 }
             } catch (IOException e) {
                 LoggerFactory.getLogger(getClass()).warn(String.format("Problem reading file: %s", fileName), e);
                 issues.add(new ConnectorIssue(KEY, String.format("Problem reading license file: '%s'.", fileName)));
             }
+        }
+    }
+
+    private void checkFileContent(List<ConnectorIssue> issues, String fileName, String masterFileName, List<String> masterTokens, List<String> connectorTokens) {
+        int i = 0;
+        while (i < masterTokens.size() && masterTokens.get(i).equals(connectorTokens.get(i))) {
+            i++;
+        }
+        if (i < masterTokens.size()) {
+            // It found 2 different words
+            issues.add(new ConnectorIssue(KEY, String.format("Difference in license file '%s'. Found word '%s' where '%s' was expected. Please use the base template: %s",
+                    fileName, connectorTokens.get(i), masterTokens.get(i), masterFileName)));
         }
     }
 
