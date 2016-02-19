@@ -1,19 +1,24 @@
 package org.mule.tools.devkit.sonar.utils;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
+import java.math.BigDecimal;
+import java.util.ArrayDeque;
+import java.util.Date;
+import java.util.Deque;
+import java.util.List;
+import java.util.Map;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.plugins.java.api.semantic.Type;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
+import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.plugins.java.api.tree.ExpressionTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MemberSelectExpressionTree;
+import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.PackageDeclarationTree;
 import org.sonar.plugins.java.api.tree.ParameterizedTypeTree;
 import org.sonar.plugins.java.api.tree.Tree;
@@ -22,55 +27,47 @@ import org.sonar.plugins.java.api.tree.TypeTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
 import org.sonar.plugins.java.api.tree.WildcardTree;
 
-import java.math.BigDecimal;
-import java.util.ArrayDeque;
-import java.util.Date;
-import java.util.Deque;
-import java.util.List;
-import java.util.Map;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 
 public class ClassParserUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(ClassParserUtils.class);
 
-    private static final ImmutableSet<String> allowedComplexTypes;
+    private static final ImmutableSet<String> allowedComplexTypes = ImmutableSet.<String> builder()
+            .add(Integer.class.getName())
+            .add(Double.class.getName())
+            .add(Long.class.getName())
+            .add(Float.class.getName())
+            .add(Character.class.getName())
+            .add(Byte.class.getName())
+            .add(Short.class.getName())
+            .add(Boolean.class.getName())
+            .add(BigDecimal.class.getName())
+            .add(String.class.getName())
+            .add(Enum.class.getName())
+            .add(Date.class.getName())
+            .build();
 
-    static {
-        final ImmutableSet.Builder<String> builder = ImmutableSet.builder();
-        builder.add(Integer.class.getName());
-        builder.add(Double.class.getName());
-        builder.add(Long.class.getName());
-        builder.add(Float.class.getName());
-        builder.add(Character.class.getName());
-        builder.add(Byte.class.getName());
-        builder.add(Short.class.getName());
-        builder.add(Boolean.class.getName());
-        builder.add(BigDecimal.class.getName());
-        builder.add(String.class.getName());
-        builder.add(Enum.class.getName());
-        builder.add(Date.class.getName());
-        allowedComplexTypes = builder.build();
-    }
+    private static final ImmutableSet<String> parameterizableTypes = ImmutableSet.<String> builder().add(List.class.getName()).add(Map.class.getName()).build();
 
-    private static final ImmutableSet<String> parameterizableTypes;
+    private static final ImmutableSet<String> connectionConfigTypes = ImmutableSet.<String> builder()
+            .add("Configuration")
+            .add("ConnectionManagement")
+            .add("OAuth")
+            .add("OAuth2")
+            .build();
 
-    static {
-        final ImmutableSet.Builder<String> builder = ImmutableSet.builder();
-        builder.add(List.class.getName());
-        builder.add(Map.class.getName());
-        parameterizableTypes = builder.build();
-    }
+    public static final Predicate<AnnotationTree> ANNOTATION_TREE_PREDICATE = new Predicate<AnnotationTree>() {
 
-    private static final ImmutableSet<String> connectionConfigTypes;
-
-    static {
-        final ImmutableSet.Builder<String> builder = ImmutableSet.builder();
-        builder.add("Configuration");
-        builder.add("ConnectionManagement");
-        builder.add("OAuth");
-        builder.add("OAuth2");
-        connectionConfigTypes = builder.build();
-    }
+        @Override
+        public boolean apply(@Nullable AnnotationTree input) {
+            return input != null && input.annotationType().is(Kind.IDENTIFIER);
+        }
+    };
 
     private ClassParserUtils() {
     }
@@ -220,5 +217,15 @@ public class ClassParserUtils {
         }
         stack.push(((IdentifierTree) expressionTree).name());
         return Joiner.on('.').join(stack);
+    }
+
+    public static boolean isTestClass(ClassTree classTree) {
+        return Iterables.any(classTree.members(), new Predicate<Tree>() {
+
+            @Override
+            public boolean apply(@Nullable Tree input) {
+                return input != null && input.is(Kind.METHOD) && Iterables.any(((MethodTree) input).modifiers().annotations(), hasAnnotationPredicate(Test.class));
+            }
+        });
     }
 }
