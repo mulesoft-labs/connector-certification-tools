@@ -1,13 +1,15 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import javax.annotation.Nullable;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.junit.runners.Suite.SuiteClasses;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -21,12 +23,12 @@ import org.sonar.plugins.java.api.tree.NewArrayTree;
 import org.sonar.plugins.java.api.tree.Tree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-import javax.annotation.Nullable;
-import java.io.File;
-import java.util.List;
-import java.util.regex.Pattern;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
-@Rule(key = FunctionalTestSuiteCheck.KEY, name = "Functional test coverage", description = "Checks that: 1. There exists a @SuiteClasses annotation on Test Suite classes. 2. TestCases class names for processors end with 'TestCases'. 3. All test cases in each package (functional, system and unit) are included in their corresponding *TestSuite classes.", priority = Priority.CRITICAL, tags = { "connector-certification" })
+@Rule(key = FunctionalTestSuiteCheck.KEY, name = "Functional test coverage", description = "Checks that: 1. There exists a @SuiteClasses annotation on Test Suite classes. 2. TestCases class names for processors end with 'TestCases'. 3. All test cases in each package (functional, system and unit) are included in their corresponding *TestSuite classes.", priority = Priority.CRITICAL, tags = { "connector-certification"
+})
 @ActivatedByDefault
 public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
 
@@ -39,7 +41,7 @@ public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
     public final void visitClass(ClassTree tree) {
         IdentifierTree treeName = tree.simpleName();
         if (treeName != null && treeName.name().equals("FunctionalTestSuite")) {
-            final AnnotationTree runWithAnnotation = Iterables.find(tree.modifiers().annotations(), ClassParserUtils.hasAnnotationPredicate(SuiteClasses.class), null);
+            final AnnotationTree runWithAnnotation = Iterables.find(tree.modifiers().annotations(), ClassParserUtils.hasAnnotationPredicate("org.junit.runners.SuiteClasses"), null);
             if (runWithAnnotation == null) {
                 logAndRaiseIssue(tree, String.format("Missing @SuiteClasses annotation on Test Suite class '%s'.", tree.simpleName().name()));
             } else {
