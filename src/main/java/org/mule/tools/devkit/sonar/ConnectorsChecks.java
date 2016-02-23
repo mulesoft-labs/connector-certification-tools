@@ -4,6 +4,7 @@ import org.mule.tools.devkit.sonar.checks.java.ConfigFriendlyNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerProcessorCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestSuiteCheck;
 import org.mule.tools.devkit.sonar.checks.java.LicenseByCategoryCheck;
+import org.mule.tools.devkit.sonar.checks.java.NoAssertionsInBeforeOrAfterCheck;
 import org.mule.tools.devkit.sonar.checks.java.NumberOfComplexArgumentsCheck;
 import org.mule.tools.devkit.sonar.checks.java.NumberOfSimpleAndOptionalArgumentsCheck;
 import org.mule.tools.devkit.sonar.checks.java.PayloadDeprecationCheck;
@@ -53,6 +54,7 @@ public class ConnectorsChecks {
         builder.add(FunctionalTestSuiteCheck.class);
         builder.add(TestSuiteCheck.class);
         builder.add(TestCasesExtendAbstractTestCasesCheck.class);
+        builder.add(NoAssertionsInBeforeOrAfterCheck.class);
         return builder.build();
     }
 
