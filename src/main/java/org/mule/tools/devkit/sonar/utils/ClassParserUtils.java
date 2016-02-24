@@ -2,6 +2,7 @@ package org.mule.tools.devkit.sonar.utils;
 
 import java.math.BigDecimal;
 import java.util.ArrayDeque;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Deque;
 import java.util.List;
@@ -48,6 +49,7 @@ public class ClassParserUtils {
             .add(String.class.getName())
             .add(Enum.class.getName())
             .add(Date.class.getName())
+            .add(Calendar.class.getName())
             .add("org.mule.api.MuleMessage")
             .build();
 
