@@ -48,6 +48,7 @@ public class ClassParserUtils {
             .add(String.class.getName())
             .add(Enum.class.getName())
             .add(Date.class.getName())
+            .add("org.mule.api.MuleMessage")
             .build();
 
     private static final ImmutableSet<String> parameterizableTypes = ImmutableSet.<String> builder().add(List.class.getName()).add(Map.class.getName()).build();
