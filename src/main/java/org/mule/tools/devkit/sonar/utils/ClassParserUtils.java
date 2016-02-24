@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +37,7 @@ public class ClassParserUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(ClassParserUtils.class);
 
-    private static final ImmutableSet<String> allowedComplexTypes = ImmutableSet.<String> builder()
+    private static final Set<String> allowedComplexTypes = ImmutableSet.<String> builder()
             .add(Integer.class.getName())
             .add(Double.class.getName())
             .add(Long.class.getName())
@@ -53,14 +54,9 @@ public class ClassParserUtils {
             .add("org.mule.api.MuleMessage")
             .build();
 
-    private static final ImmutableSet<String> parameterizableTypes = ImmutableSet.<String> builder().add(List.class.getName()).add(Map.class.getName()).build();
+    private static final Set<String> parameterizableTypes = ImmutableSet.<String> builder().add(List.class.getName()).add(Map.class.getName()).build();
 
-    private static final ImmutableSet<String> connectionConfigTypes = ImmutableSet.<String> builder()
-            .add("Configuration")
-            .add("ConnectionManagement")
-            .add("OAuth")
-            .add("OAuth2")
-            .build();
+    private static final Set<String> connectionConfigTypes = ImmutableSet.<String> builder().add("Configuration").add("ConnectionManagement").add("OAuth").add("OAuth2").build();
 
     public static final Predicate<AnnotationTree> ANNOTATION_TREE_PREDICATE = new Predicate<AnnotationTree>() {
 
