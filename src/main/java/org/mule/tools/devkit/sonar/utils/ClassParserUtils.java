@@ -18,7 +18,6 @@ import org.sonar.plugins.java.api.tree.ExpressionTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MemberSelectExpressionTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
-import org.sonar.plugins.java.api.tree.PackageDeclarationTree;
 import org.sonar.plugins.java.api.tree.ParameterizedTypeTree;
 import org.sonar.plugins.java.api.tree.Tree;
 import org.sonar.plugins.java.api.tree.Tree.Kind;
@@ -197,18 +196,6 @@ public class ClassParserUtils {
                 return false;
             }
         };
-    }
-
-    public static String extractFullyQualifiedPackageName(PackageDeclarationTree tree) {
-        final Deque<String> stack = new ArrayDeque<>();
-        ExpressionTree expressionTree = tree.packageName();
-        while (expressionTree.is(Kind.MEMBER_SELECT)) {
-            MemberSelectExpressionTree mset = (MemberSelectExpressionTree) expressionTree;
-            stack.push(mset.identifier().name());
-            expressionTree = mset.expression();
-        }
-        stack.push(((IdentifierTree) expressionTree).name());
-        return Joiner.on('.').join(stack);
     }
 
     public static String extractFullyQualifiedClassName(MemberSelectExpressionTree tree) {
