@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mule.api.annotations.rest.RestCall;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -28,7 +27,7 @@ public class RestCallDeprecationCheck extends AbstractConnectorClassCheck {
         @SuppressWarnings("deprecation")
         @Override
         public boolean apply(@Nullable AnnotationTree input) {
-            return input != null && ClassParserUtils.is(input, RestCall.class);
+            return input != null && ClassParserUtils.is(input, "org.mule.api.annotations.rest.RestCall");
         }
     };
 

@@ -91,16 +91,6 @@ public class ClassParserUtils {
         };
     }
 
-    public static Predicate<AnnotationTree> hasAnnotationPredicate(final Class<?> annotationClass) {
-        return new Predicate<AnnotationTree>() {
-
-            @Override
-            public boolean apply(@Nullable AnnotationTree input) {
-                return input != null && is(input, annotationClass);
-            }
-        };
-    }
-
     public static Predicate<AnnotationTree> hasAnnotationPredicate(final String annotationClassName) {
         return new Predicate<AnnotationTree>() {
 

@@ -1,11 +1,7 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mule.api.annotations.param.Optional;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -15,7 +11,12 @@ import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-@Rule(key = NumberOfSimpleAndOptionalArgumentsCheck.KEY, name = "Too many @Optional arguments in a processor", description = "Checks, for every @Processor, that the number of optional arguments (each of which must be of simple-type) doesn't exceed the maximum allowed. If it does, the suggested approach is to wrap them all in a separate POJO class. ", priority = Priority.MAJOR, tags = { "connector-certification" })
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
+
+@Rule(key = NumberOfSimpleAndOptionalArgumentsCheck.KEY, name = "Too many @Optional arguments in a processor", description = "Checks, for every @Processor, that the number of optional arguments (each of which must be of simple-type) doesn't exceed the maximum allowed. If it does, the suggested approach is to wrap them all in a separate POJO class. ", priority = Priority.MAJOR, tags = { "connector-certification"
+})
 @ActivatedByDefault
 public class NumberOfSimpleAndOptionalArgumentsCheck extends AbstractConnectorClassCheck {
 
@@ -36,13 +37,13 @@ public class NumberOfSimpleAndOptionalArgumentsCheck extends AbstractConnectorCl
 
             @Override
             public boolean apply(@Nullable VariableTree input) {
-                return input != null && Iterables.any(input.modifiers().annotations(), ClassParserUtils.hasAnnotationPredicate(Optional.class));
+                return input != null && Iterables.any(input.modifiers().annotations(), ClassParserUtils.hasAnnotationPredicate("org.mule.api.annotations.param.Optional"));
             }
         })));
         if (count > maxArgumentsAllowed) {
-            final String message = String
-                    .format("Processor '%s' has %d simple-type parameters marked as @Optional (more than %d, which is the maximum allowed). It's strongly recommended that all optional parameters are grouped inside a separate POJO class.",
-                            tree.simpleName(), count, maxArgumentsAllowed);
+            final String message = String.format(
+                    "Processor '%s' has %d simple-type parameters marked as @Optional (more than %d, which is the maximum allowed). It's strongly recommended that all optional parameters are grouped inside a separate POJO class.",
+                    tree.simpleName(), count, maxArgumentsAllowed);
             logAndRaiseIssue(processorAnnotation, message);
         }
     }

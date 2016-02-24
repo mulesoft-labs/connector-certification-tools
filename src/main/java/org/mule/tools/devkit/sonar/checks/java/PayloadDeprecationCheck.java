@@ -1,10 +1,7 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mule.api.annotations.param.Payload;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -12,7 +9,11 @@ import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
 
-@Rule(key = PayloadDeprecationCheck.KEY, name = "@Payload annotation is deprecated", description = "Support for @Payload has been deprecated. Use @Default(\"#[payload]\") instead.", priority = Priority.CRITICAL, tags = { "connector-certification" })
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+
+@Rule(key = PayloadDeprecationCheck.KEY, name = "@Payload annotation is deprecated", description = "Support for @Payload has been deprecated. Use @Default(\"#[payload]\") instead.", priority = Priority.CRITICAL, tags = { "connector-certification"
+})
 public class PayloadDeprecationCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "payload-annotation-deprecated";
@@ -20,7 +21,7 @@ public class PayloadDeprecationCheck extends AbstractConnectorClassCheck {
 
         @Override
         public boolean apply(@Nullable VariableTree input) {
-            return input != null && Iterables.any(input.modifiers().annotations(), ClassParserUtils.hasAnnotationPredicate(Payload.class));
+            return input != null && Iterables.any(input.modifiers().annotations(), ClassParserUtils.hasAnnotationPredicate("org.mule.api.annotations.param.Payload"));
         }
     };
 

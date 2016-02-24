@@ -1,13 +1,11 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import java.io.File;
+import java.util.List;
+
 import org.apache.maven.project.MavenProject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
-import org.mule.api.annotations.licensing.RequiresEntitlement;
 import org.mule.tools.devkit.sonar.checks.ConnectorCategory;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.mule.tools.devkit.sonar.utils.PomUtils;
@@ -21,10 +19,12 @@ import org.sonar.plugins.java.api.tree.ExpressionTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.Tree;
 
-import java.io.File;
-import java.util.List;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
-@Rule(key = LicenseByCategoryCheck.KEY, name = "Licensing annotations must match the category declared in pom.xml", description = "Checks the correct usage of @RequiresEnterpriseLicense and @RequiresEntitlement according to category defined in pom.xml.", priority = Priority.BLOCKER, tags = { "connector-certification" })
+@Rule(key = LicenseByCategoryCheck.KEY, name = "Licensing annotations must match the category declared in pom.xml", description = "Checks the correct usage of @RequiresEnterpriseLicense and @RequiresEntitlement according to category defined in pom.xml.", priority = Priority.BLOCKER, tags = { "connector-certification"
+})
 public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "license-by-category";
@@ -33,7 +33,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
         @Override
         public boolean apply(@Nullable AnnotationTree input) {
-            return input != null && ClassParserUtils.is(input, RequiresEnterpriseLicense.class);
+            return input != null && ClassParserUtils.is(input, "org.mule.api.annotations.licensing.RequiresEnterpriseLicense");
         }
     };
 
@@ -41,7 +41,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
 
         @Override
         public boolean apply(@Nullable AnnotationTree input) {
-            return input != null && ClassParserUtils.is(input, RequiresEntitlement.class);
+            return input != null && ClassParserUtils.is(input, "org.mule.api.annotations.licensing.RequiresEntitlement");
         }
     };
 

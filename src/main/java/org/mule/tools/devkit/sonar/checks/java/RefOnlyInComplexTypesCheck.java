@@ -1,10 +1,9 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mule.api.annotations.param.RefOnly;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -14,9 +13,11 @@ import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-import java.util.List;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
-@Rule(key = RefOnlyInComplexTypesCheck.KEY, name = "Complex-type arguments must be marked with @RefOnly", description = "Checks that all complex-type arguments of a processor are annotated with @RefOnly.", priority = Priority.CRITICAL, tags = { "connector-certification" })
+@Rule(key = RefOnlyInComplexTypesCheck.KEY, name = "Complex-type arguments must be marked with @RefOnly", description = "Checks that all complex-type arguments of a processor are annotated with @RefOnly.", priority = Priority.CRITICAL, tags = { "connector-certification"
+})
 @ActivatedByDefault
 public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
@@ -26,7 +27,7 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
         @Override
         public boolean apply(@Nullable AnnotationTree input) {
-            return input != null && ClassParserUtils.is(input, RefOnly.class);
+            return input != null && ClassParserUtils.is(input, "org.mule.api.annotations.param.RefOnly");
         }
     };
 

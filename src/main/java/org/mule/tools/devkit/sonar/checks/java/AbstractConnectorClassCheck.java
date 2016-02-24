@@ -1,9 +1,6 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
 import org.jetbrains.annotations.NotNull;
-import org.mule.api.annotations.Connector;
-import org.mule.api.annotations.Processor;
-import org.mule.api.annotations.Source;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.ClassTree;
@@ -17,7 +14,7 @@ public abstract class AbstractConnectorClassCheck extends BaseLoggingVisitor {
     @Override
     public final void visitClass(ClassTree tree) {
         for (AnnotationTree annotationTree : Iterables.filter(tree.modifiers().annotations(), ClassParserUtils.ANNOTATION_TREE_PREDICATE)) {
-            if (ClassParserUtils.is(annotationTree, Connector.class)) {
+            if (ClassParserUtils.is(annotationTree, "org.mule.api.annotations.Connector")) {
                 verifyConnector(tree, (IdentifierTree) annotationTree.annotationType());
             }
         }
@@ -28,9 +25,9 @@ public abstract class AbstractConnectorClassCheck extends BaseLoggingVisitor {
     public final void visitMethod(MethodTree tree) {
         for (AnnotationTree annotationTree : Iterables.filter(tree.modifiers().annotations(), ClassParserUtils.ANNOTATION_TREE_PREDICATE)) {
             final IdentifierTree idf = (IdentifierTree) annotationTree.annotationType();
-            if (ClassParserUtils.is(annotationTree, Processor.class)) {
+            if (ClassParserUtils.is(annotationTree, "org.mule.api.annotations.Processor")) {
                 verifyProcessor(tree, idf);
-            } else if (ClassParserUtils.is(annotationTree, Source.class)) {
+            } else if (ClassParserUtils.is(annotationTree, "org.mule.api.annotations.Source")) {
                 verifySource(tree, idf);
             }
         }
