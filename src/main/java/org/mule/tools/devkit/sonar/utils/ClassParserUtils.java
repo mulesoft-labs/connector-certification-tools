@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.plugins.java.api.semantic.Type;
@@ -102,6 +101,16 @@ public class ClassParserUtils {
         };
     }
 
+    public static Predicate<AnnotationTree> hasAnnotationPredicate(final String annotationClassName) {
+        return new Predicate<AnnotationTree>() {
+
+            @Override
+            public boolean apply(@Nullable AnnotationTree input) {
+                return input != null && is(input, annotationClassName);
+            }
+        };
+    }
+
     public static Predicate<AnnotationTree> hasConfigAnnotationPredicate() {
 
         return new Predicate<AnnotationTree>() {
@@ -141,6 +150,11 @@ public class ClassParserUtils {
     public static boolean is(@NotNull AnnotationTree annotation, @NotNull final Class<?> annotationClass) {
         final String annotationSimpleName = annotation.annotationType().toString();
         return annotationSimpleName.equals(annotationClass.getSimpleName()) || annotationSimpleName.equals(annotationClass.getCanonicalName());
+    }
+
+    public static boolean is(@NotNull AnnotationTree annotation, @NotNull final String annotationClassName) {
+        final String annotationSimpleName = annotation.annotationType().toString();
+        return annotationSimpleName.equals(annotationClassName) || annotationSimpleName.equals(annotationClassName.substring(annotationClassName.lastIndexOf(".") + 1));
     }
 
     public static String getStringForType(TypeTree type) {
@@ -224,7 +238,7 @@ public class ClassParserUtils {
 
             @Override
             public boolean apply(@Nullable Tree input) {
-                return input != null && input.is(Kind.METHOD) && Iterables.any(((MethodTree) input).modifiers().annotations(), hasAnnotationPredicate(Test.class));
+                return input != null && input.is(Kind.METHOD) && Iterables.any(((MethodTree) input).modifiers().annotations(), hasAnnotationPredicate("org.junit.Test"));
             }
         });
     }

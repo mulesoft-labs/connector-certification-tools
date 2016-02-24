@@ -2,8 +2,6 @@ package org.mule.tools.devkit.sonar.checks.java;
 
 import java.util.List;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -17,7 +15,8 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import com.google.common.collect.Iterables;
 
-@Rule(key = TestSuiteCheck.KEY, name = "Test Suite classes need to be annotated with @RunWith(Suite.class)", description = "Test Suite classes need to be annotated with @RunWith(Suite.class)", priority = Priority.CRITICAL, tags = { "connector-certification" })
+@Rule(key = TestSuiteCheck.KEY, name = "Test Suite classes need to be annotated with @RunWith(Suite.class)", description = "Test Suite classes need to be annotated with @RunWith(Suite.class)", priority = Priority.CRITICAL, tags = { "connector-certification"
+})
 @ActivatedByDefault
 public class TestSuiteCheck extends BaseLoggingVisitor {
 
@@ -27,7 +26,7 @@ public class TestSuiteCheck extends BaseLoggingVisitor {
     public final void visitClass(ClassTree tree) {
         IdentifierTree treeName = tree.simpleName();
         if (treeName != null && treeName.name().endsWith("TestSuite")) {
-            final AnnotationTree runWithAnnotation = Iterables.find(tree.modifiers().annotations(), ClassParserUtils.hasAnnotationPredicate(RunWith.class), null);
+            final AnnotationTree runWithAnnotation = Iterables.find(tree.modifiers().annotations(), ClassParserUtils.hasAnnotationPredicate("org.junit.runner.RunWith"), null);
             if (runWithAnnotation == null) {
                 logAndRaiseIssue(tree, String.format("Missing @RunWith annotation on Test Suite class '%s'.", tree.simpleName().name()));
             } else {
@@ -41,18 +40,18 @@ public class TestSuiteCheck extends BaseLoggingVisitor {
                         final ExpressionTree expressionTree = ((MemberSelectExpressionTree) argument).expression();
                         if (expressionTree.is(Tree.Kind.IDENTIFIER)) {
                             final IdentifierTree identifierTree = (IdentifierTree) expressionTree;
-                            if (!identifierTree.name().equals(Suite.class.getSimpleName())) {
+                            if (!identifierTree.name().equals("Suite")) {
                                 logAndRaiseIssue(tree, String.format(
                                         "Found @RunWith annotation on Test Suite class '%s', but different runner specified (%s.class instead of %s.class).", tree.simpleName()
-                                                .name(), identifierTree.name(), Suite.class.getSimpleName()));
+                                                .name(), identifierTree.name(), "Suite"));
                             }
                         } else if (expressionTree.is(Tree.Kind.MEMBER_SELECT)) {
                             final MemberSelectExpressionTree memberSelectExpressionTree = (MemberSelectExpressionTree) expressionTree;
                             final String fullyQualifiedClassName = ClassParserUtils.extractFullyQualifiedClassName(memberSelectExpressionTree);
-                            if (!fullyQualifiedClassName.equals(Suite.class.getName())) {
+                            if (!fullyQualifiedClassName.equals("org.junit.runners.Suite")) {
                                 logAndRaiseIssue(tree, String.format(
                                         "Found @RunWith annotation on Test Suite class '%s', but different runner specified (%s.class instead of %s.class).", tree.simpleName()
-                                                .name(), fullyQualifiedClassName, Suite.class.getSimpleName()));
+                                                .name(), fullyQualifiedClassName, "Suite"));
                             }
                         }
                     }
