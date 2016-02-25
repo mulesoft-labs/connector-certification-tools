@@ -1,9 +1,10 @@
 package org.mule.tools.devkit.sonar.checks.structure;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
+import java.util.regex.Pattern;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
@@ -16,17 +17,18 @@ import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
-import java.util.regex.Pattern;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
-@Rule(key = TestSuiteFoldersExistCheck.KEY, name = "Test Suite directories must be present", description = "There must exist 3 test suite directories: one for Functional ('automation/functional'), one for System ('automation/system') and one for Unit ('automation/unit'). Also, there must be a Runner package ('automation/runner').", priority = Priority.CRITICAL, tags = { "connector-certification" })
+@Rule(key = TestSuiteFoldersExistCheck.KEY, name = "Test Suite directories must be present", description = "There must exist 3 test suite directories: one for Functional ('automation/functional'), one for System ('automation/system') and one for Unit ('automation/unit'). Also, there must be a Runner package ('automation/runner').", priority = Priority.CRITICAL, tags = { "connector-certification"
+})
 public class TestSuiteFoldersExistCheck implements StructureCheck {
 
     public static final String KEY = "test-suite-folders-exists";
     public static final ImmutableList<String> packages = ImmutableList.of("functional", "system", "unit", "runner");
-    public static final Pattern TEST_PACKAGES_PATTERN = Pattern.compile("^((.*?)(org/mule/modules)+(/\\w+/)+(automation/)+(functional|system|unit|runner)$)");
+    public static final Pattern TEST_PACKAGES_PATTERN = Pattern.compile("^((.*?)(org/mule/module[s]?)+(/\\w+/)+(automation/)+(functional|system|unit|runner)$)");
     public static final Predicate<File> HAS_VALID_TEST_PACKAGE = new Predicate<File>() {
 
         @Override

@@ -1,5 +1,6 @@
 package org.mule.tools.devkit.sonar;
 
+import org.mule.tools.devkit.sonar.checks.java.BasePackageCheck;
 import org.mule.tools.devkit.sonar.checks.java.ConfigFriendlyNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerProcessorCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestSuiteCheck;
@@ -46,6 +47,7 @@ public class ConnectorsChecks {
         builder.add(LicenseByCategoryCheck.class);
         builder.add(RestCallDeprecationCheck.class);
         builder.add(RedundantExceptionNameCheck.class);
+        builder.add(BasePackageCheck.class);
         return builder.build();
     }
 

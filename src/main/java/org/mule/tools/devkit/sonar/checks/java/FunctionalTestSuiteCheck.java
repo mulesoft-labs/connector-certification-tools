@@ -35,7 +35,7 @@ public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
     public static final String KEY = "functional-test-suite-coverage";
     public static final String SUFFIX = "TestCases";
     public static final String TEST_DIR = "src/test/java";
-    public static final Pattern FILE_PATH_PATTERN = Pattern.compile("^((src/test/java/org/mule/modules)+(/\\w+/)+(automation/functional/)+(\\w*.java)$)");
+    public static final Pattern FILE_PATH_PATTERN = Pattern.compile("^((src/test/java/org/mule/module[s]?)+(/\\w+/)+(automation/functional/)+(\\w*.java)$)");
 
     @Override
     public final void visitClass(ClassTree tree) {
