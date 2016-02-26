@@ -12,7 +12,7 @@ public abstract class BaseLoggingVisitor extends BaseTreeVisitor implements Java
     JavaFileScannerContext context;
 
     @Override
-    public final void scanFile(JavaFileScannerContext context) {
+    public void scanFile(JavaFileScannerContext context) {
         this.context = context;
         scan(context.getTree());
     }
