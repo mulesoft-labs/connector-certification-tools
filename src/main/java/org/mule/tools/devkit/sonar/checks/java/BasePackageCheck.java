@@ -3,7 +3,6 @@ package org.mule.tools.devkit.sonar.checks.java;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.java.checks.helpers.ExpressionsHelper;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.plugins.java.api.tree.CompilationUnitTree;
@@ -27,7 +26,7 @@ public class BasePackageCheck extends BaseLoggingVisitor {
                     CompilationUnitTree compilationUnitTree = (CompilationUnitTree) parent;
                     final PackageDeclarationTree packageDeclarationTree = compilationUnitTree.packageDeclaration();
                     if (packageDeclarationTree != null) {
-                        final String packageName = ExpressionsHelper.concatenate(packageDeclarationTree.packageName());
+                        final String packageName = ClassParserUtils.concatenate(packageDeclarationTree.packageName());
                         if (packageName.startsWith("org.mule.module.")) {
                             logAndRaiseIssue(packageDeclarationTree,
                                     String.format("Connector base package found '%s'. Consider moving it to '%s'.", packageName, packageName.replaceFirst("module", "modules")));

@@ -2,7 +2,7 @@ package org.mule.tools.devkit.sonar;
 
 import org.mule.tools.devkit.sonar.checks.java.BasePackageCheck;
 import org.mule.tools.devkit.sonar.checks.java.ConfigFriendlyNameCheck;
-import org.mule.tools.devkit.sonar.checks.java.FunctionalTestForMetadataCategoryCheck;
+import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerMetadataCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerProcessorCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestSuiteCheck;
 import org.mule.tools.devkit.sonar.checks.java.LicenseByCategoryCheck;
@@ -41,6 +41,7 @@ public class ConnectorsChecks {
         final ImmutableList.Builder<Class<? extends JavaCheck>> builder = ImmutableList.builder();
         builder.add(ConfigFriendlyNameCheck.class);
         builder.add(FunctionalTestPerProcessorCheck.class);
+        builder.add(FunctionalTestPerMetadataCategoryCheck.class);
         builder.add(NumberOfComplexArgumentsCheck.class);
         builder.add(NumberOfSimpleAndOptionalArgumentsCheck.class);
         builder.add(PayloadDeprecationCheck.class);
@@ -49,7 +50,6 @@ public class ConnectorsChecks {
         builder.add(RestCallDeprecationCheck.class);
         builder.add(RedundantExceptionNameCheck.class);
         builder.add(BasePackageCheck.class);
-        builder.add(FunctionalTestForMetadataCategoryCheck.class);
         return builder.build();
     }
 

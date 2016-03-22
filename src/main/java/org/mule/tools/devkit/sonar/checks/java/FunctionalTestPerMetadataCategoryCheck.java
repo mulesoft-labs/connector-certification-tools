@@ -18,10 +18,10 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import com.google.common.collect.Iterables;
 
-@Rule(key = FunctionalTestForMetadataCategoryCheck.KEY, name = "One test per metadata category", description = "Checks that there is one test case per class annotated as @MetaDataCategory and that its name ends with the suffix 'TestCases' and that it inherits from DevKit's AbstractMetaDataTestCase.", priority = Priority.CRITICAL, tags = { "connector-certification"
+@Rule(key = FunctionalTestPerMetadataCategoryCheck.KEY, name = "One test per metadata category", description = "Checks that there is one test case per class annotated as @MetaDataCategory and that its name ends with the suffix 'TestCases' and that it inherits from DevKit's AbstractMetaDataTestCase.", priority = Priority.MAJOR, tags = { "connector-certification"
 })
 @ActivatedByDefault
-public class FunctionalTestForMetadataCategoryCheck extends BaseLoggingVisitor {
+public class FunctionalTestPerMetadataCategoryCheck extends BaseLoggingVisitor {
 
     public static final String KEY = "functional-test-per-metadata-category";
     public static final String TEST_DIR = "src/test/java";
@@ -37,17 +37,17 @@ public class FunctionalTestForMetadataCategoryCheck extends BaseLoggingVisitor {
         for (AnnotationTree annotationTree : Iterables.filter(tree.modifiers().annotations(), ClassParserUtils.ANNOTATION_TREE_PREDICATE)) {
             if (ClassParserUtils.is(annotationTree, "org.mule.api.annotations.components.MetaDataCategory")) {
                 String categoryName = extractCategoryName(tree);
-                String testClassName = categoryName + "MetaDataTestCases";
+                String testClassName = categoryName + "MetaDataTestCases.java";
                 File dir = new File(TEST_DIR);
                 List<File> testFiles = (List<File>) FileUtils.listFiles(dir, new WildcardFileFilter(testClassName), TrueFileFilter.INSTANCE);
 
                 if (testFiles.size() != 1) {
                     logAndRaiseIssue(tree,
-                            String.format("There should be one functional test per metadata category. Add test '%s' for category '%s'.", testClassName, categoryName));
+                            String.format("There should be one functional test per metadata category. Add test '%s' for category '%s'.", testClassName, tree.simpleName().name()));
                 } else {
                     Matcher m = TEST_PARENT_DIR_PATTERN.matcher(testFiles.get(0).getParent());
                     if (!m.matches()) {
-                        logAndRaiseIssue(tree, String.format("'%s' must be placed under directory 'src/test/java/.../automation/functional'.", testClassName));
+                        logAndRaiseIssue(tree, String.format("'%s' must be placed under directory 'src/test/java/org/mule/modules/.../automation/functional'.", testClassName));
                     }
                 }
             }
