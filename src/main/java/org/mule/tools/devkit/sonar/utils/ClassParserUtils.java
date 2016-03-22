@@ -3,6 +3,8 @@ package org.mule.tools.devkit.sonar.utils;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.plugins.java.api.semantic.Type;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
 import org.sonar.plugins.java.api.tree.ClassTree;
+import org.sonar.plugins.java.api.tree.ExpressionTree;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MemberSelectExpressionTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
@@ -202,5 +205,29 @@ public class ClassParserUtils {
                 return input != null && input.is(Kind.METHOD) && Iterables.any(((MethodTree) input).modifiers().annotations(), hasAnnotationPredicate("org.junit.Test"));
             }
         });
+    }
+
+    public static String concatenate(@Nullable ExpressionTree tree) {
+        if (tree == null) {
+            return "";
+        }
+        Deque<String> pieces = new LinkedList<>();
+        ExpressionTree expr = tree;
+        while (expr.is(Tree.Kind.MEMBER_SELECT)) {
+            MemberSelectExpressionTree mse = (MemberSelectExpressionTree) expr;
+            pieces.push(mse.identifier().name());
+            pieces.push(".");
+            expr = mse.expression();
+        }
+        if (expr.is(Tree.Kind.IDENTIFIER)) {
+            IdentifierTree idt = (IdentifierTree) expr;
+            pieces.push(idt.name());
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String piece : pieces) {
+            sb.append(piece);
+        }
+        return sb.toString();
     }
 }
