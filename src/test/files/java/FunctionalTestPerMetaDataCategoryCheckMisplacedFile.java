@@ -5,8 +5,7 @@ import org.mule.api.annotations.MetaDataKeyRetriever;
 import org.mule.api.annotations.MetaDataRetriever;
 
 @MetaDataCategory
-public class CreateLeadFieldsMetaData { // Noncompliant {{'CreateLeadFieldsMetaDataTestCases.java' must be placed under directory
-                                        // 'src/test/java/org/mule/modules/.../automation/functional'.}}
+public class CreateLeadFieldsMetaData { // Noncompliant {{'CreateLeadFieldsMetaDataTestCases.java' must be placed under directory 'src/test/java/org/mule/modules/.../automation/functional'.}}
 
     @MetaDataKeyRetriever
     public List<MetaDataKey> getMetaDataKeys() throws SomeException {

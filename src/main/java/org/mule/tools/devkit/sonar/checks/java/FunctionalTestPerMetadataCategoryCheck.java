@@ -18,7 +18,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
 import com.google.common.collect.Iterables;
 
-@Rule(key = FunctionalTestPerMetadataCategoryCheck.KEY, name = "One test per metadata category", description = "Checks that there is one test case per class annotated as @MetaDataCategory and that its name ends with the suffix 'TestCases' and that it inherits from DevKit's AbstractMetaDataTestCase.", priority = Priority.MAJOR, tags = { "connector-certification"
+@Rule(key = FunctionalTestPerMetadataCategoryCheck.KEY, name = "One test per metadata category", description = "Checks that there is one test case per class annotated as @MetaDataCategory and that its name ends with the suffix 'TestCases'.", priority = Priority.MAJOR, tags = { "connector-certification"
 })
 @ActivatedByDefault
 public class FunctionalTestPerMetadataCategoryCheck extends BaseLoggingVisitor {
