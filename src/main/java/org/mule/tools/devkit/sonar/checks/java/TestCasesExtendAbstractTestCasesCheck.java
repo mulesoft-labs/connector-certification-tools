@@ -7,7 +7,7 @@ import org.sonar.plugins.java.api.semantic.Symbol;
 import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-@Rule(key = TestCasesExtendAbstractTestCasesCheck.KEY, name = "TestCases classes should extend project's AbstractTestCase class", description = "Test Cases should extend project's AbstractTestCase class", priority = Priority.CRITICAL, tags = { "connector-certification"
+@Rule(key = TestCasesExtendAbstractTestCasesCheck.KEY, name = "TestCases classes should inherit from CTF's AbstractTestCase class", description = "Test Cases should inherit from CTF's AbstractTestCase class", priority = Priority.CRITICAL, tags = { "connector-certification"
 })
 @ActivatedByDefault
 public class TestCasesExtendAbstractTestCasesCheck extends BaseLoggingVisitor {
@@ -21,7 +21,8 @@ public class TestCasesExtendAbstractTestCasesCheck extends BaseLoggingVisitor {
         boolean isFunctional = owner.isPackageSymbol() && owner.name().endsWith("functional");
         boolean isTestClass = ClassParserUtils.isTestClass(classTree);
 
-        if (isTestClass && isFunctional && !classTree.symbol().type().isSubtypeOf("org.mule.tools.devkit.ctf.junit.AbstractTestCase")) {
+        if (isTestClass && isFunctional && classTree.simpleName() != null && !classTree.simpleName().name().endsWith("MetaDataTestCases")
+                && !classTree.symbol().type().isSubtypeOf("org.mule.tools.devkit.ctf.junit.AbstractTestCase")) {
             logAndRaiseIssue(classTree, String.format("Test case '%s' should inherit from AbstractTestCase.", classTree.simpleName().name()));
         }
     }
