@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
@@ -40,7 +39,7 @@ public class FunctionalTestPerMetadataCategoryCheck extends BaseLoggingVisitor {
                 String categoryName = extractCategoryName(tree);
                 String testClassName = categoryName + "MetaDataTestCases.java";
                 File dir = new File(TEST_DIR);
-                List<File> testFiles = (List<File>) FileUtils.listFiles(dir, new WildcardFileFilter(testClassName, IOCase.INSENSITIVE), TrueFileFilter.INSTANCE);
+                List<File> testFiles = (List<File>) FileUtils.listFiles(dir, new WildcardFileFilter(testClassName), TrueFileFilter.INSTANCE);
 
                 if (testFiles.size() != 1) {
                     logAndRaiseIssue(tree,
