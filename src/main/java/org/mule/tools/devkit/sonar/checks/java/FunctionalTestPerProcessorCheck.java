@@ -37,7 +37,7 @@ public class FunctionalTestPerProcessorCheck extends AbstractConnectorClassCheck
         } else {
             Matcher m = TEST_PARENT_DIR_PATTERN.matcher(testFiles.get(0).getParent());
             if (!m.matches()) {
-                logAndRaiseIssue(tree, String.format("'%s' must be placed under directory 'src/test/java/.../automation/functional'.", processorTestName));
+                logAndRaiseIssue(tree, String.format("'%s' must be placed under directory 'src/test/java/org/mule/modules/.../automation/functional'.", processorTestName));
             }
         }
 

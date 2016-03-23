@@ -52,6 +52,7 @@ public class ClassParserUtils {
             .add(Date.class.getName())
             .add(Calendar.class.getName())
             .add("org.mule.api.MuleMessage")
+            .add("org.mule.api.MuleEvent")
             .build();
 
     private static final Set<String> parameterizableTypes = ImmutableSet.<String> builder().add(List.class.getName()).add(Map.class.getName()).build();

@@ -5,7 +5,7 @@ import org.mule.api.annotations.Processor;
 public class FunctionalTestPerProcessorCheckMisplacedFile {
 
     @Processor
-    public void methodC() { // Noncompliant {{'MethodCTestCases.java' must be placed under directory 'src/test/java/.../automation/functional'.}}
+    public void methodC() { // Noncompliant {{'MethodCTestCases.java' must be placed under directory 'src/test/java/org/mule/modules/.../automation/functional'.}}
     }
 
 }

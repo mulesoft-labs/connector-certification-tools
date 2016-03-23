@@ -1,5 +1,6 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
+import org.apache.commons.lang.StringUtils;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -21,7 +22,7 @@ public class MetaDataTestCasesExtendAbstractMetaDataTestCaseCheck extends BaseLo
         boolean isFunctional = owner.isPackageSymbol() && owner.name().endsWith("functional");
         boolean isTestClass = ClassParserUtils.isTestClass(classTree);
 
-        if (isTestClass && isFunctional && classTree.simpleName() != null && classTree.simpleName().name().endsWith("MetaDataTestCases")
+        if (isTestClass && isFunctional && classTree.simpleName() != null && StringUtils.endsWithIgnoreCase(classTree.simpleName().name(), "MetaDataTestCases")
                 && !classTree.symbol().type().isSubtypeOf("org.mule.tools.devkit.ctf.junit.AbstractMetaDataTestCase")) {
             logAndRaiseIssue(classTree, String.format("MetaData Test Case '%s' should inherit from AbstractMetaDataTestCase.", classTree.simpleName().name()));
         }
