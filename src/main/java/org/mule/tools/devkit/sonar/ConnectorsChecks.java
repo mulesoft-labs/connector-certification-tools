@@ -26,6 +26,7 @@ import org.mule.tools.devkit.sonar.checks.structure.IconsExistCheck;
 import org.mule.tools.devkit.sonar.checks.structure.LicenseDeclarationFilesCheck;
 import org.mule.tools.devkit.sonar.checks.structure.ReadmeExistsCheck;
 import org.mule.tools.devkit.sonar.checks.structure.ReleaseNotesExistsCheck;
+import org.mule.tools.devkit.sonar.checks.structure.TestDataBuilderExistsCheck;
 import org.mule.tools.devkit.sonar.checks.structure.TestResourcesFolderExistsCheck;
 import org.mule.tools.devkit.sonar.checks.structure.TestSuiteFoldersExistCheck;
 import org.mule.tools.devkit.sonar.checks.structure.UserManualExistsCheck;
@@ -84,6 +85,7 @@ public class ConnectorsChecks {
         builder.add(TestSuiteFoldersExistCheck.class);
         builder.add(UserManualExistsCheck.class);
         builder.add(DemoExistCheck.class);
+        builder.add(TestDataBuilderExistsCheck.class);
         return builder.build();
     }
 }

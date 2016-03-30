@@ -71,6 +71,7 @@ public class StructureSensor implements Sensor {
         scanners.add(new TestResourcesFolderExistsCheck(fileSystem));
         scanners.add(new TestSuiteFoldersExistCheck(fileSystem));
         scanners.add(new DemoExistCheck(fileSystem));
+        scanners.add(new TestDataBuilderExistsCheck(fileSystem));
         return scanners;
     }
 }
