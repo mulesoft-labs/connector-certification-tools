@@ -1,7 +1,7 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import java.util.List;
+
 import org.jetbrains.annotations.Nullable;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
@@ -14,15 +14,25 @@ import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.LiteralTree;
 import org.sonar.plugins.java.api.tree.Tree;
 
-import java.util.List;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
-@Rule(key = ConfigFriendlyNameCheck.KEY, name = "@Config 'friendlyName' must follow a convention.", description = "Checks that @MetadataCategory follows a naming convention.", priority = Priority.MAJOR, tags = { "connector-certification" })
+@Rule(key = ConfigFriendlyNameCheck.KEY, name = "@Config 'friendlyName' must follow a convention.", description = "Checks that @MetadataCategory follows a naming convention.", priority = Priority.MAJOR, tags = { "connector-certification"
+})
 public class ConfigFriendlyNameCheck extends BaseLoggingVisitor {
 
     public static final String KEY = "config-friendly-name";
     public static final String DEFAULT_CONFIG_NAME = "Configuration";
     public static final String OAUTH_CONFIG_NAME = "OAuth 1.0";
     public static final String OAUTH_2_CONFIG_NAME = "OAuth 2.0";
+
+    final Predicate<ExpressionTree> IS_FRIENDLY_NAME_PREDICATE = new Predicate<ExpressionTree>() {
+
+        @Override
+        public boolean apply(@Nullable ExpressionTree input) {
+            return input != null && input.is(Tree.Kind.ASSIGNMENT) && "friendlyName".equals(((AssignmentExpressionTree) input).variable().toString());
+        }
+    };
 
     @Override
     public final void visitClass(ClassTree tree) {
@@ -36,18 +46,7 @@ public class ConfigFriendlyNameCheck extends BaseLoggingVisitor {
                 logAndRaiseIssue(annotation,
                         String.format("@%s must define a friendlyName. If there is a single configuration, 'Configuration' must be used as friendlyName.", annotationName));
             } else {
-                AssignmentExpressionTree argument;
-                if (!arguments.isEmpty()) {
-                    argument = (AssignmentExpressionTree) Iterables.find(arguments, new Predicate<ExpressionTree>() {
-
-                        @Override
-                        public boolean apply(@Nullable ExpressionTree input) {
-                            return input != null && input.is(Tree.Kind.ASSIGNMENT) && "friendlyName".equals(((AssignmentExpressionTree) input).variable().toString());
-                        }
-                    }, null);
-                } else {
-                    argument = (AssignmentExpressionTree) Iterables.getOnlyElement(arguments);
-                }
+                AssignmentExpressionTree argument = (AssignmentExpressionTree) Iterables.find(arguments, IS_FRIENDLY_NAME_PREDICATE, null);
 
                 final LiteralTree expression = (LiteralTree) argument.expression();
                 String friendlyName = expression.token().text().replaceAll("^\"|\"$", "");
