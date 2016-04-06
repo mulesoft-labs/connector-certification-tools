@@ -17,7 +17,7 @@ import org.sonar.plugins.java.api.tree.Tree;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
-@Rule(key = ConfigFriendlyNameCheck.KEY, name = "@Config 'friendlyName' must follow a convention.", description = "Checks that @MetadataCategory follows a naming convention.", priority = Priority.MAJOR, tags = { "connector-certification"
+@Rule(key = ConfigFriendlyNameCheck.KEY, name = "@Config 'friendlyName' must follow a convention.", description = "Checks that @Config follows a naming convention.", priority = Priority.MAJOR, tags = { "connector-certification"
 })
 public class ConfigFriendlyNameCheck extends BaseLoggingVisitor {
 
