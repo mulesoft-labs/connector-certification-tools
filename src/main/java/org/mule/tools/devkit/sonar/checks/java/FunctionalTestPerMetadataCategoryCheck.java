@@ -42,12 +42,12 @@ public class FunctionalTestPerMetadataCategoryCheck extends BaseLoggingVisitor {
                 List<File> testFiles = (List<File>) FileUtils.listFiles(dir, new WildcardFileFilter(testClassName), TrueFileFilter.INSTANCE);
 
                 if (testFiles.size() != 1) {
-                    logAndRaiseIssue(tree,
+                    logAndRaiseIssue(tree.simpleName(),
                             String.format("There should be one functional test per metadata category. Add test '%s' for category '%s'.", testClassName, tree.simpleName().name()));
                 } else {
                     Matcher m = TEST_PARENT_DIR_PATTERN.matcher(testFiles.get(0).getParent());
                     if (!m.matches()) {
-                        logAndRaiseIssue(tree, String.format("'%s' must be placed under directory 'src/test/java/org/mule/modules/.../automation/functional'.", testClassName));
+                        logAndRaiseIssue(tree.simpleName(), String.format("'%s' must be placed under directory 'src/test/java/org/mule/modules/.../automation/functional'.", testClassName));
                     }
                 }
             }

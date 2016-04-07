@@ -84,26 +84,26 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
                 break;
 
             default:
-                logAndRaiseIssue(classTree, "Invalid category specified in pom.xml");
+                logAndRaiseIssue(classTree.simpleName(), "Invalid category specified in pom.xml");
                 break;
         }
     }
 
     private void checkCommunity(@NotNull ClassTree classTree, boolean hasEnterpriseAnnotation, boolean hasEntitlementAnnotation) {
         if (hasEnterpriseAnnotation || hasEntitlementAnnotation) {
-            logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense and @RequiresEntitlement must not be present for Community category.");
+            logAndRaiseIssue(classTree.simpleName(), "@RequiresEnterpriseLicense and @RequiresEntitlement must not be present for Community category.");
         }
     }
 
     private void checkSelectOrCertified(@NotNull ClassTree classTree, boolean hasEnterpriseAnnotation, boolean hasEntitlementAnnotation) {
         if (!hasEnterpriseAnnotation || hasEntitlementAnnotation) {
-            logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.");
+            logAndRaiseIssue(classTree.simpleName(), "@RequiresEnterpriseLicense must be defined and @RequiresEntitlement must not be present for Select and Certified category.");
         }
     }
 
     private void checkPremium(@NotNull ClassTree classTree, List<? extends AnnotationTree> annotations, boolean hasEnterpriseAnnotation, boolean hasEntitlementAnnotation) {
         if (!hasEnterpriseAnnotation || !hasEntitlementAnnotation) {
-            logAndRaiseIssue(classTree, "@RequiresEnterpriseLicense and @RequiresEntitlement need to be defined for Premium category.");
+            logAndRaiseIssue(classTree.simpleName(), "@RequiresEnterpriseLicense and @RequiresEntitlement need to be defined for Premium category.");
         }
 
         if (hasEntitlementAnnotation) {
@@ -117,7 +117,7 @@ public class LicenseByCategoryCheck extends AbstractConnectorClassCheck {
                 }
             }, null);
             if (find == null) {
-                logAndRaiseIssue(classTree, "'name' attribute must be defined for @RequiresEntitlement using connector name.");
+                logAndRaiseIssue(classTree.simpleName(), "'name' attribute must be defined for @RequiresEntitlement using connector name.");
             }
         }
     }

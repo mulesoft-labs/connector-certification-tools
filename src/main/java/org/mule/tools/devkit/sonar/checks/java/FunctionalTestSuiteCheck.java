@@ -43,7 +43,7 @@ public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
         if (treeName != null && treeName.name().equals("FunctionalTestSuite")) {
             final AnnotationTree runWithAnnotation = Iterables.find(tree.modifiers().annotations(), ClassParserUtils.hasAnnotationPredicate("org.junit.runners.SuiteClasses"), null);
             if (runWithAnnotation == null) {
-                logAndRaiseIssue(tree, String.format("Missing @SuiteClasses annotation on Test Suite class '%s'.", tree.simpleName().name()));
+                logAndRaiseIssue(tree.simpleName(), String.format("Missing @SuiteClasses annotation on Test Suite class '%s'.", tree.simpleName().name()));
             } else {
                 final List<ExpressionTree> arguments = runWithAnnotation.arguments();
                 final ExpressionTree expressionTree = Iterables.getOnlyElement(arguments);
@@ -51,7 +51,7 @@ public class FunctionalTestSuiteCheck extends BaseLoggingVisitor {
                 if (expressionTree.is(Tree.Kind.NEW_ARRAY)) {
                     ListTree<ExpressionTree> suiteClasses = ((NewArrayTree) expressionTree).initializers();
                     if (suiteClasses.isEmpty()) {
-                        logAndRaiseIssue(tree, "No tests have been declared under @SuiteClasses.");
+                        logAndRaiseIssue(runWithAnnotation, "No tests have been declared under @SuiteClasses.");
                     } else {
                         final List<File> tests = Lists.newArrayList(FileUtils.listFiles(new File(TEST_DIR), new WildcardFileFilter("*TestCases.java"), TrueFileFilter.INSTANCE));
                         for (ExpressionTree test : suiteClasses) {

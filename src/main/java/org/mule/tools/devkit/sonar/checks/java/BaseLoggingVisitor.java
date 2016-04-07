@@ -17,10 +17,9 @@ public abstract class BaseLoggingVisitor extends BaseTreeVisitor implements Java
         scan(context.getTree());
     }
 
-    protected final void logAndRaiseIssue(@NotNull Tree classTree, String message) {
+    protected final void logAndRaiseIssue(@NotNull Tree tree, String message) {
         LoggerFactory.getLogger(getClass()).info(message);
-        // TODO need to change this to new form context.reportIssue()
-        context.addIssue(classTree, this, message);
+        context.reportIssue(this, tree, message);
     }
 
 }

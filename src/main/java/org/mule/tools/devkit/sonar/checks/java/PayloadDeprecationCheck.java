@@ -27,11 +27,10 @@ public class PayloadDeprecationCheck extends AbstractConnectorClassCheck {
 
     @Override
     protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
-        if (!Iterables.isEmpty(Iterables.filter(tree.parameters(), HAS_PAYLOAD_ANNOTATION))) {
+        for (VariableTree param: Iterables.filter(tree.parameters(), HAS_PAYLOAD_ANNOTATION)) {
             final String message = String.format("@Payload must be removed from processor '%s' as it has been deprecated.", tree.simpleName());
-            logAndRaiseIssue(tree, message);
+            logAndRaiseIssue(param, message);
         }
-
     }
 
 }

@@ -30,13 +30,13 @@ public class TestSuiteCheck extends BaseLoggingVisitor {
             final AnnotationTree runWithAnnotation = Iterables.find(tree.modifiers()
                     .annotations(), ClassParserUtils.hasAnnotationPredicate("org.junit.runner.RunWith"), null);
             if (runWithAnnotation == null) {
-                logAndRaiseIssue(tree, String.format("Missing @RunWith annotation on Test Suite class '%s'.", tree.simpleName()
+                logAndRaiseIssue(tree.simpleName(), String.format("Missing @RunWith annotation on Test Suite class '%s'.", tree.simpleName()
                         .name()));
             } else {
                 final List<ExpressionTree> arguments = runWithAnnotation.arguments();
                 if (arguments.isEmpty()) {
-                    logAndRaiseIssue(tree,
-                            String.format("Found @RunWith annotation on Test Suite class '%s', but no runner specified. It should be Suite.class.", tree.simpleName()
+                    logAndRaiseIssue(runWithAnnotation,
+                            String.format("Found @RunWith annotation on Test Suite class '%s', but no runner specified. It should be 'Suite.class'.", tree.simpleName()
                                     .name()));
                 } else {
                     final ExpressionTree argument = Iterables.getOnlyElement(arguments);
@@ -46,16 +46,16 @@ public class TestSuiteCheck extends BaseLoggingVisitor {
                             final IdentifierTree identifierTree = (IdentifierTree) expressionTree;
                             if (!identifierTree.name()
                                     .equals("Suite")) {
-                                logAndRaiseIssue(tree, String.format(
-                                        "Found @RunWith annotation on Test Suite class '%s', but different runner specified (%s.class instead of %s.class).", tree.simpleName()
+                                logAndRaiseIssue(runWithAnnotation, String.format(
+                                        "Found @RunWith annotation on Test Suite class '%s', but different runner specified ('%s.class' instead of '%s.class').", tree.simpleName()
                                                 .name(), identifierTree.name(), "Suite"));
                             }
                         } else if (expressionTree.is(Tree.Kind.MEMBER_SELECT)) {
                             final MemberSelectExpressionTree memberSelectExpressionTree = (MemberSelectExpressionTree) expressionTree;
                             final String fullyQualifiedClassName = ClassParserUtils.concatenate(memberSelectExpressionTree);
                             if (!fullyQualifiedClassName.equals("org.junit.runners.Suite")) {
-                                logAndRaiseIssue(tree, String.format(
-                                        "Found @RunWith annotation on Test Suite class '%s', but different runner specified (%s.class instead of %s.class).", tree.simpleName()
+                                logAndRaiseIssue(runWithAnnotation, String.format(
+                                        "Found @RunWith annotation on Test Suite class '%s', but different runner specified ('%s.class' instead of '%s.class').", tree.simpleName()
                                                 .name(), fullyQualifiedClassName, "Suite"));
                             }
                         }

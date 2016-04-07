@@ -1,7 +1,5 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
@@ -33,12 +31,8 @@ public class RestCallDeprecationCheck extends AbstractConnectorClassCheck {
 
     @Override
     protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
-        List<? extends AnnotationTree> annotations = tree.modifiers().annotations();
-        final long count = Iterables.size(Iterables.filter(annotations, HAS_REST_CALL_ANNOTATION));
-        if (count > 0) {
-            final String message = String.format("@RestCall should be removed from processor '%s' as it is deprecated.", tree.simpleName());
-            logAndRaiseIssue(tree, message);
+        for (AnnotationTree annotations : Iterables.filter(tree.modifiers().annotations(), HAS_REST_CALL_ANNOTATION)) {
+            logAndRaiseIssue(annotations, String.format("@RestCall should be removed from processor '%s' as it is deprecated.", tree.simpleName()));
         }
-
     }
 }

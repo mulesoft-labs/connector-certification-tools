@@ -3,9 +3,9 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.mule.modules.testconnector.automation.unit.TransformerResolverUnitTest;
 
-@RunWith
+@RunWith // Noncompliant {{Found @RunWith annotation on Test Suite class 'UnitTestSuite', but no runner specified. It should be 'Suite.class'.}}
 @SuiteClasses({
         TransformerResolverUnitTest.class })
-public class UnitTestSuite { // Noncompliant {{Found @RunWith annotation on Test Suite class 'UnitTestSuite', but no runner specified. It should be Suite.class.}}
+public class UnitTestSuite {
 
 }

@@ -56,7 +56,7 @@ public class ConfigFriendlyNameCheck extends BaseLoggingVisitor {
                     case "ConnectionManagement":
                         if (!friendlyName.equals(DEFAULT_CONFIG_NAME)) {
                             logAndRaiseIssue(
-                                    tree,
+                                    annotation,
                                     String.format(
                                             "Single connector configurations annotated with @ConnectionManagement or @Configuration must use 'Configuration' as friendly name (instead of '%s'). If there are multiple configurations, none of which is of type @OAuth or @OAuth2, use a brief description to specify the configuration name (e.g, 'SAML 2.0').",
                                             friendlyName));
@@ -66,7 +66,7 @@ public class ConfigFriendlyNameCheck extends BaseLoggingVisitor {
                     case "OAuth":
                         if (!friendlyName.equals(OAUTH_CONFIG_NAME)) {
                             logAndRaiseIssue(
-                                    tree,
+                                    annotation,
                                     String.format(
                                             "For multiple connector configurations, if one or more are annotated with @OAuth, the default friendly name must be 'OAuth 1.0' (instead of '%s').",
                                             friendlyName));
@@ -76,7 +76,7 @@ public class ConfigFriendlyNameCheck extends BaseLoggingVisitor {
                     case "OAuth2":
                         if (!friendlyName.equals(OAUTH_2_CONFIG_NAME)) {
                             logAndRaiseIssue(
-                                    tree,
+                                    annotation,
                                     String.format(
                                             "For multiple connector configurations, if one or more are annotated with @OAuth2, the default friendly name must be 'OAuth 2.0' (instead of '%s').",
                                             friendlyName));
@@ -84,7 +84,7 @@ public class ConfigFriendlyNameCheck extends BaseLoggingVisitor {
                         break;
 
                     default:
-                        logAndRaiseIssue(tree, "Invalid configuration type specified in @Config class.");
+                        logAndRaiseIssue(annotation, "Invalid configuration type specified in @Config class.");
                         break;
                 }
             }
