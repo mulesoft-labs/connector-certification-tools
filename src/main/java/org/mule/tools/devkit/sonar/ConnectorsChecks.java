@@ -1,7 +1,6 @@
 package org.mule.tools.devkit.sonar;
 
 import org.mule.tools.devkit.sonar.checks.java.BasePackageCheck;
-import org.mule.tools.devkit.sonar.checks.java.ConfigFriendlyNameCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerMetadataCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerProcessorCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestSuiteCheck;
@@ -41,7 +40,6 @@ public class ConnectorsChecks {
 
     public static Iterable<Class<? extends JavaCheck>> javaChecks() {
         final ImmutableList.Builder<Class<? extends JavaCheck>> builder = ImmutableList.builder();
-        builder.add(ConfigFriendlyNameCheck.class);
         builder.add(FunctionalTestPerProcessorCheck.class);
         builder.add(FunctionalTestPerMetadataCategoryCheck.class);
         builder.add(NumberOfComplexArgumentsCheck.class);
