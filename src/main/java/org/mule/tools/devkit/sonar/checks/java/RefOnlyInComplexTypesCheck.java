@@ -3,7 +3,6 @@ package org.mule.tools.devkit.sonar.checks.java;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -13,7 +12,6 @@ import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
 @Rule(key = RefOnlyInComplexTypesCheck.KEY, name = "Complex-type arguments must be marked with @RefOnly", description = "Checks that all complex-type arguments of a processor are annotated with @RefOnly.", priority = Priority.CRITICAL, tags = { "connector-certification"
@@ -23,14 +21,6 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "refonly-annotation-in-complex-types";
 
-    public static final Predicate<AnnotationTree> HAS_REF_ONLY_ANNOTATION = new Predicate<AnnotationTree>() {
-
-        @Override
-        public boolean apply(@Nullable AnnotationTree input) {
-            return input != null && ClassParserUtils.is(input, "org.mule.api.annotations.param.RefOnly");
-        }
-    };
-
     @Override
     protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
 
@@ -39,7 +29,7 @@ public class RefOnlyInComplexTypesCheck extends AbstractConnectorClassCheck {
 
             List<? extends AnnotationTree> annotations = variable.modifiers().annotations();
 
-            final long count = Iterables.size(Iterables.filter(annotations, HAS_REF_ONLY_ANNOTATION));
+            final long count = Iterables.size(Iterables.filter(annotations, ClassParserUtils.hasAnnotationPredicate("org.mule.api.annotations.param.RefOnly")));
             if (count == 0) {
                 final String message = String.format("Processor '%s' contains variable '%s' of type '%s' (complex type) not annotated with @RefOnly.", tree.simpleName(),
                         variable.simpleName(), ClassParserUtils.getStringForType(variable.type()));
