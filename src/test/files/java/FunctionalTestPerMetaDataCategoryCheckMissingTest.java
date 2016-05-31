@@ -5,7 +5,7 @@ import org.mule.api.annotations.MetaDataKeyRetriever;
 import org.mule.api.annotations.MetaDataRetriever;
 
 @MetaDataCategory
-public class CreateSomeFieldsMetaData {  // Noncompliant {{There should be one functional test per metadata category. Add test 'CreateSomeFieldsMetaDataTestCases.java' for category 'CreateSomeFieldsMetaData'.}}
+public class CreateSomeFieldsMetaData { // Noncompliant {{There should be one functional test per metadata category. Add test 'CreateSomeFieldsMetaDataTestCases.java' or 'CreateSomeFieldsMetaDataIT.java' for category 'CreateSomeFieldsMetaData'.}}
 
     @MetaDataKeyRetriever
     public List<MetaDataKey> getMetaDataKeys() throws SomeException {
