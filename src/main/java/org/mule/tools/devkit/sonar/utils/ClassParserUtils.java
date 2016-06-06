@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -101,6 +102,16 @@ public class ClassParserUtils {
         };
     }
 
+    public static Predicate<AnnotationTree> hasSimpleAnnotationPredicate(final String annotationName) {
+        return new Predicate<AnnotationTree>() {
+
+            @Override
+            public boolean apply(@Nullable AnnotationTree input) {
+                return input != null && isSimpleName(input, annotationName);
+            }
+        };
+    }
+
     public static Predicate<AnnotationTree> hasConfigAnnotationPredicate() {
 
         return new Predicate<AnnotationTree>() {
@@ -145,6 +156,11 @@ public class ClassParserUtils {
     public static boolean is(@NotNull AnnotationTree annotation, @NotNull final String annotationClassName) {
         final String annotationSimpleName = annotation.annotationType().toString();
         return annotationSimpleName.equals(annotationClassName) || annotationSimpleName.equals(annotationClassName.substring(annotationClassName.lastIndexOf(".") + 1));
+    }
+
+    public static boolean isSimpleName(@NotNull AnnotationTree annotation, @NotNull final String annotationName) {
+        final String annotationSimpleName = annotation.annotationType().toString();
+        return annotationSimpleName.equalsIgnoreCase(annotationName);
     }
 
     public static String getStringForType(TypeTree type) {

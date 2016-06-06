@@ -8,7 +8,6 @@ public class DevKitAnnotationsOrderCheckTest {
     @Test
     public void detected() {
         DevKitAnnotationsOrderCheck check = new DevKitAnnotationsOrderCheck();
-
         JavaCheckVerifier.verify("src/test/files/java/DevKitAnnotationsOrderCheck.java", check);
     }
 

@@ -1,21 +1,6 @@
 package org.mule.tools.devkit.sonar;
 
-import org.mule.tools.devkit.sonar.checks.java.BasePackageCheck;
-import org.mule.tools.devkit.sonar.checks.java.DevKitAnnotationsOrderCheck;
-import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerMetadataCategoryCheck;
-import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerProcessorCheck;
-import org.mule.tools.devkit.sonar.checks.java.FunctionalTestSuiteCheck;
-import org.mule.tools.devkit.sonar.checks.java.LicenseByCategoryCheck;
-import org.mule.tools.devkit.sonar.checks.java.MetaDataTestCasesExtendAbstractMetaDataTestCaseCheck;
-import org.mule.tools.devkit.sonar.checks.java.NoAssertionsInBeforeOrAfterCheck;
-import org.mule.tools.devkit.sonar.checks.java.NumberOfComplexArgumentsCheck;
-import org.mule.tools.devkit.sonar.checks.java.NumberOfSimpleAndOptionalArgumentsCheck;
-import org.mule.tools.devkit.sonar.checks.java.PayloadDeprecationCheck;
-import org.mule.tools.devkit.sonar.checks.java.RedundantExceptionNameCheck;
-import org.mule.tools.devkit.sonar.checks.java.RefOnlyInComplexTypesCheck;
-import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecationCheck;
-import org.mule.tools.devkit.sonar.checks.java.TestCasesExtendAbstractTestCasesCheck;
-import org.mule.tools.devkit.sonar.checks.java.TestSuiteCheck;
+import org.mule.tools.devkit.sonar.checks.java.*;
 import org.mule.tools.devkit.sonar.checks.maven.DistributionManagementByCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.maven.ScopeProvidedInMuleDependenciesCheck;
 import org.mule.tools.devkit.sonar.checks.maven.SnapshotDependenciesCheck;
@@ -43,6 +28,7 @@ public class ConnectorsChecks {
         final ImmutableList.Builder<Class<? extends JavaCheck>> builder = ImmutableList.builder();
         builder.add(FunctionalTestPerProcessorCheck.class);
         builder.add(FunctionalTestPerMetadataCategoryCheck.class);
+        builder.add(NoNullAnnotationsInProcessorCheck.class);
         builder.add(NumberOfComplexArgumentsCheck.class);
         builder.add(NumberOfSimpleAndOptionalArgumentsCheck.class);
         builder.add(PayloadDeprecationCheck.class);
