@@ -7,7 +7,7 @@ import org.mule.api.annotations.param.Optional;
 import org.mule.api.annotations.param.RefOnly;
 
 @Connector
-public class RefOnlyInComplexTypesCheck {
+public class DevKitAnnotationsOrderCheck {
 
     /*
     * Only one argument
