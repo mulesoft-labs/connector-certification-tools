@@ -26,7 +26,7 @@ public class FunctionalTestPerMetadataCategoryCheck extends BaseLoggingVisitor {
 
     public static final String KEY = "functional-test-per-metadata-category";
     public static final String TEST_DIR = "src/test/java";
-    public static final Pattern TEST_PARENT_DIR_PATTERN = Pattern.compile("^((src/test/java/org/mule/module[s]?)+(/\\w+/)+(automation/functional)+$)");
+    public static final Pattern TEST_PARENT_DIR_PATTERN = Pattern.compile("^((src/test/java/org/mule/module[s]?)+(/\\w+/)+(automation/functional)(/\\w+)*$)");
 
     @Override
     public void scanFile(JavaFileScannerContext context) {
