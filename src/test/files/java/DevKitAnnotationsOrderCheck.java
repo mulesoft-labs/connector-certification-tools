@@ -10,7 +10,7 @@ import org.mule.api.annotations.param.RefOnly;
 public class DevKitAnnotationsOrderCheck {
 
     /*
-    * Only one argument
+    * Only one annotation
     */
 
     @Processor
@@ -26,58 +26,32 @@ public class DevKitAnnotationsOrderCheck {
     }
 
    /*
-    * Two arguments
+    * Two annotations
     */
 
     @Processor
-    public void aMethodWithBothOk(@RefOnly @Default Map<String, Object> s1) {
+    public void aMethodWithRefOnlyAndDefault(@RefOnly @Default Map<String, Object> s1) {
     }
 
     @Processor
-    public void aMethodWithBothWrongOrder(@Default @RefOnly Map<String, Object> s1) { // Noncompliant {{@Default annotation must be the last one in method 'aMethodWithBothWrongOrder' argument 's1'.}}
+    public void aMethodWithDefaultAndRefOnly(@Default @RefOnly Map<String, Object> s1) { // Noncompliant {{Annotation(s) '@Default @RefOnly' in method 'aMethodWithDefaultAndRefOnly' argument 's1' do not have expected order.}}
     }
 
     @Processor
-    public void aMethodWithOptionalAndDefaultOk(@Optional @Default Map<String, Object> s1) {
+    public void aMethodWithRefOnlyAndOptional(@RefOnly @Optional Map<String, Object> s1) {
     }
 
     @Processor
-    public void aMethodWithOptionalAndRefOnlyOk(@Optional @RefOnly Map<String, Object> s1) {
+    public void aMethodWithOptionalAndRefOnly(@Optional @RefOnly Map<String, Object> s1) { // Noncompliant {{Annotation(s) '@Optional @RefOnly' in method 'aMethodWithOptionalAndRefOnly' argument 's1' do not have expected order.}}
     }
+
+    /*
+     * Three annotations
+     */
 
     @Processor
-    public void aMethodWithOptionalAndDefaultWrong(@Default @Optional Map<String, Object> s1) { // Noncompliant {{@Default annotation must be the last one in method 'aMethodWithOptionalAndDefaultWrong' argument 's1'.}}
+    public void aMethodWithRefOnlyAndDefaultAndOptional(@RefOnly @Default @Optional Map<String, Object> s1) { // Noncompliant {{Annotation(s) '@RefOnly @Default @Optional' in method 'aMethodWithRefOnlyAndDefaultAndOptional' argument 's1' do not have expected order.}}
     }
 
-    @Processor
-    public void aMethodWithOptionalAndRefOnlyWrong(@RefOnly @Optional Map<String, Object> s1) { // Noncompliant {{@RefOnly annotation must be the last one in method 'aMethodWithOptionalAndRefOnlyWrong' argument 's1'.}}
-    }
 
-   /*
-    * Three arguments
-    */
-
-    @Processor
-    public void aMethodWithThreeOk(@Optional @RefOnly @Default Map<String, Object> s1) {
-    }
-
-    @Processor
-    public void aMethodWithOptionalDefaultRefOnlyWrong(@Optional @Default @RefOnly Map<String, Object> s1) { // Noncompliant {{@Default annotation must be the last one in method 'aMethodWithOptionalDefaultRefOnlyWrong' argument 's1'.}}
-    }
-
-    @Processor
-    public void aMethodWithRefOnlyOptionalDefaultWrong(@RefOnly @Optional @Default Map<String, Object> s1) { // Noncompliant {{@RefOnly annotation must be right before @Default in method 'aMethodWithRefOnlyOptionalDefaultWrong' argument 's1'.}}
-    }
-
-    @Processor
-    public void aMethodWithRefOnlyDefaultOptionalWrong(@RefOnly @Default @Optional Map<String, Object> s1) { // Noncompliant {{@Default annotation must be the last one in method 'aMethodWithRefOnlyDefaultOptionalWrong' argument 's1'.}}
-    }
-
-    @Processor
-    public void aMethodWithDefaultRefOnlyOptionalWrong(@Default @RefOnly @Optional Map<String, Object> s1) { // Noncompliant {{@Default annotation must be the last one in method 'aMethodWithDefaultRefOnlyOptionalWrong' argument 's1'.}}
-    }
-
-    @Processor
-    public void aMethodWithDefaultOptionalRefOnlyWrong(@Default @Optional @RefOnly Map<String, Object> s1) { // Noncompliant {{@Default annotation must be the last one in method 'aMethodWithDefaultOptionalRefOnlyWrong' argument 's1'.}}
-    }
 }
