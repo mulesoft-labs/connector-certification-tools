@@ -28,7 +28,8 @@ public class GitIgnoreExistsCheck  extends ExistingResourceCheck {
 
     public static final String KEY = "gitignore-exist";
     private static final String PATH = ".gitignore";
-    private static final ImmutableList<String> REQUIRED_GITIGNORE_FIELDS = ImmutableList.of("*.class", "*.jar", "*.war","target/",".classpath", ".settings/", ".project", ".factorypath",".idea/", "*.iml", "*.ipr", "*.iws", ".DS_Store");
+    private static final ImmutableList<String> REQUIRED_GITIGNORE_FIELDS = ImmutableList.of("*.class", "*.jar", "*.war","target/",".classpath", ".settings/", ".project", ".factorypath",".idea/", "*.iml", "*.ipr", "*.iws", "bin/", ".DS_Store","automation-credentials.properties");
+
 
     private static FileSystem fileSystem;
 
