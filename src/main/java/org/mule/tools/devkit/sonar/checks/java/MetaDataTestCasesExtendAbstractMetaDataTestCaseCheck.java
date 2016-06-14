@@ -7,7 +7,8 @@ import org.sonar.plugins.java.api.semantic.Symbol;
 import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 
-@Rule(key = MetaDataTestCasesExtendAbstractMetaDataTestCaseCheck.KEY, name = "MetaDataTestCases classes should extend CTF's AbstractMetaDataTestCase class", description = "MetaData Test Cases should extend CTFs AbstractMetaDataTestCase class", priority = Priority.CRITICAL, tags = { "connector-certification"
+@Rule(key = MetaDataTestCasesExtendAbstractMetaDataTestCaseCheck.KEY, name = "MetaDataTestCases classes should extend CTF's AbstractMetaDataTestCase class", description = "MetaData Test Cases should extend CTFs AbstractMetaDataTestCase class", priority = Priority.CRITICAL, tags = {
+        "connector-certification"
 })
 @ActivatedByDefault
 public class MetaDataTestCasesExtendAbstractMetaDataTestCaseCheck extends BaseLoggingVisitor {
@@ -21,8 +22,9 @@ public class MetaDataTestCasesExtendAbstractMetaDataTestCaseCheck extends BaseLo
         boolean isFunctional = owner.isPackageSymbol() && owner.name().endsWith("functional");
         boolean isTestClass = ClassParserUtils.isTestClass(classTree);
 
-        if (isTestClass && isFunctional && classTree.simpleName() != null && classTree.simpleName().name().endsWith("MetaDataTestCases")
-                && !classTree.symbol().type().isSubtypeOf("org.mule.tools.devkit.ctf.junit.AbstractMetaDataTestCase")) {
+        if (isTestClass && isFunctional && classTree.simpleName() != null && (classTree.simpleName().name().endsWith("MetaDataTestCases") || classTree.simpleName()
+                .name()
+                .endsWith("MetaDataTestCases")) && !classTree.symbol().type().isSubtypeOf("org.mule.tools.devkit.ctf.junit.AbstractMetaDataTestCase")) {
             logAndRaiseIssue(classTree, String.format("MetaData Test Case '%s' should inherit from AbstractMetaDataTestCase.", classTree.simpleName().name()));
         }
     }
