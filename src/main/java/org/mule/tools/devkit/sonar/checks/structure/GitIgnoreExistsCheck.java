@@ -1,7 +1,8 @@
 package org.mule.tools.devkit.sonar.checks.structure;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Predicates;
+import static com.google.common.base.Predicates.*;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -46,11 +47,11 @@ public class GitIgnoreExistsCheck extends ExistingResourceCheck {
         }
         if (issues.isEmpty()) {
             try {
-                File gitIgnoreFile = Iterables.find(testFiles, Predicates.equalTo(new File(fileSystem.baseDir(), PATH)));
+                File gitIgnoreFile = Iterables.find(testFiles, equalTo(new File(fileSystem.baseDir(), PATH)));
                 String gitIgnoreText = FileUtils.readFileToString(gitIgnoreFile, StandardCharsets.UTF_8);
                 List<String> gitIgnoreElements = ImmutableList.copyOf(StringUtils.split(gitIgnoreText, '\n'));
                 Iterable<String> missingRequiredFields = Iterables.filter(REQUIRED_GITIGNORE_FIELDS,
-                        Predicates.and(Predicates.notNull(), Predicates.not(Predicates.in(gitIgnoreElements))));
+                        and(notNull(), not(in(gitIgnoreElements))));
                 if (!Iterables.isEmpty(missingRequiredFields)) {
                     issues.add(new ConnectorIssue(KEY, String.format(".gitignore file in project is missing the following exclusions:  '%s'.", Joiner.on(", ")
                             .join(missingRequiredFields))));
