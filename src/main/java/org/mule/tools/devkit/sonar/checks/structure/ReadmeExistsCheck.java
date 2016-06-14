@@ -5,7 +5,7 @@ import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 
 @Rule(key = ReadmeExistsCheck.KEY, name = "README.md should be present", description = "There should exist a file named 'README.md' in root folder", priority = Priority.CRITICAL, tags = { "connector-certification" })
-public class ReadmeExistsCheck extends ResourceExistsCheckBase {
+public class ReadmeExistsCheck extends ExistingResourceCheck {
 
     public static final String KEY = "readme-exists";
 
