@@ -51,7 +51,7 @@ public class GitIgnoreExistsCheck extends ExistingResourceCheck {
                 String gitIgnoreText = FileUtils.readFileToString(gitIgnoreFile, StandardCharsets.UTF_8);
                 List<String> gitIgnoreElements = ImmutableList.copyOf(StringUtils.split(gitIgnoreText, '\n'));
                 Iterable<String> missingRequiredFields = Iterables.filter(REQUIRED_GITIGNORE_FIELDS,
-                        and(notNull(), not(in(gitIgnoreElements))));
+                        not(in(gitIgnoreElements)));
                 if (!Iterables.isEmpty(missingRequiredFields)) {
                     issues.add(new ConnectorIssue(KEY, String.format(".gitignore file in project is missing the following exclusions:  '%s'.", Joiner.on(", ")
                             .join(missingRequiredFields))));
