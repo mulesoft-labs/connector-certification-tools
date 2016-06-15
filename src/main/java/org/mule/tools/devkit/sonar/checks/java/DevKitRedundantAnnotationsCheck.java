@@ -1,9 +1,8 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
+import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.tree.AnnotationTree;
@@ -19,23 +18,16 @@ import java.util.List;
 public class DevKitRedundantAnnotationsCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "devkit-redundant-annotations";
-    private static final List<String> REDUNDANT_ANNOTATIONS = Lists.newArrayList("Default", "Optional");
 
     @Override
     protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
         for (VariableTree var : tree.parameters()) {
-            if(hasRedundantAnnotations(var.modifiers().annotations())){
+            List<AnnotationTree> annotations = var.modifiers().annotations();
+            if(Iterables.any(annotations, ClassParserUtils.hasAnnotationPredicate("org.mule.api.annotations.param.Default"))
+                    && Iterables.any(annotations, ClassParserUtils.hasAnnotationPredicate("org.mule.api.annotations.param.Optional"))) {
                 logAndRaiseIssue(tree.simpleName(), String.format("@Default and @Optional annotations cannot be used at the same time in method '%s' argument '%s'. Discard @Optional.", tree.simpleName(), var.simpleName()));
             }
         }
     }
 
-    private boolean hasRedundantAnnotations(List<AnnotationTree> annotations){
-        return Iterables.size(Iterables.filter(annotations, new Predicate<AnnotationTree>() {
-            public boolean apply(AnnotationTree input) {
-                return input != null && REDUNDANT_ANNOTATIONS.contains(input.annotationType().toString());
-            }
-        })) == 2;
-
-    }
 }

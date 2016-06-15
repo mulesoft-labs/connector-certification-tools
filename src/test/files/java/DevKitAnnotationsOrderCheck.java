@@ -34,7 +34,7 @@ public class DevKitAnnotationsOrderCheck {
     }
 
     @Processor
-    public void aMethodWithDefaultAndRefOnly(@Default @RefOnly Map<String, Object> s1) { // Noncompliant {{Annotation(s) '@Default @RefOnly' in method 'aMethodWithDefaultAndRefOnly' argument 's1' do not have expected order.}}
+    public void aMethodWithDefaultAndRefOnly(@Default @RefOnly Map<String, Object> s1) { // Noncompliant {{@Default annotation must be the last one in method 'aMethodWithDefaultAndRefOnly' argument 's1'.}}
     }
 
     @Processor
@@ -42,7 +42,27 @@ public class DevKitAnnotationsOrderCheck {
     }
 
     @Processor
-    public void aMethodWithOptionalAndRefOnly(@Optional @RefOnly Map<String, Object> s1) { // Noncompliant {{Annotation(s) '@Optional @RefOnly' in method 'aMethodWithOptionalAndRefOnly' argument 's1' do not have expected order.}}
+    public void aMethodWithOptionalAndRefOnly(@Optional @RefOnly Map<String, Object> s1) { // Noncompliant {{@Optional annotation must be the last one in method 'aMethodWithOptionalAndRefOnly' argument 's1'.}}
+    }
+
+    @Processor
+    public void aMethodWithMetaDataKeyParamRefOnlyAndOptional(@MetaDataKeyParam @RefOnly @Optional Map<String, Object> s1) {
+    }
+
+    @Processor
+    public void aMethodWithMetaDataKeyParamRefOnlyAndOptionalFirst(@Optional @MetaDataKeyParam @RefOnly Map<String, Object> s1) { // Noncompliant {{@Optional annotation must be the last one in method 'aMethodWithMetaDataKeyParamRefOnlyAndOptionalFirst' argument 's1'.}}
+    }
+
+    /*
+     * With FQN
+     */
+
+    @Processor
+    public void aMethodWithRefOnlyAndDefaultFQN(@org.mule.api.annotations.param.RefOnly @org.mule.api.annotations.param.Default Map<String, Object> s1) {
+    }
+
+    @Processor
+    public void aMethodWithDefaultAndRefOnlyFQN(@org.mule.api.annotations.param.Default @org.mule.api.annotations.param.RefOnly Map<String, Object> s1) { // Noncompliant {{@Default annotation must be the last one in method 'aMethodWithDefaultAndRefOnlyFQN' argument 's1'.}}
     }
 
     /*
@@ -50,7 +70,7 @@ public class DevKitAnnotationsOrderCheck {
      */
 
     @Processor
-    public void aMethodWithRefOnlyAndDefaultAndOptional(@RefOnly @Default @Optional Map<String, Object> s1) { // Noncompliant {{Annotation(s) '@RefOnly @Default @Optional' in method 'aMethodWithRefOnlyAndDefaultAndOptional' argument 's1' do not have expected order.}}
+    public void aMethodWithRefOnlyAndDefaultAndOptional(@RefOnly @Default @Optional Map<String, Object> s1) { // Noncompliant {{@Default annotation must be the last one in method 'aMethodWithRefOnlyAndDefaultAndOptional' argument 's1'.}}
     }
 
 

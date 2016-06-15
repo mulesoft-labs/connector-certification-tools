@@ -22,11 +22,24 @@ public class DevKitRedundantAnnotationsCheck {
     }
 
     @Processor
-    public void aMethodWithDefaultAndOptionalAnother(@Default @Optional Map<String, Object> s1) { // Noncompliant {{@Default and @Optional annotations cannot be used at the same time in method 'aMethodWithDefaultAndOptionalAnother' argument 's1'. Discard @Optional.}}
+    public void aMethodWithOptionalAndDefault(@Optional @Default Map<String, Object> s1) { // Noncompliant {{@Default and @Optional annotations cannot be used at the same time in method 'aMethodWithOptionalAndDefault' argument 's1'. Discard @Optional.}}
     }
 
     @Processor
     public void aMethodWithRefOnlyAndDefaultAndOptional(@RefOnly @Default @Optional Map<String, Object> s1) { // Noncompliant {{@Default and @Optional annotations cannot be used at the same time in method 'aMethodWithRefOnlyAndDefaultAndOptional' argument 's1'. Discard @Optional.}}
     }
+
+    /*
+     * With FQN
+     */
+
+    @Processor
+    public void aMethodWithOptionalAndDefaultFQN(@org.mule.api.annotations.param.Optional Map<String, Object> s1) {
+    }
+
+    @Processor
+    public void aMethodWithOptionalAndDefaultFQN(@org.mule.api.annotations.param.Optional @org.mule.api.annotations.param.Default Map<String, Object> s1) { // Noncompliant {{@Default and @Optional annotations cannot be used at the same time in method 'aMethodWithOptionalAndDefaultFQN' argument 's1'. Discard @Optional.}}
+    }
+
 
 }
