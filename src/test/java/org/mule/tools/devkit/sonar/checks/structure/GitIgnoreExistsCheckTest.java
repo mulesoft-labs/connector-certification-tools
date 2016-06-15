@@ -1,16 +1,16 @@
 package org.mule.tools.devkit.sonar.checks.structure;
 
-import org.junit.Test;
-import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
-import org.sonar.api.batch.fs.FileSystem;
-import org.sonar.api.internal.google.common.collect.Iterables;
-
-import java.io.File;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.io.File;
+
+import org.junit.Test;
+import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.internal.google.common.collect.Iterables;
 
 public class GitIgnoreExistsCheckTest {
 
@@ -51,6 +51,6 @@ public class GitIgnoreExistsCheckTest {
         assertThat(first.ruleKey(), is("gitignore-exist"));
         assertThat(
                 first.message(),
-                is(".gitignore file in project is missing the following exclusions:  'target/, .classpath, .settings/, .project, .factorypath, .idea/, *.iml, *.ipr, *.iws, bin/, .DS_Store, automation-credentials.properties'."));
+                is(".gitignore file in project is missing the following exclusions: 'target/, .classpath, .settings/, .project, .factorypath, .idea/, *.iml, *.ipr, *.iws, bin/, .DS_Store, automation-credentials.properties'."));
     }
 }
