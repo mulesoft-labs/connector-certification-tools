@@ -46,15 +46,7 @@ public class DevKitAnnotationsOrderCheck {
     }
 
     @Processor
-    public void aMethodWithMetaDataKeyParamRefOnlyAndOptional(@MetaDataKeyParam @RefOnly @Optional Map<String, Object> s1) {
-    }
-
-    @Processor
     public void aMethodWithMetaDataKeyParamAndRefOnly(@RefOnly @MetaDataKeyParam Map<String, Object> s1) { // Noncompliant {{@RefOnly annotation must be the last one in method 'aMethodWithMetaDataKeyParamAndRefOnly' argument 's1'.}}
-    }
-
-    @Processor
-    public void aMethodWithMetaDataKeyParamRefOnlyAndOptionalFirst(@Optional @MetaDataKeyParam @RefOnly Map<String, Object> s1) { // Noncompliant {{@Optional annotation must be the last one in method 'aMethodWithMetaDataKeyParamRefOnlyAndOptionalFirst' argument 's1'.}}
     }
 
     /*
@@ -78,7 +70,15 @@ public class DevKitAnnotationsOrderCheck {
     }
 
     @Processor
-    public void aMethodWithDefaultOptionalRefOnlyWrong(@RefOnly @MetaDataKeyParam @Default Map<String, Object> s1) { // Noncompliant {{See proper error here.}}
+    public void aMethodWithMetaDataKeyParamRefOnlyAndOptionalFirst(@Optional @MetaDataKeyParam @RefOnly Map<String, Object> s1) { // Noncompliant {{@Optional annotation must be the last one in method 'aMethodWithMetaDataKeyParamRefOnlyAndOptionalFirst' argument 's1'.}}
+    }
+
+    @Processor
+    public void aMethodWithMetaDataKeyParamRefOnlyAndOptional(@MetaDataKeyParam @RefOnly @Optional Map<String, Object> s1) {
+    }
+
+    @Processor
+    public void aMethodWithDefaultOptionalRefOnlyWrong(@RefOnly @MetaDataKeyParam @Default Map<String, Object> s1) { // Noncompliant {{@RefOnly annotation must be placed just before @Default in method 'aMethodWithDefaultOptionalRefOnlyWrong' argument 's1'.}}
     }
 
 }

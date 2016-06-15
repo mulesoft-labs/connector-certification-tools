@@ -46,6 +46,12 @@ public class DevKitAnnotationsOrderCheck extends AbstractConnectorClassCheck {
                 logAndRaiseIssue(annotations.get(indexOfRefOnly),
                         String.format("@RefOnly annotation must be the last one in method '%s' argument '%s'.", tree.simpleName(), var.simpleName()));
             }
+            else if (hasAnnotation(indexOfRefOnly)
+                    && hasDefaultOrOptional(indexOfDefault, indexOfOptional)
+                    && isNotNextToLastAnnotation(indexOfRefOnly, annotations)) {
+                logAndRaiseIssue(annotations.get(indexOfRefOnly),
+                        String.format("@RefOnly annotation must be placed just before @Default in method '%s' argument '%s'.", tree.simpleName(), var.simpleName()));
+            }
         }
     }
 
@@ -59,6 +65,10 @@ public class DevKitAnnotationsOrderCheck extends AbstractConnectorClassCheck {
 
     private boolean isNotLastAnnotation(int index, List<AnnotationTree> annotations){
         return index != annotations.size() - 1;
+    }
+
+    private boolean isNotNextToLastAnnotation(int index, List<AnnotationTree> annotations){
+        return index != annotations.size() - 2;
     }
 
 }
