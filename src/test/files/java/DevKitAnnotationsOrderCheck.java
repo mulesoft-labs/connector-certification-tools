@@ -77,5 +77,8 @@ public class DevKitAnnotationsOrderCheck {
     public void aMethodWithRefOnlyAndDefaultAndOptional(@RefOnly @Default @Optional Map<String, Object> s1) { // Noncompliant {{@Default annotation must be the last one in method 'aMethodWithRefOnlyAndDefaultAndOptional' argument 's1'.}}
     }
 
+    @Processor
+    public void aMethodWithDefaultOptionalRefOnlyWrong(@RefOnly @MetaDataKeyParam @Default Map<String, Object> s1) { // Noncompliant {{See proper error here.}}
+    }
 
 }
