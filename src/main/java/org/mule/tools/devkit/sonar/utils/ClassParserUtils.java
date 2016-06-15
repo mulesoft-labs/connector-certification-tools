@@ -1,15 +1,10 @@
 package org.mule.tools.devkit.sonar.utils;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.google.common.collect.ImmutableList;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -28,15 +23,22 @@ import org.sonar.plugins.java.api.tree.TypeTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
 import org.sonar.plugins.java.api.tree.WildcardTree;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ClassParserUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(ClassParserUtils.class);
+
+    public static final String FQN_DEFAULT = "org.mule.api.annotations.param.Default";
+    public static final String FQN_OPTIONAL = "org.mule.api.annotations.param.Optional";
+    public static final String FQN_REFONLY = "org.mule.api.annotations.param.RefOnly";
 
     private static final Set<String> allowedComplexTypes = ImmutableSet.<String> builder()
             .add(Integer.class.getName())
@@ -154,13 +156,19 @@ public class ClassParserUtils {
     }
 
     public static boolean is(@NotNull AnnotationTree annotation, @NotNull final String annotationClassName) {
-        final String annotationSimpleName = annotation.annotationType().toString();
+        final String annotationSimpleName = getNameForSimpleAndFQN(annotation);
         return annotationSimpleName.equals(annotationClassName) || annotationSimpleName.equals(annotationClassName.substring(annotationClassName.lastIndexOf(".") + 1));
     }
 
     public static boolean isSimpleName(@NotNull AnnotationTree annotation, @NotNull final String annotationName) {
         final String annotationSimpleName = annotation.annotationType().toString();
         return annotationSimpleName.equalsIgnoreCase(annotationName);
+    }
+
+    public static String getNameForSimpleAndFQN(@NotNull AnnotationTree annotation) {
+        // handle FQN annotations
+        return annotation.annotationType().is(Tree.Kind.MEMBER_SELECT) ?
+                ((MemberSelectExpressionTree)annotation.annotationType()).identifier().name() : annotation.annotationType().toString();
     }
 
     public static String getStringForType(TypeTree type) {

@@ -3,6 +3,7 @@ package org.mule.tools.devkit.sonar;
 import com.google.common.collect.ImmutableList;
 import org.mule.tools.devkit.sonar.checks.java.BasePackageCheck;
 import org.mule.tools.devkit.sonar.checks.java.DevKitAnnotationsOrderCheck;
+import org.mule.tools.devkit.sonar.checks.java.DevKitRedundantAnnotationsCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerMetadataCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestPerProcessorCheck;
 import org.mule.tools.devkit.sonar.checks.java.FunctionalTestSuiteCheck;
@@ -45,6 +46,7 @@ public class ConnectorsChecks {
         builder.add(RedundantExceptionNameCheck.class);
         builder.add(BasePackageCheck.class);
         builder.add(DevKitAnnotationsOrderCheck.class);
+        builder.add(DevKitRedundantAnnotationsCheck.class);
         return builder.build();
     }
 
