@@ -5,7 +5,7 @@ import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 
 @Rule(key = TestResourcesFolderExistsCheck.KEY, name = "Test Resources directory must be present", description = "There must exist a directory named 'src/test/resources/'", priority = Priority.CRITICAL, tags = { "connector-certification" })
-public class TestResourcesFolderExistsCheck extends ResourceExistsCheckBase {
+public class TestResourcesFolderExistsCheck extends ExistingResourceCheck {
 
     public static final String KEY = "test-resources-folder-exists";
 

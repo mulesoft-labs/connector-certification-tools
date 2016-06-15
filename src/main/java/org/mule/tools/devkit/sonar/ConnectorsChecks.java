@@ -23,15 +23,7 @@ import org.mule.tools.devkit.sonar.checks.maven.ScopeProvidedInMuleDependenciesC
 import org.mule.tools.devkit.sonar.checks.maven.SnapshotDependenciesCheck;
 import org.mule.tools.devkit.sonar.checks.maven.SourceDeploymentForStandardCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.maven.TestingFrameworkNotOverwrittenCheck;
-import org.mule.tools.devkit.sonar.checks.structure.DemoExistCheck;
-import org.mule.tools.devkit.sonar.checks.structure.IconsExistCheck;
-import org.mule.tools.devkit.sonar.checks.structure.LicenseDeclarationFilesCheck;
-import org.mule.tools.devkit.sonar.checks.structure.ReadmeExistsCheck;
-import org.mule.tools.devkit.sonar.checks.structure.ReleaseNotesExistsCheck;
-import org.mule.tools.devkit.sonar.checks.structure.TestDataBuilderExistsCheck;
-import org.mule.tools.devkit.sonar.checks.structure.TestResourcesFolderExistsCheck;
-import org.mule.tools.devkit.sonar.checks.structure.TestSuiteFoldersExistCheck;
-import org.mule.tools.devkit.sonar.checks.structure.UserManualExistsCheck;
+import org.mule.tools.devkit.sonar.checks.structure.*;
 import org.sonar.plugins.java.api.JavaCheck;
 
 public class ConnectorsChecks {
@@ -87,6 +79,7 @@ public class ConnectorsChecks {
         builder.add(UserManualExistsCheck.class);
         builder.add(DemoExistCheck.class);
         builder.add(TestDataBuilderExistsCheck.class);
+        builder.add(GitIgnoreExistsCheck.class);
         return builder.build();
     }
 }
