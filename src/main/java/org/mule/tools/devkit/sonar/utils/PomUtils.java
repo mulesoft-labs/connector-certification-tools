@@ -49,7 +49,7 @@ public class PomUtils {
 
     public static boolean isDevKitConnector(MavenProject mavenProject) {
         final Parent parent = mavenProject.getModel().getParent();
-        return parent != null && parent.getGroupId().equals(DEVKIT_GROUP_ID) && (parent.getArtifactId().equals(DEVKIT_ARTIFACT_ID)) || parent.getArtifactId().equals(CERTIFIED_DEVKIT_ARTIFACT_ID);
+        return parent != null && parent.getGroupId().equals(DEVKIT_GROUP_ID) && (parent.getArtifactId().equals(DEVKIT_ARTIFACT_ID) || parent.getArtifactId().equals(CERTIFIED_DEVKIT_ARTIFACT_ID));
     }
 
     @NotNull
