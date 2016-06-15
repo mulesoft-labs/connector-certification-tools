@@ -8,16 +8,16 @@ import org.sonar.api.batch.fs.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public abstract class ResourceExistsCheckBase implements StructureCheck {
+public abstract class ExistingResourceCheck implements StructureCheck {
 
     private final FileSystem fileSystem;
 
-    public ResourceExistsCheckBase(FileSystem fileSystem) {
+    public ExistingResourceCheck(FileSystem fileSystem) {
         this.fileSystem = fileSystem;
     }
 
     @Override
-    public final Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
+    public Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
         Path path = fileSystem.baseDir().toPath().resolve(resourcePath());
         if (!Files.exists(path)) {
             return ImmutableList.of(new ConnectorIssue(ruleKey(), String.format("%s doesn't exist.", resourcePath())));

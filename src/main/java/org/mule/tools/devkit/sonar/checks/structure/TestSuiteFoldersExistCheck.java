@@ -22,13 +22,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-@Rule(key = TestSuiteFoldersExistCheck.KEY, name = "Test Suite directories must be present", description = "There must exist 3 test suite directories: one for Functional ('automation/functional'), one for System ('automation/system') and one for Unit ('automation/unit'). Also, there must be a Runner package ('automation/runner').", priority = Priority.CRITICAL, tags = { "connector-certification"
+@Rule(key = TestSuiteFoldersExistCheck.KEY, name = "Test Suite directories must be present", description = "There must exist 3 test suite directories: one for Functional ('automation/functional'), one for System ('automation/system') and one for Unit ('automation/unit').", priority = Priority.CRITICAL, tags = { "connector-certification"
 })
 public class TestSuiteFoldersExistCheck implements StructureCheck {
 
     public static final String KEY = "test-suite-folders-exists";
-    public static final ImmutableList<String> packages = ImmutableList.of("functional", "system", "unit", "runner");
-    public static final Pattern TEST_PACKAGES_PATTERN = Pattern.compile("^((.*?)(org/mule/module[s]?)+(/\\w+/)+(automation/)+(functional|system|unit|runner)$)");
+    public static final ImmutableList<String> packages = ImmutableList.of("functional", "system", "unit");
+    public static final Pattern TEST_PACKAGES_PATTERN = Pattern.compile("^((.*?)(org/mule/module[s]?)+(/\\w+/)+(automation/)+(functional|system|unit)$)");
     public static final Predicate<File> HAS_VALID_TEST_PACKAGE = new Predicate<File>() {
 
         @Override
