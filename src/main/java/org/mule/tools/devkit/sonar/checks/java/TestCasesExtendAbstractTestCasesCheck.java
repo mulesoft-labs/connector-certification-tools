@@ -18,10 +18,10 @@ public class TestCasesExtendAbstractTestCasesCheck extends BaseLoggingVisitor {
     public final void visitClass(ClassTree classTree) {
         super.visitClass(classTree);
         final Symbol owner = classTree.symbol().owner();
-        boolean isFunctional = owner.isPackageSymbol() && owner.name().endsWith("functional");
+        boolean isFunctional = owner.isPackageSymbol() && owner.name().contains(".functional");
         boolean isTestClass = ClassParserUtils.isTestClass(classTree);
 
-        if (isTestClass && isFunctional && classTree.simpleName() != null && !classTree.simpleName().name().endsWith("MetaDataTestCases")
+        if (isTestClass && isFunctional && classTree.simpleName() != null && !classTree.simpleName().name().endsWith("MetaDataTestCases") && !classTree.simpleName().name().endsWith("MetaDataIT")
                 && !classTree.symbol().type().isSubtypeOf("org.mule.tools.devkit.ctf.junit.AbstractTestCase")) {
             logAndRaiseIssue(classTree, String.format("Test case '%s' should inherit from AbstractTestCase.", classTree.simpleName().name()));
         }

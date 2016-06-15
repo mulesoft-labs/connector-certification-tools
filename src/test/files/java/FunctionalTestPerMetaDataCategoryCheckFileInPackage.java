@@ -9,13 +9,12 @@ public class CreateLeadFieldsMetaDataInPackage {
 
     @MetaDataKeyRetriever
     public List<MetaDataKey> getMetaDataKeys() throws SomeException {
-        return ImmutableList.of();
+        return null;
     }
 
     @MetaDataRetriever
     public MetaData getMetaData(final MetaDataKey key) throws SomeException {
-        DefaultMetaDataBuilder builder = new DefaultMetaDataBuilder();
-        return new DefaultMetaData(builder.build());
+        return null;
     }
 
 }
