@@ -36,6 +36,10 @@ public class ClassParserUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(ClassParserUtils.class);
 
+    public static final String FQN_DEFAULT = "org.mule.api.annotations.param.Default";
+    public static final String FQN_OPTIONAL = "org.mule.api.annotations.param.Optional";
+    public static final String FQN_REFONLY = "org.mule.api.annotations.param.RefOnly";
+
     private static final Set<String> allowedComplexTypes = ImmutableSet.<String> builder()
             .add(Integer.class.getName())
             .add(Double.class.getName())

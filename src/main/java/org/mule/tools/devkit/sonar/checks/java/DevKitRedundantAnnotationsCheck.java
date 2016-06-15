@@ -23,8 +23,8 @@ public class DevKitRedundantAnnotationsCheck extends AbstractConnectorClassCheck
     protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
         for (VariableTree var : tree.parameters()) {
             List<AnnotationTree> annotations = var.modifiers().annotations();
-            if(Iterables.any(annotations, ClassParserUtils.hasAnnotationPredicate("org.mule.api.annotations.param.Default"))
-                    && Iterables.any(annotations, ClassParserUtils.hasAnnotationPredicate("org.mule.api.annotations.param.Optional"))) {
+            if(Iterables.any(annotations, ClassParserUtils.hasAnnotationPredicate(ClassParserUtils.FQN_DEFAULT))
+                    && Iterables.any(annotations, ClassParserUtils.hasAnnotationPredicate(ClassParserUtils.FQN_OPTIONAL))) {
                 logAndRaiseIssue(tree.simpleName(), String.format("@Default and @Optional annotations cannot be used at the same time in method '%s' argument '%s'. Discard @Optional.", tree.simpleName(), var.simpleName()));
             }
         }

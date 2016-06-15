@@ -23,34 +23,28 @@ public class DevKitAnnotationsOrderCheck extends AbstractConnectorClassCheck {
     protected void verifyProcessor(@NotNull MethodTree tree, @NotNull final IdentifierTree processorAnnotation) {
         for (VariableTree var : tree.parameters()) {
             final List<AnnotationTree> annotations = var.modifiers().annotations();
-            int indexOfDefault = Iterables.indexOf(annotations, ClassParserUtils.hasAnnotationPredicate("org.mule.api.annotations.param.Default"));
-            int indexOfOptional = Iterables.indexOf(annotations, ClassParserUtils.hasAnnotationPredicate("org.mule.api.annotations.param.Optional"));
-            int indexOfRefOnly = Iterables.indexOf(annotations, ClassParserUtils.hasAnnotationPredicate("org.mule.api.annotations.param.RefOnly"));
+            int indexOfDefault = Iterables.indexOf(annotations, ClassParserUtils.hasAnnotationPredicate(ClassParserUtils.FQN_DEFAULT));
+            int indexOfOptional = Iterables.indexOf(annotations, ClassParserUtils.hasAnnotationPredicate(ClassParserUtils.FQN_OPTIONAL));
+            int indexOfRefOnly = Iterables.indexOf(annotations, ClassParserUtils.hasAnnotationPredicate(ClassParserUtils.FQN_REFONLY));
 
             if (hasAnnotation(indexOfDefault)
-                    && isFirstAnnotation(indexOfDefault, annotations)) {
+                    && isNotLastAnnotation(indexOfDefault, annotations)) {
                 // if there is a @Default annotation it has to be the last one, otherwise raise an issue
                 logAndRaiseIssue(annotations.get(indexOfDefault),
                         String.format("@Default annotation must be the last one in method '%s' argument '%s'.", tree.simpleName(), var.simpleName()));
             }
             else if (hasAnnotation(indexOfOptional)
-                    && isFirstAnnotation(indexOfOptional, annotations)) {
+                    && isNotLastAnnotation(indexOfOptional, annotations)) {
                 // if there is a @Optional annotation it has to be the last one, otherwise raise an issue
                 logAndRaiseIssue(annotations.get(indexOfOptional),
                         String.format("@Optional annotation must be the last one in method '%s' argument '%s'.", tree.simpleName(), var.simpleName()));
             }
             else if (hasAnnotation(indexOfRefOnly)
                     && !hasDefaultOrOptional(indexOfDefault, indexOfOptional)
-                    && isFirstAnnotation(indexOfRefOnly, annotations)) {
+                    && isNotLastAnnotation(indexOfRefOnly, annotations)) {
                 // if there is a @RefOnly annotation it has to be the last one or be right before a @Default one, otherwise raise an issue
                 logAndRaiseIssue(annotations.get(indexOfRefOnly),
                         String.format("@RefOnly annotation must be the last one in method '%s' argument '%s'.", tree.simpleName(), var.simpleName()));
-            }
-            else if (hasAnnotation(indexOfRefOnly)
-                    && hasDefaultOrOptional(indexOfDefault, indexOfOptional)
-                    && isMiddleAnnotation(indexOfRefOnly, annotations)) {
-                logAndRaiseIssue(annotations.get(indexOfRefOnly),
-                        String.format("@RefOnly annotation must be placed just before @Default in method '%s' argument '%s'.", tree.simpleName(), var.simpleName()));
             }
         }
     }
@@ -63,12 +57,8 @@ public class DevKitAnnotationsOrderCheck extends AbstractConnectorClassCheck {
         return index != -1;
     }
 
-    private boolean isFirstAnnotation(int index, List<AnnotationTree> annotations){
+    private boolean isNotLastAnnotation(int index, List<AnnotationTree> annotations){
         return index != annotations.size() - 1;
-    }
-
-    private boolean isMiddleAnnotation(int index, List<AnnotationTree> annotations){
-        return index != annotations.size() - 2;
     }
 
 }

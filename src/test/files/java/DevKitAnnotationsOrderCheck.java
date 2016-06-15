@@ -50,6 +50,10 @@ public class DevKitAnnotationsOrderCheck {
     }
 
     @Processor
+    public void aMethodWithMetaDataKeyParamAndRefOnly(@RefOnly @MetaDataKeyParam Map<String, Object> s1) { // Noncompliant {{@RefOnly annotation must be the last one in method 'aMethodWithMetaDataKeyParamAndRefOnly' argument 's1'.}}
+    }
+
+    @Processor
     public void aMethodWithMetaDataKeyParamRefOnlyAndOptionalFirst(@Optional @MetaDataKeyParam @RefOnly Map<String, Object> s1) { // Noncompliant {{@Optional annotation must be the last one in method 'aMethodWithMetaDataKeyParamRefOnlyAndOptionalFirst' argument 's1'.}}
     }
 
