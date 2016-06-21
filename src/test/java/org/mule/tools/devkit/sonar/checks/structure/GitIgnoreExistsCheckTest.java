@@ -51,6 +51,6 @@ public class GitIgnoreExistsCheckTest {
         assertThat(first.ruleKey(), is("gitignore-exist"));
         assertThat(
                 first.message(),
-                is(".gitignore file in project is missing the following exclusions: 'target/, .classpath, .settings/, .project, .factorypath, .idea/, *.iml, *.ipr, *.iws, bin/, .DS_Store, automation-credentials.properties, muleLicenseKey.lic'."));
+                is(".gitignore file in project is missing the following exclusions: '.settings, .project, .factorypath, .idea, *.iml, *.ipr, *.iws, .DS_Store, automation-credentials.properties, muleLicenseKey.lic'."));
     }
 }
