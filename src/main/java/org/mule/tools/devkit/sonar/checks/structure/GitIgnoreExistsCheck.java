@@ -28,23 +28,28 @@ public class GitIgnoreExistsCheck extends ExistingResourceCheck {
     public static final String KEY = "gitignore-exist";
     private static final String PATH = ".gitignore";
     private static FileSystem fileSystem;
+    public Boolean applyByTrue = true;
 
-    private static final ImmutableList<String> REQUIRED_GITIGNORE_FIELDS = ImmutableList.of("\\*\\.class", "\\*\\.jar", "\\*\\.war", "[/]?target[/]?", "[*]?[/]?\\.classpath",
+    public ImmutableList<String> requiredGitignoreFields = ImmutableList.of("\\*\\.class", "\\*\\.jar", "\\*\\.war", "[/]?target[/]?", "[*]?[/]?\\.classpath",
             "[*]?[/]?\\.settings[/]?", "[*]?[/]?\\.project",
             "[*]?[/]?\\.factorypath", "[/]?\\.idea[/]?", "\\*\\.iml", "\\*\\.ipr", "\\*\\.iws", "[/]?bin[/]?", "[/]?\\.DS_Store", "automation-credentials\\.properties",
             "muleLicenseKey.lic");
+
+    public String issueMessage = ".gitignore file in project is missing the following exclusions: '%s'.";
 
     public GitIgnoreExistsCheck(FileSystem fileSystem) {
         super(fileSystem);
         this.fileSystem = fileSystem;
     }
 
-    private static class matchesPredicate<T extends String> implements Predicate<T> {
+    public class matchesPredicate<T extends String> implements Predicate<T> {
 
-        private final Iterable<String> target;
+        private Iterable<String> target;
+        private Boolean applyByTrue;
 
-        private matchesPredicate(Collection<String> target) {
+        public matchesPredicate(Collection<String> target, Boolean applyByTrue) {
             this.target = target;
+            this.applyByTrue = applyByTrue;
         }
 
         @Override
@@ -53,10 +58,10 @@ public class GitIgnoreExistsCheck extends ExistingResourceCheck {
                 if (Pattern.compile(t)
                         .matcher(s)
                         .matches()) {
-                    return false;
+                    return !applyByTrue;
                 }
             }
-            return true;
+            return applyByTrue;
         }
     }
 
@@ -70,7 +75,7 @@ public class GitIgnoreExistsCheck extends ExistingResourceCheck {
             } else {
                 try {
                     List<String> gitIgnoreElements = FileUtils.readLines(Iterables.getOnlyElement(testFiles), StandardCharsets.UTF_8);
-                    Iterable<String> missingRequiredFields = Iterables.filter(REQUIRED_GITIGNORE_FIELDS, new matchesPredicate(gitIgnoreElements));
+                    Iterable<String> missingRequiredFields = Iterables.filter(requiredGitignoreFields, new matchesPredicate(gitIgnoreElements, applyByTrue));
                     if (!Iterables.isEmpty(missingRequiredFields)) {
                         missingRequiredFields = Iterables.transform(missingRequiredFields, new Function<String, String>() {
 
@@ -79,7 +84,7 @@ public class GitIgnoreExistsCheck extends ExistingResourceCheck {
                                 return input.replaceAll("(\\\\)|( *\\[/]\\?)|( *\\[\\*]\\?)", "");
                             }
                         });
-                        issues.add(new ConnectorIssue(KEY, String.format(".gitignore file in project is missing the following exclusions: '%s'.", Joiner.on(", ")
+                        issues.add(new ConnectorIssue(KEY, String.format(issueMessage, Joiner.on(", ")
                                 .join(missingRequiredFields))));
                     }
                 } catch (IOException e) {
@@ -100,4 +105,15 @@ public class GitIgnoreExistsCheck extends ExistingResourceCheck {
         return KEY;
     }
 
+    public void setApplyByTrue(Boolean applyByTrue) {
+        this.applyByTrue = applyByTrue;
+    }
+
+    public void setRequiredGitignoreFields(ImmutableList<String> requiredGitignoreFields) {
+        this.requiredGitignoreFields = requiredGitignoreFields;
+    }
+
+    public void setIssueMessage(String issueMessage) {
+        this.issueMessage = issueMessage;
+    }
 }

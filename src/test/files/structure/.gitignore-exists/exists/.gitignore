@@ -3,6 +3,6 @@
 *.class
 *.jar
 *.war
-/bin
+bin
 target/
 *.classpath
