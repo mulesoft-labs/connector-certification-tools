@@ -82,6 +82,7 @@ public class ConnectorsChecks {
         builder.add(DemoExistCheck.class);
         builder.add(TestDataBuilderExistsCheck.class);
         builder.add(GitIgnoreExistsCheck.class);
+        builder.add(GitIgnoreValidatePatterns.class);
         return builder.build();
     }
 }

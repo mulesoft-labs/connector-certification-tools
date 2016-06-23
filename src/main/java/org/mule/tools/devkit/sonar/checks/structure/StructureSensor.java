@@ -73,6 +73,7 @@ public class StructureSensor implements Sensor {
         scanners.add(new DemoExistCheck(fileSystem));
         scanners.add(new TestDataBuilderExistsCheck(fileSystem));
         scanners.add(new GitIgnoreExistsCheck(fileSystem));
+        scanners.add(new GitIgnoreValidatePatterns(fileSystem));
         return scanners;
     }
 }
