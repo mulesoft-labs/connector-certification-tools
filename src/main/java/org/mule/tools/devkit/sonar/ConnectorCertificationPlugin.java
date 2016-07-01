@@ -1,5 +1,7 @@
 package org.mule.tools.devkit.sonar;
 
+import org.mule.tools.devkit.sonar.checks.git.GitLanguage;
+import org.mule.tools.devkit.sonar.checks.git.GitSensor;
 import org.mule.tools.devkit.sonar.checks.maven.MavenSensor;
 import org.mule.tools.devkit.sonar.checks.structure.StructureSensor;
 import org.sonar.api.SonarPlugin;
@@ -17,7 +19,10 @@ public final class ConnectorCertificationPlugin extends SonarPlugin {
         return Arrays.asList(
 
                 // server extensions -> objects are instantiated during server startup
-                ConnectorCertificationRulesDefinition.class, MvnLanguage.class, StructureLanguage.class,
+                ConnectorCertificationRulesDefinition.class,
+
+                // Languages.
+                GitLanguage.class, MvnLanguage.class, StructureLanguage.class,
 
                 // batch extensions
                 // Java checks
@@ -27,6 +32,9 @@ public final class ConnectorCertificationPlugin extends SonarPlugin {
                 ConnectorCertificationMvnProfile.class, MavenSensor.class,
 
                 // Structure checks
-                ConnectorCertificationStructProfile.class, StructureSensor.class);
+                ConnectorCertificationStructProfile.class, StructureSensor.class,
+
+                // Git checks
+                ConnectorCertificationGitProfile.class, GitSensor.class);
     }
 }

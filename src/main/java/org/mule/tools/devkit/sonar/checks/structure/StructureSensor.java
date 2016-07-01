@@ -1,7 +1,6 @@
 package org.mule.tools.devkit.sonar.checks.structure;
 
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
@@ -17,8 +16,6 @@ import org.sonar.api.issue.Issuable;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rule.RuleKey;
-
-import com.google.common.collect.Lists;
 
 public class StructureSensor implements Sensor {
 
@@ -62,18 +59,15 @@ public class StructureSensor implements Sensor {
     }
 
     private Iterable<StructureCheck> buildStructureChecks() {
-        List<StructureCheck> scanners = Lists.newArrayList();
-        scanners.add(new IconsExistCheck(fileSystem));
-        scanners.add(new LicenseDeclarationFilesCheck(fileSystem));
-        scanners.add(new ReadmeExistsCheck(fileSystem));
-        scanners.add(new ReleaseNotesExistsCheck(fileSystem));
-        scanners.add(new UserManualExistsCheck(fileSystem));
-        scanners.add(new TestResourcesFolderExistsCheck(fileSystem));
-        scanners.add(new TestSuiteFoldersExistCheck(fileSystem));
-        scanners.add(new DemoExistCheck(fileSystem));
-        scanners.add(new TestDataBuilderExistsCheck(fileSystem));
-        scanners.add(new GitIgnoreExistsCheck(fileSystem));
-        scanners.add(new GitIgnoreValidatePatterns(fileSystem));
-        return scanners;
+        return Lists.newArrayList(new IconsExistCheck(fileSystem),
+                new LicenseDeclarationFilesCheck(fileSystem),
+                new ReadmeExistsCheck(fileSystem),
+                new ReleaseNotesExistsCheck(fileSystem),
+                new UserManualExistsCheck(fileSystem),
+                new TestResourcesFolderExistsCheck(fileSystem),
+                new TestSuiteFoldersExistCheck(fileSystem),
+                new DemoExistCheck(fileSystem),
+                new TestDataBuilderExistsCheck(fileSystem),
+                new GitIgnoreExistsCheck(fileSystem));
     }
 }

@@ -29,4 +29,7 @@ public abstract class ExistingResourceCheck implements StructureCheck {
 
     protected abstract String ruleKey();
 
+    protected FileSystem getFileSystem() {
+        return fileSystem;
+    }
 }
