@@ -1,6 +1,7 @@
 package org.mule.tools.devkit.sonar.checks.maven;
 
 import com.google.common.collect.Lists;
+import java.util.Collections;
 import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.mule.tools.devkit.sonar.utils.PomUtils;
@@ -15,7 +16,7 @@ public class SnapshotConnectorArtifactCheck implements MavenCheck {
     @Override
     public Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
         return PomUtils.hasSnapshot(mavenProject.getVersion()) ?
-                Lists.<ConnectorIssue>newArrayList() :
+                Collections.<ConnectorIssue>emptyList() :
                 Lists.newArrayList(new ConnectorIssue(KEY, String.format("Project artifact (%s) MUST have a SNAPSHOT. Current version is (%s) but it should be (%s-SNAPSHOT).",
                 mavenProject.getArtifactId(), mavenProject.getVersion(), mavenProject.getVersion())));
     }

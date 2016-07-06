@@ -55,7 +55,7 @@ public class PomUtils {
     }
 
     public static boolean hasSnapshot(String version) {
-        return StringUtils.isNotEmpty(version) && version.endsWith(SNAPSHOT);
+        return StringUtils.endsWith(version, SNAPSHOT);
     }
 
     @NotNull
