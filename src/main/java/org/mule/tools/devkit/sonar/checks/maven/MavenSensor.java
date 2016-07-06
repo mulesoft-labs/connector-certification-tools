@@ -63,7 +63,7 @@ public class MavenSensor implements Sensor {
         List<MavenCheck> scanners = Lists.newArrayList();
         scanners.add(new DistributionManagementByCategoryCheck());
         scanners.add(new ScopeProvidedInMuleDependenciesCheck());
-        scanners.add(new SnapshotArtifactVersionPresentCheck());
+        scanners.add(new SnapshotConnectorArtifactCheck());
         scanners.add(new SnapshotDependenciesCheck());
         scanners.add(new SourceDeploymentForStandardCategoryCheck());
         scanners.add(new TestingFrameworkNotOverwrittenCheck());

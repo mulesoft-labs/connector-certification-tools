@@ -13,18 +13,18 @@ import java.io.IOException;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class SnapshotArtifactVersionPresentCheckTest {
+public class SnapshotConnectorArtifactCheckTest {
 
     @Test
     public void checkSnapshotInArtifactVersion() throws IOException, XmlPullParserException {
-        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/snapshot-artifact-present/snapshot-artifact-not-present"));
-        final SnapshotArtifactVersionPresentCheck check = new SnapshotArtifactVersionPresentCheck();
+        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/snapshot-artifact-mandatory/snapshot-artifact-missing"));
+        final SnapshotConnectorArtifactCheck check = new SnapshotConnectorArtifactCheck();
         final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
 
         assertThat(Iterables.size(pomIssues), is(1));
         ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(connectorIssue.ruleKey(), is("snapshot-artifact-is-present"));
+        assertThat(connectorIssue.ruleKey(), is("snapshot-artifact-mandatory"));
         assertThat(connectorIssue.message(),
-                is("Project artifact [certification-plugin] MUST have a SNAPSHOT version. Current version is [1.0.0] but it should be [1.0.0-SNAPSHOT]."));
+                is("Project artifact (certification-plugin) MUST have a SNAPSHOT. Current version is (1.0.0) but it should be (1.0.0-SNAPSHOT)."));
     }
 }

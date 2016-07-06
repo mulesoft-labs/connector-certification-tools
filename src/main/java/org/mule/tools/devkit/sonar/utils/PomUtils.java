@@ -1,5 +1,6 @@
 package org.mule.tools.devkit.sonar.utils;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -53,8 +54,8 @@ public class PomUtils {
         return parent != null && parent.getGroupId().equals(DEVKIT_GROUP_ID) && (parent.getArtifactId().equals(DEVKIT_ARTIFACT_ID) || parent.getArtifactId().equals(CERTIFIED_DEVKIT_ARTIFACT_ID));
     }
 
-    public static boolean hasSnapshotVersion(String version) {
-        return version.endsWith(SNAPSHOT);
+    public static boolean hasSnapshot(String version) {
+        return StringUtils.isNotEmpty(version) && version.endsWith(SNAPSHOT);
     }
 
     @NotNull

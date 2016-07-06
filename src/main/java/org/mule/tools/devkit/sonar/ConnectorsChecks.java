@@ -21,7 +21,7 @@ import org.mule.tools.devkit.sonar.checks.java.TestCasesExtendAbstractTestCasesC
 import org.mule.tools.devkit.sonar.checks.java.TestSuiteCheck;
 import org.mule.tools.devkit.sonar.checks.maven.DistributionManagementByCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.maven.ScopeProvidedInMuleDependenciesCheck;
-import org.mule.tools.devkit.sonar.checks.maven.SnapshotArtifactVersionPresentCheck;
+import org.mule.tools.devkit.sonar.checks.maven.SnapshotConnectorArtifactCheck;
 import org.mule.tools.devkit.sonar.checks.maven.SnapshotDependenciesCheck;
 import org.mule.tools.devkit.sonar.checks.maven.SourceDeploymentForStandardCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.maven.TestingFrameworkNotOverwrittenCheck;
@@ -65,7 +65,7 @@ public class ConnectorsChecks {
         final ImmutableList.Builder<Class<?>> builder = ImmutableList.builder();
         builder.add(DistributionManagementByCategoryCheck.class);
         builder.add(ScopeProvidedInMuleDependenciesCheck.class);
-        builder.add(SnapshotArtifactVersionPresentCheck.class);
+        builder.add(SnapshotConnectorArtifactCheck.class);
         builder.add(SnapshotDependenciesCheck.class);
         builder.add(SourceDeploymentForStandardCategoryCheck.class);
         builder.add(TestingFrameworkNotOverwrittenCheck.class);

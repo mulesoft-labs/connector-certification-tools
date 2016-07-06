@@ -22,7 +22,7 @@ public class SnapshotDependenciesCheck implements MavenCheck {
 
         if (!mavenProject.getVersion().endsWith(PomUtils.SNAPSHOT)) {
             Parent parent = mavenProject.getModel().getParent();
-            if (parent != null && parent.getVersion().endsWith(PomUtils.SNAPSHOT)) {
+            if (parent != null && PomUtils.hasSnapshot(parent.getVersion())) {
                 issues.add(new ConnectorIssue(KEY, String.format("Project version is not a snapshot (%s), so it should not inherit from a snapshot version parent (%s:%s).",
                         mavenProject.getVersion(), parent.getArtifactId(), parent.getVersion())));
             }
@@ -32,7 +32,7 @@ public class SnapshotDependenciesCheck implements MavenCheck {
                 List<Dependency> dependencies = mavenProject.getDependencies();
                 if (dependencies != null) {
                     for (Dependency dependency : dependencies) {
-                        if (dependency.getVersion().endsWith(PomUtils.SNAPSHOT)) {
+                        if (PomUtils.hasSnapshot(dependency.getVersion())) {
                             issues.add(new ConnectorIssue(KEY, String.format("Project version is not a snapshot (%s), so it should not declare any snapshot dependencies (%s:%s).",
                                     mavenProject.getVersion(), dependency.getArtifactId(), dependency.getVersion())));
                         }
