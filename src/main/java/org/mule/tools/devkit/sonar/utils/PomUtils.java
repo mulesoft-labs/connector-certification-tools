@@ -1,12 +1,6 @@
 package org.mule.tools.devkit.sonar.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Properties;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -16,11 +10,19 @@ import org.jetbrains.annotations.NotNull;
 import org.mule.tools.devkit.sonar.checks.ConnectorCategory;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Properties;
+
 public class PomUtils {
 
     public static final String DEVKIT_GROUP_ID = "org.mule.tools.devkit";
     public static final String DEVKIT_ARTIFACT_ID = "mule-devkit-parent";
     public static final String CERTIFIED_DEVKIT_ARTIFACT_ID = "certified-mule-connector-parent";
+    public static final String SNAPSHOT = "SNAPSHOT";
 
     private PomUtils() {
     }
@@ -50,6 +52,10 @@ public class PomUtils {
     public static boolean isDevKitConnector(MavenProject mavenProject) {
         final Parent parent = mavenProject.getModel().getParent();
         return parent != null && parent.getGroupId().equals(DEVKIT_GROUP_ID) && (parent.getArtifactId().equals(DEVKIT_ARTIFACT_ID) || parent.getArtifactId().equals(CERTIFIED_DEVKIT_ARTIFACT_ID));
+    }
+
+    public static boolean hasSnapshot(String version) {
+        return StringUtils.endsWith(version, SNAPSHOT);
     }
 
     @NotNull
