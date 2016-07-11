@@ -65,7 +65,7 @@ public class PomUtils {
         if (properties != null) {
             try {
                 category = ConnectorCategory.valueOf(properties.getProperty("category").toUpperCase());
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | NullPointerException e) {
                 LoggerFactory.getLogger(PomUtils.class).warn(String.format("Cannot parse Connector Category: %s", properties.getProperty("category")), e);
                 category = ConnectorCategory.UNKNOWN;
             }

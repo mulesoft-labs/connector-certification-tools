@@ -49,7 +49,7 @@ public class MavenSensor implements Sensor {
     public void analyse(Project project, SensorContext sensorContext) {
         final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(fileSystem.baseDir());
         if (PomUtils.isDevKitConnector(mavenProject)) {
-            final InputFile pomFile = Iterables.getOnlyElement(fileSystem.inputFiles(fileSystem.predicates().matchesPathPattern("pom.xml")));
+            final InputFile pomFile = Iterables.getOnlyElement(fileSystem.inputFiles(fileSystem.predicates().matchesPathPatterns(new String[]{"pom.xml", "dependency-reduced-pom.xml"})));
             for (MavenCheck mavenCheck : buildMavenChecks()) {
                 final Iterable<ConnectorIssue> analyse = mavenCheck.analyze(mavenProject);
                 for (ConnectorIssue issue : analyse) {

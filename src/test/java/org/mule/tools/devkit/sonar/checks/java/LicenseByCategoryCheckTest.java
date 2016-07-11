@@ -16,7 +16,6 @@ public class LicenseByCategoryCheckTest {
     private void runForCategory(String category, String testClass) {
         FileSystem fileSystem = new DefaultFileSystem(new File(String.format("src/test/files/java/licensechecks/%s", category.toLowerCase())));
         LicenseByCategoryCheck check = new LicenseByCategoryCheck(fileSystem);
-
         JavaCheckVerifier.verify(String.format("src/test/files/java/licensechecks/%s/LicenseByCategory%sCheck.java", category.toLowerCase(), testClass), check);
     }
 
@@ -48,6 +47,11 @@ public class LicenseByCategoryCheckTest {
     @Test
     public void checkInvalid() {
         runForCategory("Invalid");
+    }
+
+    @Test
+    public void checkMissing() {
+        runForCategory("Missing");
     }
 
 }
