@@ -1,6 +1,8 @@
 package org.mule.tools.devkit.sonar;
 
 import com.google.common.collect.ImmutableList;
+import org.mule.tools.devkit.sonar.checks.git.GitIgnoreValidationCheck;
+import org.mule.tools.devkit.sonar.checks.java.AvoidNullChecksOnProcessorCheck;
 import org.mule.tools.devkit.sonar.checks.java.BasePackageCheck;
 import org.mule.tools.devkit.sonar.checks.java.DevKitAnnotationsOrderCheck;
 import org.mule.tools.devkit.sonar.checks.java.DevKitRedundantAnnotationsCheck;
@@ -10,7 +12,6 @@ import org.mule.tools.devkit.sonar.checks.java.FunctionalTestSuiteCheck;
 import org.mule.tools.devkit.sonar.checks.java.LicenseByCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.java.MetaDataTestCasesExtendAbstractMetaDataTestCaseCheck;
 import org.mule.tools.devkit.sonar.checks.java.NoAssertionsInBeforeOrAfterCheck;
-import org.mule.tools.devkit.sonar.checks.java.AvoidNullChecksOnProcessorCheck;
 import org.mule.tools.devkit.sonar.checks.java.NumberOfComplexArgumentsCheck;
 import org.mule.tools.devkit.sonar.checks.java.NumberOfSimpleAndOptionalArgumentsCheck;
 import org.mule.tools.devkit.sonar.checks.java.PayloadDeprecationCheck;
@@ -25,7 +26,15 @@ import org.mule.tools.devkit.sonar.checks.maven.SnapshotConnectorArtifactCheck;
 import org.mule.tools.devkit.sonar.checks.maven.SnapshotDependenciesCheck;
 import org.mule.tools.devkit.sonar.checks.maven.SourceDeploymentForStandardCategoryCheck;
 import org.mule.tools.devkit.sonar.checks.maven.TestingFrameworkNotOverwrittenCheck;
-import org.mule.tools.devkit.sonar.checks.structure.*;
+import org.mule.tools.devkit.sonar.checks.structure.DemoExistCheck;
+import org.mule.tools.devkit.sonar.checks.structure.IconsExistCheck;
+import org.mule.tools.devkit.sonar.checks.structure.LicenseDeclarationFilesCheck;
+import org.mule.tools.devkit.sonar.checks.structure.ReadmeExistsCheck;
+import org.mule.tools.devkit.sonar.checks.structure.ReleaseNotesExistsCheck;
+import org.mule.tools.devkit.sonar.checks.structure.TestDataBuilderExistsCheck;
+import org.mule.tools.devkit.sonar.checks.structure.TestResourcesFolderExistsCheck;
+import org.mule.tools.devkit.sonar.checks.structure.TestSuiteFoldersExistCheck;
+import org.mule.tools.devkit.sonar.checks.structure.UserManualExistsCheck;
 import org.sonar.plugins.java.api.JavaCheck;
 
 public class ConnectorsChecks {
@@ -83,7 +92,7 @@ public class ConnectorsChecks {
         builder.add(UserManualExistsCheck.class);
         builder.add(DemoExistCheck.class);
         builder.add(TestDataBuilderExistsCheck.class);
-        builder.add(GitIgnoreExistsCheck.class);
+        builder.add(GitIgnoreValidationCheck.class);
         return builder.build();
     }
 }

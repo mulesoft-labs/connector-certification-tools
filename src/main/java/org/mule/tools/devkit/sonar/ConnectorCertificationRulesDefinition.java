@@ -20,6 +20,7 @@
 package org.mule.tools.devkit.sonar;
 
 import com.google.common.collect.Iterables;
+import org.reflections.Reflections;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinitionAnnotationLoader;
 
@@ -29,6 +30,7 @@ public class ConnectorCertificationRulesDefinition implements RulesDefinition {
     private static final String JAVA_REPOSITORY_KEY = "connector-certification-java";
     private static final String POM_REPOSITORY_KEY = "connector-certification-mvn";
     private static final String STRUCT_REPOSITORY_KEY = "connector-certification-struct";
+    private static final String GIT_REPOSITORY_KEY = "connector-certification-git";
 
     public static String getJavaRepositoryKey() {
         return JAVA_REPOSITORY_KEY;
@@ -47,6 +49,7 @@ public class ConnectorCertificationRulesDefinition implements RulesDefinition {
         addJavaRules(context);
         addMavenRules(context);
         addStructureRules(context);
+        addGitRules(context);
     }
 
     private void addJavaRules(Context context) {
@@ -74,6 +77,15 @@ public class ConnectorCertificationRulesDefinition implements RulesDefinition {
 
         RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
         annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.structureChecks(), Class.class));
+        repo.done();
+    }
+
+    private void addGitRules(Context context) {
+        NewRepository repo = context.createRepository(GIT_REPOSITORY_KEY, "git");
+        repo.setName(REPOSITORY_NAME);
+
+        RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
+        annotationLoader.load(repo, Iterables.toArray(new Reflections(getClass().getPackage().getName()).getTypesAnnotatedWith(org.sonar.check.Rule.class), Class.class));
         repo.done();
     }
 }
