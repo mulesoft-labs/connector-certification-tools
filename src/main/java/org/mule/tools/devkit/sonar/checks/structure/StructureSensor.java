@@ -3,7 +3,6 @@ package org.mule.tools.devkit.sonar.checks.structure;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.project.MavenProject;
-import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.mule.tools.devkit.sonar.utils.PomUtils;
 import org.slf4j.Logger;
@@ -16,6 +15,8 @@ import org.sonar.api.issue.Issuable;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rule.RuleKey;
+
+import static org.mule.tools.devkit.sonar.checks.structure.StructureCheck.REPOSITORY;
 
 public class StructureSensor implements Sensor {
 
@@ -34,7 +35,7 @@ public class StructureSensor implements Sensor {
         Issuable issuable = resourcePerspectives.as(Issuable.class, pomFile);
         if (issuable != null) {
             issuable.addIssue(issuable.newIssueBuilder()
-                    .ruleKey(RuleKey.of(ConnectorCertificationRulesDefinition.getStructRepositoryKey(), connectorIssue.ruleKey()))
+                    .ruleKey(RuleKey.of(REPOSITORY, connectorIssue.ruleKey()))
                     .message(StringUtils.abbreviate(connectorIssue.message(), 4000))
                     .build());
         }

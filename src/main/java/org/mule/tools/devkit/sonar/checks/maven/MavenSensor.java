@@ -1,11 +1,8 @@
 package org.mule.tools.devkit.sonar.checks.maven;
 
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.apache.maven.project.MavenProject;
-import org.mule.tools.devkit.sonar.ConnectorCertificationRulesDefinition;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
-import org.mule.tools.devkit.sonar.utils.PomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
@@ -18,6 +15,9 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.rule.RuleKey;
 
 import java.util.List;
+
+import static org.mule.tools.devkit.sonar.utils.PomUtils.createMavenProjectFromPomFile;
+import static org.mule.tools.devkit.sonar.utils.PomUtils.isDevKitConnector;
 
 public class MavenSensor implements Sensor {
 
@@ -33,7 +33,7 @@ public class MavenSensor implements Sensor {
         logger.info(connectorIssue.message());
         Issuable issuable = resourcePerspectives.as(Issuable.class, pomFile);
         if (issuable != null) {
-            issuable.addIssue(issuable.newIssueBuilder().ruleKey(RuleKey.of(ConnectorCertificationRulesDefinition.getMvnRepositoryKey(), connectorIssue.ruleKey()))
+            issuable.addIssue(issuable.newIssueBuilder().ruleKey(RuleKey.of(MavenCheck.REPOSITORY, connectorIssue.ruleKey()))
                     .message(connectorIssue.message()).build());
         }
     }
@@ -46,11 +46,11 @@ public class MavenSensor implements Sensor {
     @Override
     public void analyse(Project project, SensorContext sensorContext) {
         FileSystem fileSystem = sensorContext.fileSystem();
-        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(fileSystem.baseDir());
-        if (PomUtils.isDevKitConnector(mavenProject)) {
+        MavenProject mavenProject = createMavenProjectFromPomFile(fileSystem.baseDir());
+        if (isDevKitConnector(mavenProject)) {
             for (InputFile pomFile : fileSystem.inputFiles(fileSystem.predicates().matchesPathPattern("pom.xml"))) {
                 for (MavenCheck mavenCheck : buildMavenChecks()) {
-                    final Iterable<ConnectorIssue> analyse = mavenCheck.analyze(mavenProject);
+                    Iterable<ConnectorIssue> analyse = mavenCheck.analyze(mavenProject);
                     for (ConnectorIssue issue : analyse) {
                         logAndRaiseIssue(pomFile, issue);
                     }

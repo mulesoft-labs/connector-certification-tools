@@ -1,7 +1,6 @@
 package org.mule.tools.devkit.sonar;
 
 import com.google.common.collect.ImmutableList;
-import org.mule.tools.devkit.sonar.checks.git.GitIgnoreValidationCheck;
 import org.mule.tools.devkit.sonar.checks.java.AvoidNullChecksOnProcessorCheck;
 import org.mule.tools.devkit.sonar.checks.java.BasePackageCheck;
 import org.mule.tools.devkit.sonar.checks.java.DevKitAnnotationsOrderCheck;
@@ -20,21 +19,6 @@ import org.mule.tools.devkit.sonar.checks.java.RefOnlyInComplexTypesCheck;
 import org.mule.tools.devkit.sonar.checks.java.RestCallDeprecationCheck;
 import org.mule.tools.devkit.sonar.checks.java.TestCasesExtendAbstractTestCasesCheck;
 import org.mule.tools.devkit.sonar.checks.java.TestSuiteCheck;
-import org.mule.tools.devkit.sonar.checks.maven.DistributionManagementByCategoryCheck;
-import org.mule.tools.devkit.sonar.checks.maven.ScopeProvidedInMuleDependenciesCheck;
-import org.mule.tools.devkit.sonar.checks.maven.SnapshotConnectorArtifactCheck;
-import org.mule.tools.devkit.sonar.checks.maven.SnapshotDependenciesCheck;
-import org.mule.tools.devkit.sonar.checks.maven.SourceDeploymentForStandardCategoryCheck;
-import org.mule.tools.devkit.sonar.checks.maven.TestingFrameworkNotOverwrittenCheck;
-import org.mule.tools.devkit.sonar.checks.structure.DemoExistCheck;
-import org.mule.tools.devkit.sonar.checks.structure.IconsExistCheck;
-import org.mule.tools.devkit.sonar.checks.structure.LicenseDeclarationFilesCheck;
-import org.mule.tools.devkit.sonar.checks.structure.ReadmeExistsCheck;
-import org.mule.tools.devkit.sonar.checks.structure.ReleaseNotesExistsCheck;
-import org.mule.tools.devkit.sonar.checks.structure.TestDataBuilderExistsCheck;
-import org.mule.tools.devkit.sonar.checks.structure.TestResourcesFolderExistsCheck;
-import org.mule.tools.devkit.sonar.checks.structure.TestSuiteFoldersExistCheck;
-import org.mule.tools.devkit.sonar.checks.structure.UserManualExistsCheck;
 import org.sonar.plugins.java.api.JavaCheck;
 
 public class ConnectorsChecks {
@@ -42,6 +26,10 @@ public class ConnectorsChecks {
     private ConnectorsChecks() {
     }
 
+    /**
+     * FIXME: Replace using {@link org.reflections.Reflections}.
+     */
+    @Deprecated
     public static Iterable<Class<? extends JavaCheck>> javaChecks() {
         final ImmutableList.Builder<Class<? extends JavaCheck>> builder = ImmutableList.builder();
         builder.add(FunctionalTestPerProcessorCheck.class);
@@ -60,6 +48,10 @@ public class ConnectorsChecks {
         return builder.build();
     }
 
+    /**
+     * FIXME: Replace using {@link org.reflections.Reflections}.
+     */
+    @Deprecated
     public static Iterable<Class<? extends JavaCheck>> javaTestChecks() {
         final ImmutableList.Builder<Class<? extends JavaCheck>> builder = ImmutableList.builder();
         builder.add(FunctionalTestSuiteCheck.class);
@@ -67,32 +59,6 @@ public class ConnectorsChecks {
         builder.add(TestCasesExtendAbstractTestCasesCheck.class);
         builder.add(MetaDataTestCasesExtendAbstractMetaDataTestCaseCheck.class);
         builder.add(NoAssertionsInBeforeOrAfterCheck.class);
-        return builder.build();
-    }
-
-    public static Iterable<Class<?>> mavenChecks() {
-        final ImmutableList.Builder<Class<?>> builder = ImmutableList.builder();
-        builder.add(DistributionManagementByCategoryCheck.class);
-        builder.add(ScopeProvidedInMuleDependenciesCheck.class);
-        builder.add(SnapshotConnectorArtifactCheck.class);
-        builder.add(SnapshotDependenciesCheck.class);
-        builder.add(SourceDeploymentForStandardCategoryCheck.class);
-        builder.add(TestingFrameworkNotOverwrittenCheck.class);
-        return builder.build();
-    }
-
-    public static Iterable<Class<?>> structureChecks() {
-        final ImmutableList.Builder<Class<?>> builder = ImmutableList.builder();
-        builder.add(IconsExistCheck.class);
-        builder.add(LicenseDeclarationFilesCheck.class);
-        builder.add(ReadmeExistsCheck.class);
-        builder.add(ReleaseNotesExistsCheck.class);
-        builder.add(TestResourcesFolderExistsCheck.class);
-        builder.add(TestSuiteFoldersExistCheck.class);
-        builder.add(UserManualExistsCheck.class);
-        builder.add(DemoExistCheck.class);
-        builder.add(TestDataBuilderExistsCheck.class);
-        builder.add(GitIgnoreValidationCheck.class);
         return builder.build();
     }
 }

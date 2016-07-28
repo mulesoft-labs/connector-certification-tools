@@ -20,72 +20,45 @@
 package org.mule.tools.devkit.sonar;
 
 import com.google.common.collect.Iterables;
+import org.mule.tools.devkit.sonar.checks.Check;
 import org.reflections.Reflections;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinitionAnnotationLoader;
 
+import java.util.Set;
+
+import static com.google.common.base.Predicates.assignableFrom;
+import static com.google.common.collect.Iterables.toArray;
+import static java.util.stream.Collectors.toList;
+
 public class ConnectorCertificationRulesDefinition implements RulesDefinition {
 
     public static final String REPOSITORY_NAME = "Connector Certification";
-    private static final String JAVA_REPOSITORY_KEY = "connector-certification-java";
-    private static final String POM_REPOSITORY_KEY = "connector-certification-mvn";
-    private static final String STRUCT_REPOSITORY_KEY = "connector-certification-struct";
-    private static final String GIT_REPOSITORY_KEY = "connector-certification-git";
-
-    public static String getJavaRepositoryKey() {
-        return JAVA_REPOSITORY_KEY;
-    }
-
-    public static String getMvnRepositoryKey() {
-        return POM_REPOSITORY_KEY;
-    }
-
-    public static String getStructRepositoryKey() {
-        return STRUCT_REPOSITORY_KEY;
-    }
+    public static final String JAVA_REPOSITORY_KEY = "connector-certification-java";
 
     @Override
     public void define(Context context) {
-        addJavaRules(context);
-        addMavenRules(context);
-        addStructureRules(context);
-        addGitRules(context);
+        Reflections reflections = new Reflections(getClass().getPackage().getName());
+        Set<Class<?>> rules = reflections.getTypesAnnotatedWith(org.sonar.check.Rule.class);
+
+        // Adding Java Rules.
+        addRules(context, JAVA_REPOSITORY_KEY, "java", Iterables.concat(ConnectorsChecks.javaChecks(), ConnectorsChecks.javaTestChecks()));
+
+        // Adding other Rules.
+        reflections.getTypesAnnotatedWith(Class.class.cast(Check.class))
+                .stream()
+                .filter(checkType -> Class.class.cast(checkType).isAnnotationPresent(Check.class))
+                .forEach(checkType -> {
+                    Class<?> type = Class.class.cast(checkType);
+                    Check annotation = type.getDeclaredAnnotation(Check.class);
+                    addRules(context, annotation.repository(), annotation.language(), rules.stream().filter(assignableFrom(type)::apply).collect(toList()));
+                });
     }
 
-    private void addJavaRules(Context context) {
-        NewRepository repo = context.createRepository(JAVA_REPOSITORY_KEY, "java");
+    private void addRules(Context context, String key, String language, Iterable<Class<?>> rules) {
+        NewRepository repo = context.createRepository(key, language);
         repo.setName(REPOSITORY_NAME);
-
-        RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
-        annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.javaChecks(), Class.class));
-        annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.javaTestChecks(), Class.class));
-        repo.done();
-    }
-
-    private void addMavenRules(Context context) {
-        NewRepository repo = context.createRepository(POM_REPOSITORY_KEY, "mvn");
-        repo.setName(REPOSITORY_NAME);
-
-        RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
-        annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.mavenChecks(), Class.class));
-        repo.done();
-    }
-
-    private void addStructureRules(Context context) {
-        NewRepository repo = context.createRepository(STRUCT_REPOSITORY_KEY, "struct");
-        repo.setName(REPOSITORY_NAME);
-
-        RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
-        annotationLoader.load(repo, Iterables.toArray(ConnectorsChecks.structureChecks(), Class.class));
-        repo.done();
-    }
-
-    private void addGitRules(Context context) {
-        NewRepository repo = context.createRepository(GIT_REPOSITORY_KEY, "git");
-        repo.setName(REPOSITORY_NAME);
-
-        RulesDefinitionAnnotationLoader annotationLoader = new RulesDefinitionAnnotationLoader();
-        annotationLoader.load(repo, Iterables.toArray(new Reflections(getClass().getPackage().getName()).getTypesAnnotatedWith(org.sonar.check.Rule.class), Class.class));
+        new RulesDefinitionAnnotationLoader().load(repo, toArray(rules, Class.class));
         repo.done();
     }
 }
