@@ -4,6 +4,7 @@ package org.mule.tools.devkit.sonar.checks.maven;
 import com.google.common.base.Splitter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.mule.tools.devkit.sonar.utils.PomUtils;
 
@@ -45,21 +46,28 @@ public class DevkitLatestVersionCheckTest {
         Version currentVersion;
         String currentTag = "";
         String currentValue;
-        streamReader.nextTag(); // Advance to "metadata" element
+        // Advance to "metadata" element
+        streamReader.nextTag();
         do{
             streamReader.next();
             if(streamReader.hasName()){
                 currentTag = streamReader.getName().toString();
             }
-        }while(!currentTag.equals("versions") && streamReader.hasNext()); // Advance until we reach versions
-        streamReader.nextTag(); // Advance into the first element inside versions
-        streamReader.next(); // Advance into the value of the first version
+        }
+        // Advance until we reach versions
+        while(!currentTag.equals("versions") && streamReader.hasNext());
+        // Advance into the first element inside versions
+        streamReader.nextTag();
+        // Advance into the value of the first version
+        streamReader.next();
         currentValue = streamReader.getText();
         latestVersion = new Version(currentValue);
         do{
             if(streamReader.isStartElement()){
                 currentValue = streamReader.getElementText();
             }
+            /* It does not enter when the version has a - because those are test versions,
+             and Devkit version 4.x.x is not taken into account for being a migration tool */
             if(currentValue.indexOf('-') < 0 && !currentValue.isEmpty() && currentValue.indexOf('4') != 0){
                 currentVersion = new Version(currentValue);
                 currentVersion.replaceIfGreaterThan(latestVersion);
@@ -79,7 +87,7 @@ public class DevkitLatestVersionCheckTest {
         int minor;
         int rev;
 
-        public int compareTo(Version latestVersion) {
+        public int compareTo(@NotNull Version latestVersion) {
             if (this.major != latestVersion.major) {
                 return Integer.compare(this.major, latestVersion.major);
             }
