@@ -1,0 +1,8 @@
+# .gitignore file for non compliant test 'validateGitIgnoreFileContent()' of GitIgnoreExistsCheckTest.class
+
+*.class
+*.jar
+*.war
+bin
+target/
+*.classpath
