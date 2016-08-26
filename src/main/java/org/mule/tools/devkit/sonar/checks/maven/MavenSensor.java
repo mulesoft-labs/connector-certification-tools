@@ -61,6 +61,7 @@ public class MavenSensor implements Sensor {
 
     private Iterable<MavenCheck> buildMavenChecks() {
         List<MavenCheck> scanners = Lists.newArrayList();
+        scanners.add(new DevkitLatestVersionCheck());
         scanners.add(new DistributionManagementByCategoryCheck());
         scanners.add(new ScopeProvidedInMuleDependenciesCheck());
         scanners.add(new SnapshotConnectorArtifactCheck());
