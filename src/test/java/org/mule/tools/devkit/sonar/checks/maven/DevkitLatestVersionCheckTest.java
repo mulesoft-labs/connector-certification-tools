@@ -49,7 +49,7 @@ public class DevkitLatestVersionCheckTest {
         ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
         assertThat(connectorIssue.ruleKey(), is("devkit-latest-version"));
         assertThat(connectorIssue.message(),
-                is(String.format("Current connector Devkit version '%s' is not the last stable version. If feasible, use the latest sta stable one '%s'.",
+                is(String.format("Current connector Devkit version '%s' is not the last stable version. If feasible, use the latest stable one '%s'.",
                         currentVersion, check.getLatestVersion())));
     }
 }
