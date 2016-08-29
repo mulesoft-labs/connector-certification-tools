@@ -14,13 +14,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
@@ -71,14 +69,13 @@ public class PomUtils {
         try (InputStream xml = new URL("https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/tools/devkit/mule-devkit-parent/maven-metadata.xml").openStream()) {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xml);
             doc.getDocumentElement().normalize();
-            NodeList nList = doc.getElementsByTagName("version");
-            latestVersion = getCurrentDevkitVersion(nList.item(0).getFirstChild().getTextContent());
-            for (int i = 1; i < nList.getLength(); i++) {
-                Node tag = nList.item(i);
+            NodeList nodes = doc.getElementsByTagName("version");
+            latestVersion = getCurrentDevkitVersion(nodes.item(0).getFirstChild().getTextContent());
+            for (int i = 1; i < nodes.getLength(); i++) {
+                Node tag = nodes.item(i);
                 String currentValue = tag.getNodeType() == Node.ELEMENT_NODE ? tag.getFirstChild().getTextContent() : StringUtils.EMPTY;
-                /* It does not enter when the version has a - because those are revision versions,
-               and Devkit versions 4.x.x are not taken into account for being migration tools */
-                if (currentValue.indexOf('-') < 0 && !currentValue.isEmpty() && currentValue.indexOf('4') != 0) {
+                // Ignore revisions (e.g. 3.7.0-M1) and Mule 4.x.x versions that refer to the new SDK
+                if (StringUtils.isNotEmpty(currentValue) && currentValue.indexOf('-') < 0  && currentValue.indexOf('4') != 0) {
                     getCurrentDevkitVersion(currentValue).replaceIfGreaterThan(latestVersion);
                 }
             }
