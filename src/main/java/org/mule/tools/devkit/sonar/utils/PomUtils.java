@@ -67,7 +67,7 @@ public class PomUtils {
     }
 
     public static VersionUtils getLatestDevkitVersion() {
-        VersionUtils latestVersion = null;
+        VersionUtils latestVersion = getCurrentDevkitVersion("0.0.0");
         try (InputStream xml = new URL("https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/tools/devkit/mule-devkit-parent/maven-metadata.xml").openStream()) {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xml);
             doc.getDocumentElement().normalize();
