@@ -10,11 +10,9 @@ import org.jetbrains.annotations.NotNull;
 import org.mule.tools.devkit.sonar.checks.ConnectorCategory;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 
@@ -64,28 +62,24 @@ public class PomUtils {
         return parent != null && parent.getGroupId().equals(DEVKIT_GROUP_ID) && (parent.getArtifactId().equals(DEVKIT_ARTIFACT_ID) || parent.getArtifactId().equals(CERTIFIED_DEVKIT_ARTIFACT_ID));
     }
 
-    public static VersionUtils setLatestVersion() {
-        VersionUtils latestVersion = new VersionUtils("3.0.0");
-        try {
-            InputStream xml = new URL("https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/tools/devkit/mule-devkit-parent/maven-metadata.xml").openStream();
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(xml);
+    public static VersionUtils getCurrentDevkitVersion(String devkitVersion){
+        return new VersionUtils(devkitVersion);
+    }
+
+    public static VersionUtils getLatestDevkitVersion() {
+        VersionUtils latestVersion = null;
+        try (InputStream xml = new URL("https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/tools/devkit/mule-devkit-parent/maven-metadata.xml").openStream()) {
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xml);
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName("version");
-            VersionUtils currentVersion;
-            String currentValue = "";
-            for (int i = 0; i < nList.getLength(); i++) {
+            latestVersion = getCurrentDevkitVersion(nList.item(0).getFirstChild().getTextContent());
+            for (int i = 1; i < nList.getLength(); i++) {
                 Node tag = nList.item(i);
-                if (tag.getNodeType() == Node.ELEMENT_NODE) {
-                    Element version = (Element) tag;
-                    currentValue = version.getFirstChild().getTextContent();
-                }
-                /* It does not enter when the version has a - because those are test versions,
-               and Devkit version 4.x.x is not taken into account for being a migration tool */
+                String currentValue = tag.getNodeType() == Node.ELEMENT_NODE ? tag.getFirstChild().getTextContent() : StringUtils.EMPTY;
+                /* It does not enter when the version has a - because those are revision versions,
+               and Devkit versions 4.x.x are not taken into account for being migration tools */
                 if (currentValue.indexOf('-') < 0 && !currentValue.isEmpty() && currentValue.indexOf('4') != 0) {
-                    currentVersion = new VersionUtils(currentValue);
-                    currentVersion.replaceIfGreaterThan(latestVersion);
+                    getCurrentDevkitVersion(currentValue).replaceIfGreaterThan(latestVersion);
                 }
             }
         } catch (Exception e) {

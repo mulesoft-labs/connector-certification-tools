@@ -15,33 +15,19 @@ public class DevkitLatestVersionCheck implements MavenCheck {
 
     public static final String KEY = "devkit-latest-version";
     private static final int OUTDATED_VERSION = 1;
-    private VersionUtils latestVersion;
-    private VersionUtils currentVersion;
 
     @Override
     public Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
         final List<ConnectorIssue> issues = Lists.newArrayList();
         String devkitVersion = mavenProject.getModel().getParent().getVersion();
-        String issueMessage;
-        latestVersion = PomUtils.setLatestVersion();
-        if (devkitVersion.indexOf('-') != -1) {
-            issueMessage = String.format("Current connector Devkit version '%s' is not the last stable version. If feasible, use the latest stable one '%s'.", devkitVersion, latestVersion);
-            issues.add(new ConnectorIssue(KEY, issueMessage));
-        } else {
-            currentVersion = new VersionUtils(devkitVersion);
-            if (latestVersion.compareTo(currentVersion) == OUTDATED_VERSION) {
-                issueMessage = String.format("Current connector Devkit version '%s' is not up to date. If feasible, use the latest DevKit stable version '%s'.", currentVersion, latestVersion);
-                issues.add(new ConnectorIssue(KEY, issueMessage));
-            }
+        VersionUtils latestVersion = PomUtils.getLatestDevkitVersion();
+        if (isRevision(devkitVersion) || (!isRevision(devkitVersion) && latestVersion.compareTo(PomUtils.getCurrentDevkitVersion(devkitVersion)) == OUTDATED_VERSION)) {
+            issues.add(new ConnectorIssue(KEY, String.format("Current connector Devkit version '%s' is not the latest stable version. If feasible, use version '%s'.", devkitVersion, latestVersion)));
         }
         return issues;
     }
 
-    public VersionUtils getLatestVersion() {
-        return latestVersion;
-    }
-
-    public VersionUtils getCurrentVersion() {
-        return currentVersion;
+    private boolean isRevision(String devkitVersion) {
+        return devkitVersion.indexOf('-') != -1;
     }
 }
