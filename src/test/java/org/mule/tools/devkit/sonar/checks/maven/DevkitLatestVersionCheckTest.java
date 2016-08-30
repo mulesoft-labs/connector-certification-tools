@@ -19,33 +19,27 @@ import static org.hamcrest.Matchers.is;
 
 public class DevkitLatestVersionCheckTest {
 
+    private MavenProject mavenProject;
+
     @Test
     public void checkDevkitVersionIsLatest() throws IOException, XmlPullParserException, XMLStreamException {
-        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/devkit-latest-version/devkit-version-is-latest"));
-        final DevkitLatestVersionCheck check = new DevkitLatestVersionCheck();
-        final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
+        Iterable<ConnectorIssue> pomIssues = analyze("src/test/files/maven/devkit-latest-version/devkit-version-is-latest");
         assertThat(pomIssues, emptyIterable());
     }
 
     @Test
     public void checkDevkitVersionIsNotLatest() throws IOException, XmlPullParserException, XMLStreamException {
-        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/devkit-latest-version/devkit-version-is-not-latest"));
-        final DevkitLatestVersionCheck check = new DevkitLatestVersionCheck();
-        final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
-        String devkitVersion = mavenProject.getModel().getParent().getVersion();
-        assertThat(Iterables.size(pomIssues), is(1));
-        ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(connectorIssue.ruleKey(), is("devkit-latest-version"));
-        assertThat(connectorIssue.message(),
-                is(String.format("Current connector Devkit version '%s' is not the latest stable version. If feasible, use version '%s'.",
-                        PomUtils.getCurrentDevkitVersion(devkitVersion), PomUtils.getLatestDevkitVersion())));
+        devkitVersionIsRevisionOrNotLatest("src/test/files/maven/devkit-latest-version/devkit-version-is-not-latest");
     }
 
     @Test
     public void checkDevkitVersionIsRevision() throws IOException, XmlPullParserException, XMLStreamException {
-        final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/devkit-latest-version/devkit-version-is-revision"));
-        final DevkitLatestVersionCheck check = new DevkitLatestVersionCheck();
-        final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
+        devkitVersionIsRevisionOrNotLatest("src/test/files/maven/devkit-latest-version/devkit-version-is-revision");
+    }
+
+    //Both have the same code but read different POMs
+    private void devkitVersionIsRevisionOrNotLatest(String filePath){
+        Iterable<ConnectorIssue> pomIssues = analyze(filePath);
         String currentDevkitVersion = mavenProject.getModel().getParent().getVersion();
         assertThat(Iterables.size(pomIssues), is(1));
         ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
@@ -53,5 +47,11 @@ public class DevkitLatestVersionCheckTest {
         assertThat(connectorIssue.message(),
                 is(String.format("Current connector Devkit version '%s' is not the latest stable version. If feasible, use version '%s'.",
                         currentDevkitVersion, PomUtils.getLatestDevkitVersion())));
+    }
+
+    private Iterable<ConnectorIssue> analyze(String fileName){
+        mavenProject = PomUtils.createMavenProjectFromPomFile(new File(fileName));
+        final DevkitLatestVersionCheck check = new DevkitLatestVersionCheck();
+        return check.analyze(mavenProject);
     }
 }
