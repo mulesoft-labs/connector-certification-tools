@@ -87,7 +87,7 @@ public class PomUtils {
                 Node tag = versions.item(i);
                 String currentValue = tag.getNodeType() == ELEMENT_NODE ? tag.getFirstChild().getTextContent() : EMPTY;
                 // Ignore revisions (e.g. 3.7.0-M1) and Mule 4.x.x versions that refer to the new SDK
-                if (isNotEmpty(currentValue) && currentValue.indexOf('-') < 0 && currentValue.indexOf('4') != 0) {
+                if (isRevision(currentValue) && isNotEmpty(currentValue) && currentValue.indexOf('4') != 0) {
                     getCurrentDevkitVersion(currentValue).replaceIfGreaterThan(latestVersion);
                 }
             }
