@@ -92,7 +92,7 @@ public class PomUtils {
                 }
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
-            logger.warn("Couldn't retrieve the XML", e);
+            logger.error("Unable to retrieve the XML for DevKit metadata from Nexus repository. The rule 'DevkitLatestVersionCheck' won't be executed at this point", e);
         }
         return latestVersion;
     }
