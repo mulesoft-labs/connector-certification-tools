@@ -72,7 +72,7 @@ public class PomUtils {
         return parent != null && parent.getGroupId().equals(DEVKIT_GROUP_ID) && (parent.getArtifactId().equals(DEVKIT_ARTIFACT_ID) || parent.getArtifactId().equals(CERTIFIED_DEVKIT_ARTIFACT_ID));
     }
 
-    public static VersionUtils getCurrentDevkitVersion(String devkitVersion){
+    public static VersionUtils getCurrentDevkitVersion(String devkitVersion) {
         return new VersionUtils(devkitVersion);
     }
 
@@ -87,7 +87,7 @@ public class PomUtils {
                 Node tag = versions.item(i);
                 String currentValue = tag.getNodeType() == ELEMENT_NODE ? tag.getFirstChild().getTextContent() : EMPTY;
                 // Ignore revisions (e.g. 3.7.0-M1) and Mule 4.x.x versions that refer to the new SDK
-                if (!isRevision(currentValue) && isNotEmpty(currentValue) && currentValue.indexOf('4') != 0) {
+                if (isNotEmpty(currentValue) && currentValue.indexOf('-') < 0 && currentValue.indexOf('4') != 0) {
                     getCurrentDevkitVersion(currentValue).replaceIfGreaterThan(latestVersion);
                 }
             }
