@@ -25,7 +25,7 @@ public class DevkitLatestVersionCheck implements MavenCheck {
         final List<ConnectorIssue> issues = Lists.newArrayList();
         String devkitVersion = mavenProject.getModel().getParent().getVersion();
         VersionUtils latestVersion = getLatestDevkitVersion();
-        if (isRevision(devkitVersion) || (!isRevision(devkitVersion) && latestVersion.compareTo(getCurrentDevkitVersion(devkitVersion)) == OUTDATED_VERSION)) {
+        if (isRevision(devkitVersion) || latestVersion.compareTo(getCurrentDevkitVersion(devkitVersion)) == OUTDATED_VERSION) {
             issues.add(new ConnectorIssue(KEY, String.format("Current connector Devkit version '%s' is not the latest stable version. If feasible, use version '%s'.", devkitVersion, latestVersion)));
         }
         return issues;
