@@ -1,5 +1,6 @@
 package org.mule.tools.devkit.sonar.utils;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +38,7 @@ public class VersionUtils implements Comparable<VersionUtils> {
 
 
     public void replaceIfGreaterThan(VersionUtils version) {
-        if (this.minor > version.minor || this.minor == version.minor && this.rev > version.rev) {
+        if (this.compareTo(version) > 0) {
             version.minor = this.minor;
             version.rev = this.rev;
         }
@@ -45,6 +46,6 @@ public class VersionUtils implements Comparable<VersionUtils> {
 
     @Override
     public String toString() {
-        return "" + major + "." + minor + "." + rev;
+        return Joiner.on('.').skipNulls().join(major, minor, rev);
     }
 }

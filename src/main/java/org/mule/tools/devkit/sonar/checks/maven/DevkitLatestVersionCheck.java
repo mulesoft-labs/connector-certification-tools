@@ -3,7 +3,11 @@ package org.mule.tools.devkit.sonar.checks.maven;
 import com.google.common.collect.Lists;
 import org.apache.maven.project.MavenProject;
 import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
-import org.mule.tools.devkit.sonar.utils.PomUtils;
+
+import static org.mule.tools.devkit.sonar.utils.PomUtils.getLatestDevkitVersion;
+import static org.mule.tools.devkit.sonar.utils.PomUtils.getCurrentDevkitVersion;
+import static org.mule.tools.devkit.sonar.utils.PomUtils.isRevision;
+
 import org.mule.tools.devkit.sonar.utils.VersionUtils;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -20,14 +24,10 @@ public class DevkitLatestVersionCheck implements MavenCheck {
     public Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
         final List<ConnectorIssue> issues = Lists.newArrayList();
         String devkitVersion = mavenProject.getModel().getParent().getVersion();
-        VersionUtils latestVersion = PomUtils.getLatestDevkitVersion();
-        if (isRevision(devkitVersion) || (!isRevision(devkitVersion) && latestVersion.compareTo(PomUtils.getCurrentDevkitVersion(devkitVersion)) == OUTDATED_VERSION)) {
+        VersionUtils latestVersion = getLatestDevkitVersion();
+        if (isRevision(devkitVersion) || (!isRevision(devkitVersion) && latestVersion.compareTo(getCurrentDevkitVersion(devkitVersion)) == OUTDATED_VERSION)) {
             issues.add(new ConnectorIssue(KEY, String.format("Current connector Devkit version '%s' is not the latest stable version. If feasible, use version '%s'.", devkitVersion, latestVersion)));
         }
         return issues;
-    }
-
-    private boolean isRevision(String devkitVersion) {
-        return devkitVersion.indexOf('-') != -1;
     }
 }

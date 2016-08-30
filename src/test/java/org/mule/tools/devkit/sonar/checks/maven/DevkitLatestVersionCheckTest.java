@@ -13,6 +13,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 
+import static org.hamcrest.Matchers.emptyIterable;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -23,7 +24,7 @@ public class DevkitLatestVersionCheckTest {
         final MavenProject mavenProject = PomUtils.createMavenProjectFromPomFile(new File("src/test/files/maven/devkit-latest-version/devkit-version-is-latest"));
         final DevkitLatestVersionCheck check = new DevkitLatestVersionCheck();
         final Iterable<ConnectorIssue> pomIssues = check.analyze(mavenProject);
-        assertThat(Iterables.size(pomIssues), is(0));
+        assertThat(pomIssues, emptyIterable());
     }
 
     @Test
