@@ -37,21 +37,18 @@ public class DevkitLatestVersionCheckTest {
         devkitVersionIsRevisionOrNotLatest("src/test/files/maven/devkit-latest-version/devkit-version-is-revision");
     }
 
-    //Both have the same code but read different POMs
     private void devkitVersionIsRevisionOrNotLatest(String filePath){
         Iterable<ConnectorIssue> pomIssues = analyze(filePath);
-        String currentDevkitVersion = mavenProject.getModel().getParent().getVersion();
         assertThat(Iterables.size(pomIssues), is(1));
         ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
         assertThat(connectorIssue.ruleKey(), is("devkit-latest-version"));
         assertThat(connectorIssue.message(),
                 is(String.format("Current connector Devkit version '%s' is not the latest stable version. If feasible, use version '%s'.",
-                        currentDevkitVersion, PomUtils.getLatestDevkitVersion())));
+                        mavenProject.getModel().getParent().getVersion(), PomUtils.getLatestDevkitVersion())));
     }
 
     private Iterable<ConnectorIssue> analyze(String fileName){
         mavenProject = PomUtils.createMavenProjectFromPomFile(new File(fileName));
-        final DevkitLatestVersionCheck check = new DevkitLatestVersionCheck();
-        return check.analyze(mavenProject);
+        return new DevkitLatestVersionCheck().analyze(mavenProject);
     }
 }
