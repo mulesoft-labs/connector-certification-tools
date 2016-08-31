@@ -41,7 +41,7 @@ public class DevKitLatestVersionCheckTest {
         Iterable<ConnectorIssue> pomIssues = analyze(filePath);
         assertThat(Iterables.size(pomIssues), is(1));
         ConnectorIssue connectorIssue = Iterables.getOnlyElement(pomIssues);
-        assertThat(connectorIssue.ruleKey(), is("devKit-latest-version"));
+        assertThat(connectorIssue.ruleKey(), is("devkit-latest-version"));
         assertThat(connectorIssue.message(),
                 is(String.format("Current connector DevKit version '%s' is not the latest stable version. If feasible, use version '%s'.",
                         mavenProject.getModel().getParent().getVersion(), PomUtils.getLatestDevKitVersion())));

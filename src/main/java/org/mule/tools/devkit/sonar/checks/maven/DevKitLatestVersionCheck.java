@@ -16,7 +16,7 @@ import java.util.List;
 @Rule(key = DevKitLatestVersionCheck.KEY, name = "DevKit version should be the latest stable release", description = "This rule checks whether the current connector is using the latest stable release version of DevKit", priority = Priority.MAJOR, tags = {"connector-certification"})
 public class DevKitLatestVersionCheck implements MavenCheck {
 
-    public static final String KEY = "devKit-latest-version";
+    public static final String KEY = "devkit-latest-version";
 
     @Override
     public Iterable<ConnectorIssue> analyze(MavenProject mavenProject) {
