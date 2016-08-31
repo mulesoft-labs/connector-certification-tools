@@ -1,6 +1,7 @@
 package org.mule.tools.devkit.sonar.utils;
 
 import static org.apache.commons.lang.StringUtils.*;
+import static org.mule.tools.devkit.sonar.utils.VersionUtils.compareTo;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
@@ -34,7 +35,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
-public class PomUtils {
+public final class PomUtils {
 
     public static final String DEVKIT_GROUP_ID = "org.mule.tools.devkit";
     public static final String DEVKIT_ARTIFACT_ID = "mule-devkit-parent";
@@ -72,23 +73,19 @@ public class PomUtils {
         return parent != null && parent.getGroupId().equals(DEVKIT_GROUP_ID) && (parent.getArtifactId().equals(DEVKIT_ARTIFACT_ID) || parent.getArtifactId().equals(CERTIFIED_DEVKIT_ARTIFACT_ID));
     }
 
-    public static VersionUtils getCurrentDevkitVersion(String devkitVersion) {
-        return new VersionUtils(devkitVersion);
-    }
-
-    public static VersionUtils getLatestDevkitVersion() {
-        VersionUtils latestVersion = getCurrentDevkitVersion("0.0.0");
+    public static String getLatestDevkitVersion() {
+        String latestVersion = "0.0.0";
         try (InputStream xml = new URL("https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/tools/devkit/mule-devkit-parent/maven-metadata.xml").openStream()) {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xml);
             doc.getDocumentElement().normalize();
             NodeList versions = doc.getElementsByTagName("version");
-            latestVersion = getCurrentDevkitVersion(versions.item(0).getFirstChild().getTextContent());
-            for (int i = 1; i < versions.getLength(); i++) {
+            latestVersion = versions.item(0).getFirstChild().getTextContent();
+            for (Integer i = 1; i < versions.getLength(); i++) {
                 Node tag = versions.item(i);
                 String currentValue = tag.getNodeType() == ELEMENT_NODE ? tag.getFirstChild().getTextContent() : EMPTY;
                 // Ignore revisions (e.g. 3.7.0-M1) and Mule 4.x.x versions that refer to the new SDK
-                if (!isRevision(currentValue) && isNotEmpty(currentValue) && currentValue.indexOf('4') != 0) {
-                    getCurrentDevkitVersion(currentValue).replaceIfGreaterThan(latestVersion);
+                if (!isRevision(currentValue) && isNotEmpty(currentValue) && currentValue.indexOf('4') != 0 && compareTo(currentValue,latestVersion) > 0) {
+                    latestVersion = currentValue;
                 }
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {

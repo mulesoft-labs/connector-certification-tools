@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ClassParserUtils {
+public final class ClassParserUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(ClassParserUtils.class);
 

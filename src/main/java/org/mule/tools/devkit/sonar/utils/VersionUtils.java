@@ -1,51 +1,29 @@
 package org.mule.tools.devkit.sonar.utils;
 
-import com.google.common.base.Joiner;
+import com.google.common.base.Function;
 import com.google.common.base.Splitter;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import static com.google.common.base.Joiner.on;
+import static com.google.common.base.Strings.padStart;
+import static com.google.common.collect.Iterables.transform;
+import static java.lang.Math.max;
 
-public class VersionUtils implements Comparable<VersionUtils> {
+public final class VersionUtils {
 
-    private int major;
-    private int minor;
-    private int rev;
-
-    public VersionUtils(String version) {
-        List<String> tokens = Splitter.on(".").omitEmptyStrings().splitToList(version);
-        this.major = Integer.parseInt(tokens.get(0));
-        this.minor = Integer.parseInt(tokens.get(1));
-        if (tokens.size() == 3) {
-            this.rev = Integer.parseInt(tokens.get(2));
-        } else {
-            this.rev = 0;
-        }
+    private VersionUtils(){
     }
 
-    public int compareTo(@NotNull VersionUtils currentVersion) {
-        if (this.major != currentVersion.major) {
-            return Integer.compare(this.major, currentVersion.major);
-        }
-        if (this.minor != currentVersion.minor) {
-            return Integer.compare(this.minor, currentVersion.minor);
-        }
-        if (this.rev != currentVersion.rev) {
-            return Integer.compare(this.rev, currentVersion.rev);
-        }
-        return 0;
+    public static Integer compareTo(String a, String b) {
+        Integer maxSize = max(a.length(), b.length());
+        return convert(a, maxSize).compareTo(convert(b, maxSize));
     }
 
-
-    public void replaceIfGreaterThan(VersionUtils version) {
-        if (this.compareTo(version) > 0) {
-            version.minor = this.minor;
-            version.rev = this.rev;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return Joiner.on('.').skipNulls().join(major, minor, rev);
+    public static String convert(String a, final Integer size) {
+        return on("").join(transform(Splitter.on(".").split(a), new Function<String, String>() {
+            @Override
+            public String apply(String input) {
+                return padStart(input, size, '0');
+            }
+        }));
     }
 }
