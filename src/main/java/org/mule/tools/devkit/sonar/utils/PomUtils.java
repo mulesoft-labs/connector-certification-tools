@@ -73,7 +73,7 @@ public final class PomUtils {
         return parent != null && parent.getGroupId().equals(DEVKIT_GROUP_ID) && (parent.getArtifactId().equals(DEVKIT_ARTIFACT_ID) || parent.getArtifactId().equals(CERTIFIED_DEVKIT_ARTIFACT_ID));
     }
 
-    public static String getLatestDevkitVersion() {
+    public static String getLatestDevKitVersion() {
         String latestVersion = "0.0.0";
         try (InputStream xml = new URL("https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/tools/devkit/mule-devkit-parent/maven-metadata.xml").openStream()) {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xml);
@@ -89,13 +89,13 @@ public final class PomUtils {
                 }
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
-            logger.error("Unable to retrieve the XML for DevKit metadata from Nexus repository. The rule 'DevkitLatestVersionCheck' won't be executed at this point", e);
+            logger.error("Unable to retrieve the XML for DevKit metadata from Nexus repository. The rule 'DevKitLatestVersionCheck' won't be executed at this point", e);
         }
         return latestVersion;
     }
 
-    public static boolean isRevision(String devkitVersion) {
-        return devkitVersion.contains("-");
+    public static boolean isRevision(String devKitVersion) {
+        return devKitVersion.contains("-");
     }
 
     public static boolean hasSnapshot(String version) {
