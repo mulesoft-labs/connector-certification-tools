@@ -22,31 +22,15 @@ import static com.google.common.base.Strings.padStart;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.transform;
 import static java.lang.Math.max;
+import static org.apache.commons.lang.StringUtils.EMPTY;
 import static org.mule.tools.devkit.sonar.utils.NodeIterable.getVersion;
 
 public final class DevkitUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(PomUtils.class);
-
     private DevkitUtils() {
     }
 
-    public static String getLatestDevKitVersion() {
-        String latestVersion = null;
-        try (InputStream xml = new URL("https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/tools/devkit/mule-devkit-parent/maven-metadata.xml").openStream()) {
-            Document doc = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder()
-                    .parse(xml);
-            doc.getDocumentElement()
-                    .normalize();
-            latestVersion = getMayorVersion(filter(transform(new NodeIterable(doc.getElementsByTagName("version")), getVersion), and(notNull(), isValidVersion)));
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            logger.error("Unable to retrieve the XML for DevKit metadata from Nexus repository. The rule 'DevKitLatestVersionCheck' won't be executed at this point", e);
-        }
-        return latestVersion;
-    }
-
-    private static String EMPTY = "";
+    private static final Logger logger = LoggerFactory.getLogger(PomUtils.class);
 
     public static Predicate<String> isValidVersion = new Predicate<String>() {
 
@@ -57,7 +41,22 @@ public final class DevkitUtils {
         }
     };
 
-    public static String getMayorVersion(Iterable<String> versions) {
+    public static String getLatestDevKitVersion() {
+        String latestVersion = null;
+        try (InputStream xml = new URL("https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/tools/devkit/mule-devkit-parent/maven-metadata.xml").openStream()) {
+            Document doc = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder()
+                    .parse(xml);
+            doc.getDocumentElement()
+                    .normalize();
+            latestVersion = getMajorVersion(filter(transform(new NodeIterable(doc.getElementsByTagName("version")), getVersion), and(notNull(), isValidVersion)));
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            logger.error("Unable to retrieve the XML for DevKit metadata from Nexus repository. The rule 'DevKitLatestVersionCheck' won't be executed at this point", e);
+        }
+        return latestVersion;
+    }
+
+    public static String getMajorVersion(Iterable<String> versions) {
         String mayor = EMPTY;
         for (String version : versions) {
             if (compareTo(version, mayor) > 0) {
