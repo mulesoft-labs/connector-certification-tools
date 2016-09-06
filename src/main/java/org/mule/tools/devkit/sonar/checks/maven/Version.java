@@ -40,16 +40,6 @@ public class Version implements Comparable<Version> {
                     .parse(xml);
             doc.getDocumentElement()
                     .normalize();
-            List<String> cocaa = newArrayList(new NodeIterable(doc.getElementsByTagName("version"))).stream()
-                    .map(node -> (ofNullable(node).map(Node::getNodeType).orElse(null) == ELEMENT_NODE) ? node.getFirstChild().getTextContent() : null)
-                    .collect(Collectors.toList());
-            List<Version> cocab = cocaa.stream().map(Version::new).collect(Collectors.toList());
-            List<Version> cocae = cocab.stream().filter(((Predicate<Version>) (Version::isRevision)).negate()).collect(Collectors.toList());
-            List<Version> cocaf = cocab.stream().filter(((Predicate<Version>) (version -> version.value.startsWith(majorVersion)))).collect(Collectors.toList());
-            List<Version> cocad = cocab.stream()
-                    .filter(((Predicate<Version>) (Version::isRevision)).negate()
-                            .and(((Predicate<Version>) (version -> version.value.startsWith(majorVersion))).negate())).collect(Collectors.toList());
-            Version cocac = cocad.stream().max((a, b) -> a.compareTo(b)).orElse(null);
             return newArrayList(new NodeIterable(doc.getElementsByTagName("version"))).stream()
                     .map(node -> (ofNullable(node).map(Node::getNodeType).orElse(null) == ELEMENT_NODE) ? node.getFirstChild().getTextContent() : null)
                     .map(Version::new)
