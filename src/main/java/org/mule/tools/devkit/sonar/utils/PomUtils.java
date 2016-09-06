@@ -1,6 +1,5 @@
 package org.mule.tools.devkit.sonar.utils;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -8,6 +7,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.jetbrains.annotations.NotNull;
 import org.mule.tools.devkit.sonar.checks.ConnectorCategory;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
@@ -17,12 +17,17 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
-public class PomUtils {
+import static org.apache.commons.lang.StringUtils.endsWith;
+import static org.mule.tools.devkit.sonar.checks.ConnectorCategory.UNKNOWN;
+import static org.mule.tools.devkit.sonar.checks.ConnectorCategory.valueOf;
+
+public final class PomUtils {
 
     public static final String DEVKIT_GROUP_ID = "org.mule.tools.devkit";
     public static final String DEVKIT_ARTIFACT_ID = "mule-devkit-parent";
     public static final String CERTIFIED_DEVKIT_ARTIFACT_ID = "certified-mule-connector-parent";
     public static final String SNAPSHOT = "SNAPSHOT";
+    private static final Logger logger = LoggerFactory.getLogger(PomUtils.class);
 
     private PomUtils() {
     }
@@ -50,24 +55,29 @@ public class PomUtils {
     }
 
     public static boolean isDevKitConnector(MavenProject mavenProject) {
-        final Parent parent = mavenProject.getModel().getParent();
-        return parent != null && parent.getGroupId().equals(DEVKIT_GROUP_ID) && (parent.getArtifactId().equals(DEVKIT_ARTIFACT_ID) || parent.getArtifactId().equals(CERTIFIED_DEVKIT_ARTIFACT_ID));
+        final Parent parent = mavenProject.getModel()
+                .getParent();
+        return parent != null && parent.getGroupId()
+                .equals(DEVKIT_GROUP_ID) && (parent.getArtifactId()
+                .equals(DEVKIT_ARTIFACT_ID) || parent.getArtifactId()
+                .equals(CERTIFIED_DEVKIT_ARTIFACT_ID));
     }
 
     public static boolean hasSnapshot(String version) {
-        return StringUtils.endsWith(version, SNAPSHOT);
+        return endsWith(version, SNAPSHOT);
     }
 
     @NotNull
     public static ConnectorCategory category(MavenProject mavenProject) {
         final Properties properties = mavenProject.getProperties();
-        ConnectorCategory category = ConnectorCategory.UNKNOWN;
+        ConnectorCategory category = UNKNOWN;
         if (properties != null) {
             try {
-                category = ConnectorCategory.valueOf(properties.getProperty("category").toUpperCase());
+                category = valueOf(properties.getProperty("category")
+                        .toUpperCase());
             } catch (IllegalArgumentException e) {
-                LoggerFactory.getLogger(PomUtils.class).warn(String.format("Cannot parse Connector Category: %s", properties.getProperty("category")), e);
-                category = ConnectorCategory.UNKNOWN;
+                logger.warn(String.format("Cannot parse Connector Category: %s", properties.getProperty("category")), e);
+                category = UNKNOWN;
             }
         }
         return category;
