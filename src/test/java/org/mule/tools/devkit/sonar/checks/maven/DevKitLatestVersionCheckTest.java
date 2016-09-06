@@ -8,13 +8,13 @@ import org.mule.tools.devkit.sonar.checks.ConnectorIssue;
 import org.mule.tools.devkit.sonar.utils.PomUtils;
 
 import javax.xml.stream.XMLStreamException;
-
 import java.io.File;
 import java.io.IOException;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
-import static org.mule.tools.devkit.sonar.utils.DevkitUtils.getLatestDevKitVersion;
+import static org.mule.tools.devkit.sonar.checks.maven.DevKitLatestVersionCheck.DEVKIT_MAJOR_VERSION_3_X;
+import static org.mule.tools.devkit.sonar.checks.maven.Version.getLatestMinorDevKitVersion;
 
 public class DevKitLatestVersionCheckTest {
 
@@ -45,7 +45,7 @@ public class DevKitLatestVersionCheckTest {
                 is(String.format("Current connector DevKit version '%s' is not the latest stable version. If feasible, use version '%s'.",
                         mavenProject.getModel()
                                 .getParent()
-                                .getVersion(), getLatestDevKitVersion())));
+                                .getVersion(), getLatestMinorDevKitVersion(DEVKIT_MAJOR_VERSION_3_X))));
     }
 
     private Iterable<ConnectorIssue> analyze(String fileName) {
