@@ -17,4 +17,16 @@ public class MinMuleVersionCheckTest {
         JavaCheckVerifier.verify("src/test/files/java/MinMuleVersionInvalidConnector.java", check);
     }
 
+    @Test
+    public void invalidTypeMinMuleVersionConnector() {
+        MinMuleVersionCheck check = new MinMuleVersionCheck();
+        JavaCheckVerifier.verify("src/test/files/java/MinMuleVersionInvalidTypeConnector.java", check);
+    }
+
+    @Test
+    public void emptyMinMuleVersionConnector() {
+        MinMuleVersionCheck check = new MinMuleVersionCheck();
+        JavaCheckVerifier.verify("src/test/files/java/MinMuleVersionEmptyConnector.java", check);
+    }
+
 }
