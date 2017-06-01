@@ -38,7 +38,7 @@ public class MinMuleVersionCheck extends AbstractConnectorClassCheck {
                                 && hasValidFormat(replace((((LiteralTreeImpl) ((AssignmentExpressionTreeImpl) expression).expression()).token().text()), "\"", ""));
                     }
                 }))) {
-                    logAndRaiseIssue(annotationTree, "@Connector should declare a 'minMuleVersion'."); // that is not empty and follows the semantic versioning MAJOR.MINOR or MAJOR.MINOR.PATCH. For example, minMuleVersion = \"3.7\"");
+                    logAndRaiseIssue(annotationTree, "@Connector should declare a 'minMuleVersion'.");
                 }
             }
         }
