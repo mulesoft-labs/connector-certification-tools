@@ -1,53 +1,45 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import org.mule.tools.devkit.sonar.utils.ClassParserUtils;
+import com.google.common.base.Predicate;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.java.model.expression.AssignmentExpressionTreeImpl;
 import org.sonar.java.model.expression.IdentifierTreeImpl;
 import org.sonar.java.model.expression.LiteralTreeImpl;
-import org.sonar.plugins.java.api.tree.*;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
+import org.sonar.plugins.java.api.tree.AnnotationTree;
+import org.sonar.plugins.java.api.tree.ClassTree;
+import org.sonar.plugins.java.api.tree.ExpressionTree;
+import org.sonar.plugins.java.api.tree.IdentifierTree;
 
-import java.util.List;
+import javax.annotation.Nullable;
 
-@Rule(key = MinMuleVersionCheck.KEY, name = "Connectors should specify a minMuleVersion", description = "The 'minMuleVersion' should be specified in the @Connector annotation.", priority = Priority.CRITICAL, tags = { "connector-certification" })
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.isEmpty;
+import static org.apache.commons.lang.StringUtils.replace;
+import static org.mule.tools.devkit.sonar.checks.maven.Version.hasValidFormat;
+import static org.mule.tools.devkit.sonar.utils.ClassParserUtils.ANNOTATION_TREE_PREDICATE;
+import static org.mule.tools.devkit.sonar.utils.ClassParserUtils.is;
+
+@Rule(key = MinMuleVersionCheck.KEY, name = "Attribute 'minMuleVersion' should be declared in @Connector", description = "Connectors should explicitly declare a 'minMuleVersion' inside @Connector, which is the minimum Mule version required. It must also follow the semantic versioning MAJOR.MINOR or MAJOR.MINOR.PATCH. For example, minMuleVersion = \"3.7\".", priority = Priority.CRITICAL, tags = { "connector-certification" })
 public class MinMuleVersionCheck extends AbstractConnectorClassCheck {
 
     public static final String KEY = "min-mule-version";
 
     @Override
     protected void verifyConnector(ClassTree classTree, IdentifierTree connectorAnnotation) {
+        for (AnnotationTree annotationTree : filter(classTree.modifiers().annotations(), ANNOTATION_TREE_PREDICATE)) {
+            if (is(annotationTree, "org.mule.api.annotations.Connector")) {
+                if(isEmpty(annotationTree.arguments()) || isEmpty(filter(annotationTree.arguments(), new Predicate<ExpressionTree>() {
 
-        //Iterate through the annotations until finding @Connector
-        for (AnnotationTree annotationTree : Iterables.filter(classTree.modifiers().annotations(), ClassParserUtils.ANNOTATION_TREE_PREDICATE)) {
-            if (ClassParserUtils.is(annotationTree, "org.mule.api.annotations.Connector")) {
-
-                //Iterate through the arguments until finding minMuleVersion
-                for(ExpressionTree expression : annotationTree.arguments()){
-                    if(expression.kind().name().equals("ASSIGNMENT") && ((IdentifierTreeImpl) ((AssignmentExpressionTreeImpl) expression).variable()).name().equals("minMuleVersion")){
-
-                        //Make sure the minMuleVersion argument is set as an string value
-                        if(!((AssignmentExpressionTreeImpl) expression).expression().symbolType().isSubtypeOf(String.class.getTypeName())){
-                            logAndRaiseIssue(annotationTree, "The value of minMuleVersion must be a string");
-                            return;
-                        }
-
-                        //`length == 2` means it only opens and closes the string ("")
-                        if(((String)((LiteralTreeImpl) ((AssignmentExpressionTreeImpl) expression).expression()).value()).toCharArray().length == 2){
-                            logAndRaiseIssue(annotationTree, "The value of minMuleVersion can not be empty");
-                            return;
-                        }
-
-                        //At this point, the argument exists and is valid. Stop checking.
-                        return;
+                    @Override
+                    public boolean apply(@Nullable ExpressionTree expression) {
+                        return expression.kind().name().equals("ASSIGNMENT")
+                                && ((IdentifierTreeImpl) ((AssignmentExpressionTreeImpl) expression).variable()).name().equals("minMuleVersion")
+                                && hasValidFormat(replace((((LiteralTreeImpl) ((AssignmentExpressionTreeImpl) expression).expression()).token().text()), "\"", ""));
                     }
+                }))) {
+                    logAndRaiseIssue(annotationTree, "@Connector should declare a 'minMuleVersion'."); // that is not empty and follows the semantic versioning MAJOR.MINOR or MAJOR.MINOR.PATCH. For example, minMuleVersion = \"3.7\"");
                 }
-
-                //If not valid argument has been found, raise an issue.
-                logAndRaiseIssue(annotationTree, "The connector should specify a minMuleVersion");
             }
         }
     }

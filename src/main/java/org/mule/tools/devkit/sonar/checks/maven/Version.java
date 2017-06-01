@@ -12,17 +12,18 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.regex.Pattern;
 
 import static java.util.Optional.ofNullable;
+import static java.util.regex.Pattern.compile;
 import static org.sonar.api.internal.google.common.collect.Lists.newArrayList;
 import static org.w3c.dom.Node.ELEMENT_NODE;
 
 public class Version implements Comparable<Version> {
 
     private final String value;
+    private static final Pattern SEMANTIC_VERSION_PATTERN = compile("^(\\d(\\.\\d))(\\.\\d)?$");
 
     public Version(String value) {
         this.value = value;
@@ -30,6 +31,10 @@ public class Version implements Comparable<Version> {
 
     public boolean isRevision() {
         return value.contains("-");
+    }
+
+    public static boolean hasValidFormat(String version) {
+        return SEMANTIC_VERSION_PATTERN.matcher(version).matches();
     }
 
     public static Version getLatestMinorDevKitVersion(String majorVersion) {

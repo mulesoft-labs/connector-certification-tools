@@ -1,32 +1,40 @@
 package org.mule.tools.devkit.sonar.checks.java;
 
 import org.junit.Test;
-import org.sonar.java.checks.verifier.JavaCheckVerifier;
+
+import static org.sonar.java.checks.verifier.JavaCheckVerifier.verify;
+import static org.sonar.java.checks.verifier.JavaCheckVerifier.verifyNoIssue;
 
 public class MinMuleVersionCheckTest {
 
     @Test
-    public void validMinMuleVersionConnector() {
+    public void testValidMinMuleVersionConnector() {
         MinMuleVersionCheck check = new MinMuleVersionCheck();
-        JavaCheckVerifier.verifyNoIssue("src/test/files/java/MinMuleVersionValidConnector.java", check);
+        verifyNoIssue("src/test/files/java/MinMuleVersionCheckIsValid.java", check);
     }
 
     @Test
-    public void invalidMinMuleVersionConnector() {
+    public void testEmptyMinMuleVersionConnector() {
         MinMuleVersionCheck check = new MinMuleVersionCheck();
-        JavaCheckVerifier.verify("src/test/files/java/MinMuleVersionInvalidConnector.java", check);
+        verify("src/test/files/java/MinMuleVersionCheckIsEmpty.java", check);
     }
 
     @Test
-    public void invalidTypeMinMuleVersionConnector() {
+    public void testInvalidMinMuleVersionConnector() {
         MinMuleVersionCheck check = new MinMuleVersionCheck();
-        JavaCheckVerifier.verify("src/test/files/java/MinMuleVersionInvalidTypeConnector.java", check);
+        verify("src/test/files/java/MinMuleVersionCheckIsInvalid.java", check);
     }
 
     @Test
-    public void emptyMinMuleVersionConnector() {
+    public void testMissingMinMuleVersionConnector() {
         MinMuleVersionCheck check = new MinMuleVersionCheck();
-        JavaCheckVerifier.verify("src/test/files/java/MinMuleVersionEmptyConnector.java", check);
+        verify("src/test/files/java/MinMuleVersionCheckIsMissing.java", check);
+    }
+
+    @Test
+    public void testNoAttributesMinMuleVersionConnector() {
+        MinMuleVersionCheck check = new MinMuleVersionCheck();
+        verify("src/test/files/java/MinMuleVersionCheckNoAttributes.java", check);
     }
 
 }
